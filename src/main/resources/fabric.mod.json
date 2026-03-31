@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "${id}",
+  "name": "${name}",
+  "version": "${version}",
+  "authors": ["${authors}"],
+  "contributors": ["${contributors}"],
+  "contact": {
+    "sources": "${sources_url}",
+    "issues": "${issues_url}"
+  },
+  "description": "${description}",
+  "icon": "assets/icon.png",
+  "license": "${license}",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.ray.CraftConfig.platform.fabric.FabricEntrypoint"
+    ],
+    "client": [
+      "net.ray.CraftConfig.platform.fabric.FabricClientEntrypoint"
+    ],
+    "modmenu": [
+      "net.ray.CraftConfig.platform.fabric.ModMenuIntegration"
+    ]
+
+  },
+  "mixins": [
+    "craft_config.mixins.json"
+  ],${dependencies}
+}

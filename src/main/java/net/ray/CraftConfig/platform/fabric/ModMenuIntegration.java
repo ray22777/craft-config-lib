@@ -1,0 +1,26 @@
+package net.ray.CraftConfig.platform.fabric;
+//? fabric {
+import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+import com.terraformersmc.modmenu.api.ModMenuApi;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.ray.CraftConfig.api.registry.CraftConfigRegistry;
+import net.ray.CraftConfig.example.ExampleConfig;
+import net.ray.CraftConfig.gui.ConfigScreen;
+
+import java.util.Map;
+
+@Environment(EnvType.CLIENT)
+public class ModMenuIntegration implements ModMenuApi {
+	@Override
+	public ConfigScreenFactory<?> getModConfigScreenFactory() {
+		return parent -> new ConfigScreen(parent, ExampleConfig.config);
+	}
+
+
+    @Override
+    public Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {
+        return CraftConfigRegistry.getConfigScreenFactories();
+    }
+}
+//?}
