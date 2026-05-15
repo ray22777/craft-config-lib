@@ -41,20 +41,17 @@ public class ColorSlider extends AbstractSliderButton {
 			if (!simple && label != null) {
 				setMessage(Component.literal(label + ": " + (int)(value * 255)));
 			}
-			// For simple sliders, the message is already set by the anonymous class
 		}
 
 		@Override protected void applyValue() {
 			if (!simple && onChange != null) {
 				onChange.accept((int) (this.value * 255));
 			}
-			// For simple sliders, applyValue is handled by the anonymous class
 		}
 
 		//~ if >=26.1 'renderWidget' -> 'extractWidgetRenderState'{
 		@Override public void renderWidget(GuiGraphics g, int mx, int my, float pt) {
 			super.renderWidget(g, mx, my, pt);
-			// Only render custom thumb for RGB sliders
 			if (!simple && label != null) {
 				int trackX = getX() + 40;
 				int thumbX = trackX + (int) (value * width / 255f) - 5;

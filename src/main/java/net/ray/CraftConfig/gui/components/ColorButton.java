@@ -116,7 +116,7 @@ public class ColorButton extends AbstractButton {
 	//?if = 1.21.11{
 	/*@Override protected void renderContents(GuiGraphics g, int mx, int my, float pt) {
 		*///?}else{
-		
+
 		//~ if >=26.1 'renderWidget' -> 'extractContents'
 		@Override public void renderWidget (GuiGraphics g,int mx, int my, float pt){
 		//?}

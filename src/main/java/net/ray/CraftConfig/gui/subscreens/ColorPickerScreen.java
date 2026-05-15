@@ -435,15 +435,15 @@ public boolean mouseReleased(double mx, double my, int button) {
 
 			finalColor = (int) val;
 
-			alpha = (finalColor >> 24) & 0xFF;
-			int r = (finalColor >> 16) & 0xFF;
-			int g = (finalColor >> 8) & 0xFF;
-			int b = finalColor & 0xFF;
-
+			sliderAlpha = (finalColor >> 24) & 0xFF;
+			baseR = (finalColor >> 16) & 0xFF;
+			baseG = (finalColor >> 8) & 0xFF;
+			baseB = finalColor & 0xFF;
+			brightness = 255;
 
 			if (!draggingDisc) {
-				if (alphaSlider != null)alphaSlider.setSliderValue(alpha / 255.0);
-				if (brightnessSlider != null)  brightnessSlider.setSliderValue(brightness / 255.0);
+				if (alphaSlider != null) alphaSlider.setSliderValue(sliderAlpha / 255.0);
+				if (brightnessSlider != null) brightnessSlider.setSliderValue(brightness / 255.0);
 				if (redSlider != null) redSlider.setSliderValue(baseR / 255.0);
 				if (greenSlider != null) greenSlider.setSliderValue(baseG / 255.0);
 				if (blueSlider != null) blueSlider.setSliderValue(baseB / 255.0);

@@ -13,7 +13,6 @@ public class ConfigKeybinds {
 		HOLD_INVERTED
 	}
 
-	// ── Fields ────────────────────────────────────────────────────────────────
 
 	private boolean          enabled        = true;
 	private int              defaultKey     = InputConstants.UNKNOWN.getValue(); // -1 = unbound
