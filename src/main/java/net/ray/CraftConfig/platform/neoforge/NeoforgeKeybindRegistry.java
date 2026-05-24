@@ -41,7 +41,7 @@ public class NeoforgeKeybindRegistry {
                                 opt.name().getString(),
                                 KeyConflictContext.IN_GAME,
                                 InputConstants.getKey(kb.defaultKey(), -1),
-                                entry.keybindCategory().getString()
+                                entry.keybindCategory()
                         );
                         event.register(mapping);
                         kb.setKeyMapping(mapping);
@@ -58,7 +58,7 @@ public class NeoforgeKeybindRegistry {
                         preset.name(),
                         KeyConflictContext.IN_GAME,
                         InputConstants.getKey(preset.keyBind(), -1),
-                        entry.keybindCategory().getString()
+                        entry.keybindCategory()
                 );
                 event.register(mapping);
                 preset.setKeyMapping(mapping);

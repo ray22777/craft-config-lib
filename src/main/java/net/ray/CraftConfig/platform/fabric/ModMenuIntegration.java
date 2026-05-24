@@ -7,6 +7,8 @@ import net.fabricmc.api.Environment;
 import net.ray.CraftConfig.api.registry.CraftConfigRegistry;
 import net.ray.CraftConfig.example.ExampleConfig;
 import net.ray.CraftConfig.gui.ConfigScreen;
+import net.ray.CraftConfig.platform.CraftConfigMod;
+import net.ray.CraftConfig.platform.Platform;
 
 import java.util.Map;
 
