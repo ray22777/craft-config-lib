@@ -20,7 +20,7 @@ public class CraftConfigModInitializer {
     }
     public static void onInit(Logger log){
         setLogger(log);
-		ExampleConfig.init(); //register your configs on init
+//		ExampleConfig.init(); //register your configs on init
         CraftConfigModInitializer.getLogger().warn("Craft Config initialized.");
     }
 }

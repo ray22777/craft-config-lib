@@ -311,7 +311,7 @@ public class ListController<T> implements OptionController<List<T>> {
 			Object val = list.get(i);
 
 			EditBox eb = new EditBox(font, 0, 0, 100, 14, Component.empty()) {
-				//? if>= 1.21
+				//? if >= 1.21
 				@Override public boolean isBordered() {return false;}
 			};
 			//? if = 1.20.1
