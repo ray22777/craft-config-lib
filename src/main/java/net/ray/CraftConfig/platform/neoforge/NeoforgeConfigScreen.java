@@ -1,8 +1,9 @@
 package net.ray.CraftConfig.platform.neoforge;
 //? neoforge {
-/*import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.ray.CraftConfig.api.registry.CraftConfigRegistry;
 import net.ray.CraftConfig.api.v1.CraftConfig;
@@ -10,7 +11,6 @@ import net.ray.CraftConfig.gui.ConfigScreen;
 
 import java.util.Map;
 
-@OnlyIn(Dist.CLIENT)
 public class NeoforgeConfigScreen {
 
 	public static void registerProvidedConfigScreens() {
@@ -19,7 +19,6 @@ public class NeoforgeConfigScreen {
 		for (Map.Entry<String, CraftConfig> entry : configs.entrySet()) {
 			String targetModId = entry.getKey();
 			CraftConfig config = entry.getValue();
-
 			ModList.get().getModContainerById(targetModId).ifPresent(modContainer -> {
 				modContainer.registerExtensionPoint(
 						IConfigScreenFactory.class,
@@ -29,4 +28,4 @@ public class NeoforgeConfigScreen {
 		}
 	}
 }
-*///?}
+//?}

@@ -2,12 +2,13 @@ package net.ray.CraftConfig.platform.neoforge;
 
 //? neoforge {
 
-/*import net.minecraft.client.Minecraft;
+import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
+import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.ray.CraftConfig.api.registry.CraftConfigRegistry;
@@ -21,7 +22,10 @@ public class NeoforgeClientEventSubscriber {
     public static void onClientSetup(FMLClientSetupEvent event) {
 		NeoforgeConfigScreen.registerProvidedConfigScreens();
     }
-
+	@SubscribeEvent
+	public static void onRegisterClientCommands(RegisterClientCommandsEvent event) {
+		NeoforgeCommands.register(event.getDispatcher());
+	}
     @SubscribeEvent
     public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
         NeoforgeKeybindRegistry.init(event);
@@ -40,5 +44,5 @@ public class NeoforgeClientEventSubscriber {
 
 }
 
-*///?}
+//?}
 

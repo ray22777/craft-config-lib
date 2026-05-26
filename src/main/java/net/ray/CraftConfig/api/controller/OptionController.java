@@ -8,10 +8,10 @@ import net.ray.CraftConfig.api.v1.ConfigOption;
 import org.jetbrains.annotations.Nullable;
 
 //? if >=1.21.9 {
-/*import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.CharacterEvent;
-*///? }
+//? }
 
 public interface OptionController<T> {
 
@@ -41,7 +41,7 @@ public interface OptionController<T> {
 
 //?if >=1.21.9{
 
-	/*default boolean handleMouseClicked(ConfigOption<T> option,
+	default boolean handleMouseClicked(ConfigOption<T> option,
 									   MouseButtonEvent event, boolean doubleClick,
 									   int rowX, int rowY, int rowW, int rowH) {
 		return handleMouseClicked(option,
@@ -78,14 +78,14 @@ public interface OptionController<T> {
 		return handleCharTyped(option,
 				(char) characterEvent.codepoint(),
 				//?if>=26.1{
-				/^characterEvent.codepoint()
-				^///?}else{
+				/*characterEvent.codepoint()
+				*///?}else{
 								characterEvent.modifiers()
 				//?}
 
 		);
 	}
-	*///?}
+	//?}
 	default boolean handleMouseScrolled(ConfigOption<T> option,
 										double mx, double my, double scroll) {
 		return false;

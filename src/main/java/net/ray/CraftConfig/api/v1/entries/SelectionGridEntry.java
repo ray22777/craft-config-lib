@@ -140,8 +140,8 @@ public class SelectionGridEntry extends BaseEntry {
                                                      Collection<String> enabledKeys) {
         List<SelectionGridEntry> out = new ArrayList<>();
         for (String key : keys) {
-            net.minecraft.resources.ResourceLocation rl =
-                    net.minecraft.resources.ResourceLocation.tryParse(key);
+            net.minecraft.resources.Identifier rl =
+                    net.minecraft.resources.Identifier.tryParse(key);
             String label = rl != null ? toFriendly(rl.getPath()) : key;
             out.add(new SelectionGridEntry(key, label, enabledKeys.contains(key)));
         }

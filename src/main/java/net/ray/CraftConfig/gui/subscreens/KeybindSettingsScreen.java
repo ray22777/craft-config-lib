@@ -6,7 +6,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
 //~ if >=1.21 '.controls.KeyBindsScreen' -> '.options.controls.KeyBindsScreen'
-import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
+import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.network.chat.Component;
 import net.ray.CraftConfig.api.v1.ConfigOption;
 import net.ray.CraftConfig.api.v1.ConfigKeybinds;
@@ -36,26 +36,26 @@ public class KeybindSettingsScreen extends SubScreen {
         int cw = modalW - PADDING * 2;
         int y  = modalY + HEADER_H;
 //? if >=1.21.11 {
-		/*addRenderableWidget(CycleButton.<Boolean>builder(
+		addRenderableWidget(CycleButton.<Boolean>builder(
 						v -> Component.literal(v ? "§aEnabled" : "§7Disabled"),
 						kb::isEnabled)
 				.withValues(true, false)
 				.create(cx, y, cw, ROW_H,
 						Component.literal("Keybind"),
 						(btn, val) -> kb.setEnabled(val)));
-*///?} else {
-addRenderableWidget(CycleButton.<Boolean>builder(
+//?} else {
+/*addRenderableWidget(CycleButton.<Boolean>builder(
         v -> Component.literal(v ? "§aEnabled" : "§7Disabled"))
         .withValues(true, false)
         .withInitialValue(kb.isEnabled())
         .create(cx, y, cw, ROW_H,
                 Component.literal("Keybind"),
                 (btn, val) -> kb.setEnabled(val)));
-//?}
+*///?}
 		y += ROW_H + GAP;
 
 //? if >=1.21.11 {
-		/*addRenderableWidget(CycleButton.<ConfigKeybinds.Mode>builder(
+		addRenderableWidget(CycleButton.<ConfigKeybinds.Mode>builder(
 						mode -> switch (mode) {
 							case TOGGLE        -> Component.literal("Toggle");
 							case HOLD          -> Component.literal("Hold");
@@ -65,8 +65,8 @@ addRenderableWidget(CycleButton.<Boolean>builder(
 				.create(cx, y, cw, ROW_H,
 						Component.literal("Mode"),
 						(btn, val) -> kb.setMode(val)));
-*///?} else {
-addRenderableWidget(CycleButton.<ConfigKeybinds.Mode>builder(mode -> switch (mode) {
+//?} else {
+/*addRenderableWidget(CycleButton.<ConfigKeybinds.Mode>builder(mode -> switch (mode) {
     case TOGGLE        -> Component.literal("Toggle");
     case HOLD          -> Component.literal("Hold");
     case HOLD_INVERTED -> Component.literal("Hold Inverted");
@@ -76,26 +76,26 @@ addRenderableWidget(CycleButton.<ConfigKeybinds.Mode>builder(mode -> switch (mod
         .create(cx, y, cw, ROW_H,
                 Component.literal("Mode"),
                 (btn, val) -> kb.setMode(val)));
-//?}
+*///?}
 		y += ROW_H + GAP;
 
 //? if >=1.21.11 {
-		/*addRenderableWidget(CycleButton.<Boolean>builder(
+		addRenderableWidget(CycleButton.<Boolean>builder(
 						v -> Component.literal(v ? "§aYes" : "§7No"),
 						kb::sendChatMessage)
 				.withValues(true, false)
 				.create(cx, y, cw, ROW_H,
 						Component.literal("Announce change"),
 						(btn, val) -> kb.setSendChatMessage(val)));
-*///?} else {
-addRenderableWidget(CycleButton.<Boolean>builder(
+//?} else {
+/*addRenderableWidget(CycleButton.<Boolean>builder(
         v -> Component.literal(v ? "§aYes" : "§7No"))
         .withValues(true, false)
         .withInitialValue(kb.sendChatMessage())
         .create(cx, y, cw, ROW_H,
                 Component.literal("Announce change"),
                 (btn, val) -> kb.setSendChatMessage(val)));
-//?}
+*///?}
 
 		y += ROW_H + GAP * 2;
 

@@ -71,7 +71,3 @@ sourceSets {
 tasks.named("createMinecraftArtifacts") {
 	dependsOn(tasks.named("stonecutterGenerate"))
 }
-
-stonecutter {
-
-}

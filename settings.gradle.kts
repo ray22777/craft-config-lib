@@ -19,20 +19,20 @@ pluginManagement {
 
 plugins {
 	id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-	id("dev.kikugie.stonecutter") version "0.9.1-beta.2"
+	id("dev.kikugie.stonecutter") version "0.9.4"
 }
 
 stonecutter {
 	create(rootProject) {
 		fun match(version: String, vararg loaders: String) =
 			loaders.forEach {
-				version("$version-$it", version).buildscript = if (version >= "26.1") {
+				version("$version-$it", version).buildscript = if (version >= "26.1" && it == "fabric") {
 					"build.$it" + "-unobf.gradle.kts"
 				} else {
 					"build.$it.gradle.kts"
 				}
 			}
-		match("1.20.1","fabric") //TODO:ADD FORGE SUPPORT
+		match("1.20.1","fabric","forge")
 		match("1.21.1", "fabric","neoforge")
 		match("1.21.2", "fabric")
 		match("1.21.4", "fabric")
@@ -40,8 +40,8 @@ stonecutter {
 		match("1.21.6", "fabric")
 		match("1.21.9", "fabric")
 		match("1.21.10", "fabric")
-		match("1.21.11", "fabric")
-		match("26.1", "fabric")
+		match("1.21.11", "fabric","neoforge")
+		match("26.1", "fabric","neoforge")
 
 		vcsVersion = "1.21.1-fabric"
 	}

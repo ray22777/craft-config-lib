@@ -10,10 +10,10 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 //? if >=1.21.9{
-/*import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-*///?}
+//?}
 import net.minecraft.network.chat.Component;
 import net.ray.CraftConfig.api.v1.ConfigOption;
 import net.ray.CraftConfig.gui.ConfigScreen;
@@ -106,7 +106,7 @@ public class ListController<T> implements OptionController<List<T>> {
 			int editW = w - DELETE_BTN_W - PAD * 3;
 
 			//? if >=1.21 {
-						/*eb.setX(x + PAD + LPAD);
+						eb.setX(x + PAD + LPAD);
 						eb.setY(widgetY);
 						eb.setWidth(editW);
 						eb.setHeight(14);
@@ -115,15 +115,15 @@ public class ListController<T> implements OptionController<List<T>> {
 						db.setY(widgetY);
 						db.setWidth(DELETE_BTN_W);
 						db.setHeight(14);
-			*///? } else {
-						eb.setX(x + PAD + LPAD);
+			//? } else {
+						/*eb.setX(x + PAD + LPAD);
 						eb.setY(widgetY);
 						eb.setWidth(editW);
 
 						db.setX(deleteX);
 						db.setY(widgetY);
 						db.setWidth(DELETE_BTN_W);
-			//? }
+			*///? }
 			eb.setTextColor(error ? COL_TEXT_ERROR : COL_TEXT);
 
 			g.fill(x + PAD + LPAD - 1, widgetY - 1, x + PAD + editW + 1, widgetY + 15,
@@ -157,13 +157,13 @@ public class ListController<T> implements OptionController<List<T>> {
 			addButton.setX(x + PAD + LPAD); addButton.setY(widgetY);
 			addButton.setWidth(40);
 			//? if >=1.21
-			//addButton.setHeight(14); //fix for 1.20.1
+			addButton.setHeight(14); //fix for 1.20.1
 			//~ if >=26.1 'render' -> 'extractRenderState'
 			addButton.render(g, mx, my, delta);
 		}
 	}
 	//? if >=1.21.9 {
-	/*@Override
+	@Override
 	public boolean handleMouseClicked(ConfigOption<List<T>> option,
 									  MouseButtonEvent event, boolean doubleClick,
 									  int rowX, int rowY, int rowW, int rowH) {
@@ -237,8 +237,8 @@ public class ListController<T> implements OptionController<List<T>> {
 			if (eb.isFocused()) return eb.charTyped(characterEvent);
 		return false;
 	}
-	*///? } else {
-	@Override
+	//? } else {
+	/*@Override
 	public boolean handleMouseClicked(ConfigOption<List<T>> option,
 									  double mx, double my, int button,
 									  int rowX, int rowY, int rowW, int rowH) {
@@ -294,7 +294,7 @@ public class ListController<T> implements OptionController<List<T>> {
 	@Override public boolean handleMouseScrolled(ConfigOption<List<T>> option, double mx, double my, double scroll) {
 		return false;
 	}
-	//?}
+	*///?}
 
 
 	private void rebuildWidgets(ConfigOption<List<T>> option) {
@@ -312,10 +312,10 @@ public class ListController<T> implements OptionController<List<T>> {
 
 			EditBox eb = new EditBox(font, 0, 0, 100, 14, Component.empty()) {
 				//? if>= 1.21
-				//@Override public boolean isBordered() {return false;}
+				@Override public boolean isBordered() {return false;}
 			};
 			//? if = 1.20.1
-			eb.setBordered(false);
+			//eb.setBordered(false);
 			eb.setValue(val == null ? "" : val.toString());
 			eb.setMaxLength(Integer.MAX_VALUE);
 			eb.setTextColor(COL_TEXT);

@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.fabric;
 
 //? fabric {
 
-import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
+/*import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import net.fabricmc.api.ModInitializer;
 import net.ray.CraftConfig.platform.CraftConfigMod;
 import net.ray.CraftConfig.platform.CraftConfigModInitializer;
@@ -20,4 +20,4 @@ public final class FabricEntrypoint implements ModInitializer {
 
 	}
 }
-//?}
+*///?}

@@ -36,6 +36,7 @@ fun RepositoryHandler.strictMaven(
 	filter { groups.forEach(::includeGroup) }
 }
 
+
 abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 	override fun apply(project: Project) = with(project) {
 		val isUnobf = project.buildFile.name.contains("unobf")

@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.neoforge;
 
 //? neoforge {
 
-/*import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -32,9 +32,10 @@ public class NeoforgeCommands {
     private static int openScreen(CraftConfigRegistry.Entry entry) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return 0;
-        mc.tell(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
+		//~ if >=1.21.2 '.tell' -> '.schedule'
+        mc.schedule(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
         return 1;
     }
 }
 
-*///?}
+//?}

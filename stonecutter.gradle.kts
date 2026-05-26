@@ -1,3 +1,4 @@
+
 plugins {
 	alias(libs.plugins.stonecutter)
 	alias(libs.plugins.dotenv)
@@ -12,7 +13,17 @@ plugins {
 }
 
 stonecutter active file(".sc_active_version")
+tasks.register("runActiveClient") {
+	group = "stonecutter"
+	description = "Run client of the active Stonecutter version"
+	dependsOn(stonecutter.current!!.project + ":runClient")
+}
 
+tasks.register("runActiveServer") {
+	group = "stonecutter"
+	description = "Run server of the active Stonecutter version"
+	dependsOn(stonecutter.current!!.project + ":runServer")
+}
 for (version in stonecutter.versions.map { it.version }.distinct()) tasks.register("publish$version") {
 	group = "publishing"
 	dependsOn(stonecutter.tasks.named("publishMods") { metadata.version == version })

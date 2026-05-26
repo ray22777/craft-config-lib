@@ -29,22 +29,24 @@ A client-sided configuration library with preset support, made for my mods. Feel
 ## For developers
 
 ### Setup
-Download a version of the mod that is suitable for your version.
-Add this to dependencies
-
+Add to repositories
 ```
-modApi files("<your file path>")
-```
-
-<your file path> should be replaced to where your downloaded mod is.
-
-Note: use double ```\\```
-instead of ```\``` in your path to avoid formatting.
-Example:
-
-```
-modApi files("C:\\Users\\UserName\\Documents\\craft_config-1.0.0+1.21.11-fabric.jar")
+repositories {
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
+}
 ```
 
+Then in your dependencies include this
+```
+dependencies {
+    implementation("maven.modrinth:craft-config:<version_name>")
+}
+```
+
+Replace <version_name> with the one that is suitable.
+
+You can find the version names at [https://modrinth.com/mod/craft-config/versions](https://modrinth.com/mod/craft-config/versions)
 
 

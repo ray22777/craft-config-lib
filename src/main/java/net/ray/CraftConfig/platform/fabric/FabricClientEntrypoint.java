@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.fabric;
 
 //? fabric {
 
-import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
+/*import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,7 +19,7 @@ public class FabricClientEntrypoint implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-		ExampleConfig.init();
+
         FabricKeybindRegistry.init();
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
 			FabricCommands.register(dispatcher));
@@ -28,4 +28,4 @@ public class FabricClientEntrypoint implements ClientModInitializer {
         });
     }
 }
-//?}
+*///?}

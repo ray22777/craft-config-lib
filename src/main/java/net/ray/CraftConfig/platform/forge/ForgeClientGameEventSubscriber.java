@@ -14,18 +14,22 @@ import net.ray.CraftConfig.example.ExampleConfig;
 import net.ray.CraftConfig.platform.CraftConfigMod;
 import net.ray.CraftConfig.preset.PresetRegisteration;
 
-@Mod.EventBusSubscriber(modid = CraftConfigMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class ForgeClientEventSubscriber {
+@Mod.EventBusSubscriber(modid = CraftConfigMod.MOD_ID, value = Dist.CLIENT)
+public class ForgeClientGameEventSubscriber {
 
 	@SubscribeEvent
-	public static void onClientSetup(FMLClientSetupEvent event) {
-
-		ForgeConfigScreen.registerProvidedConfigScreens();
+	public static void onRegisterClientCommands(RegisterClientCommandsEvent event) {
+		ForgeCommands.register(event.getDispatcher());
 	}
 
 	@SubscribeEvent
-	public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
-		ForgeKeybindRegistry.init(event);
+	public static void onClientLogin(ClientPlayerNetworkEvent.LoggingIn event) {
+		PresetRegisteration.checkPreset();
+	}
+
+	@SubscribeEvent
+	public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+		PresetRegisteration.checkPreset();
 	}
 }
 

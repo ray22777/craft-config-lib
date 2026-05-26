@@ -5,9 +5,9 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 //?if>=1.21.9{
-/*import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-*///?}
+//?}
 import net.minecraft.network.chat.Component;
 import net.ray.CraftConfig.util.ScreenUtils;
 
@@ -43,17 +43,17 @@ public abstract class SubScreen extends Screen {
 		//?if =1.21.5{
 		/*renderBackground(g,mx,my,delta);
 		*///?}else if >=1.21 {
-		/*if (parent != null) parent.render(g, 0, 0, delta);
-		*///? }else{
-			renderBackground(g);
+		if (parent != null) parent.render(g, 0, 0, delta);
+		//? }else{
+			/*renderBackground(g);
 
-		//?}
+		*///?}
         super.render(g, mx, my, delta);
 		//?if>=1.21.6{
-		/*g.fill(0, 0, width, height, 0x99000000);
-		*///?}else{
-		g.fill(0, 0, width, height, 0x66000000);
-		//?}
+		g.fill(0, 0, width, height, 0x99000000);
+		//?}else{
+		/*g.fill(0, 0, width, height, 0x66000000);
+		*///?}
 
         g.fill(modalX, modalY, modalX + modalW, modalY + modalH, COL_BG);
         g.fill(modalX, modalY, modalX + modalW, modalY + TITLE_H, COL_TITLE_BG);
@@ -75,7 +75,7 @@ public abstract class SubScreen extends Screen {
     }
 
 	//? if >=1.21.9 {
-	/*@Override
+	@Override
 	public boolean keyPressed(KeyEvent keyEvent) {
 		if (keyEvent.key() == 256) {
 			onCloseModal();
@@ -97,8 +97,8 @@ public abstract class SubScreen extends Screen {
 		}
 		return super.mouseClicked(event, doubleClick);
 	}
-*///? } else {
-@Override
+//? } else {
+/*@Override
 public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
     if (keyCode == 256) {
         onCloseModal();
@@ -116,7 +116,7 @@ public boolean mouseClicked(double mouseX, double mouseY, int button) {
     }
     return super.mouseClicked(mouseX, mouseY, button);
 }
-//? }
+*///? }
 
     protected void onCloseModal() {
         onClose();
