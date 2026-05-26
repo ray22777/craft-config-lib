@@ -4,6 +4,7 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
 import net.ray.CraftConfig.api.v1.ConfigOption;
 
+
 public class SliderController<T extends Number> implements OptionController<T> {
 
 	private final double min;
@@ -19,6 +20,7 @@ public class SliderController<T extends Number> implements OptionController<T> {
 	}
 
 	@Override
+	@SuppressWarnings("shadow")
 	public AbstractSliderButton createWidget(ConfigOption<T> option, int x, int y, int w, int h) {
 		double current = clamp(option.get().doubleValue());
 		double initial = (current - min) / (max - min);

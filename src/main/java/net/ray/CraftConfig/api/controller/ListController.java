@@ -309,7 +309,7 @@ public class ListController<T> implements OptionController<List<T>> {
 		for (int i = 0; i < list.size(); i++) {
 			final int idx = i;
 			Object val = list.get(i);
-
+			@SuppressWarnings("shadow")
 			EditBox eb = new EditBox(font, 0, 0, 100, 14, Component.empty()) {
 				//? if >= 1.21
 				@Override public boolean isBordered() {return false;}

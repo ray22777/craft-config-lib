@@ -77,6 +77,7 @@ public class PresetSettingsScreen extends SubScreen {
 	}
 
 	@Override
+	@SuppressWarnings("shadow")
 	protected void init() {
 		super.init();
 
@@ -100,6 +101,7 @@ public class PresetSettingsScreen extends SubScreen {
 		addRenderableWidget(nameBox);
 		y += ROW_H + PADDING;
 		//? if >=1.21 {
+
 		defaultCheckbox = Checkbox.builder(Component.literal("Set as Default Preset"), font)
 				.pos(cx, y)
 				.selected(preset.isDefault())
@@ -119,7 +121,8 @@ public class PresetSettingsScreen extends SubScreen {
 				})
 				.build();
 		//? } else {
-		/*defaultCheckbox = new Checkbox(cx, y, 20, 20, Component.literal("Set as Default Preset"), preset.isDefault(), true) {
+		/*
+		defaultCheckbox = new Checkbox(cx, y, 20, 20, Component.literal("Set as Default Preset"), preset.isDefault(), true) {
 			@Override
 			public void onPress() {
 				super.onPress();
