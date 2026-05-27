@@ -1,6 +1,6 @@
 package net.ray.CraftConfig.platform.forge;
 //? forge {
-import net.minecraftforge.fml.ModList;
+/*import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.client.ConfigScreenHandler;
@@ -29,4 +29,4 @@ public class ForgeConfigScreen {
         }
     }
 }
-//?}
+*///?}

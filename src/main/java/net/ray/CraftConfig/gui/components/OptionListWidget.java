@@ -39,9 +39,9 @@ public class OptionListWidget
 
 	public OptionListWidget(Minecraft mc, int width, int height, int top, int itemHeight) {
 		//? if 1.20.1
-		super(mc, width, height, top, top + height, itemHeight);
+		//super(mc, width, height, top, top + height, itemHeight);
 		//? if >=1.21
-		//super(mc, width, height, top, itemHeight);
+		super(mc, width, height, top, itemHeight);
 		this.baseItemHeight = itemHeight;
 		this.setFocused(false);
 	}
@@ -100,10 +100,10 @@ public class OptionListWidget
 		*///?} else if >=1.21.4 {
 		/*int top = this.getY() + 4 - (int) this.scrollAmount() + this.headerHeight;
 		 *///? } else if >=1.21 {
-		/*int top = this.getY() + 4 - (int) this.getScrollAmount() + this.headerHeight;
-		 *///? } else {
-		int top = this.y0 + 4 - (int) this.getScrollAmount() + this.headerHeight;
-		 //? }
+		int top = this.getY() + 4 - (int) this.getScrollAmount() + this.headerHeight;
+		 //? } else {
+		/*int top = this.y0 + 4 - (int) this.getScrollAmount() + this.headerHeight;
+		 *///? }
 
 		for (int i = 0; i < index; i++) {
 			top += getEntryHeight(i);
@@ -225,15 +225,15 @@ public class OptionListWidget
 			return super.mouseDragged(mx, my, button, dx, dy);
 		}
 		//? if >=1.21 {
-		/*if (getFocused() instanceof Entry e) {
+		if (getFocused() instanceof Entry e) {
 			return e.mouseDragged(mx, my, button, dx, dy);
 		}
-		*///? } else {
-		if (getFocused() instanceof Entry) {
+		//? } else {
+		/*if (getFocused() instanceof Entry) {
 			Entry e = (Entry) getFocused();
 			return e.mouseDragged(mx, my, button, dx, dy);
 		}
-		//? }
+		*///? }
 		return false;
 	}
 	//? }
@@ -256,21 +256,21 @@ public class OptionListWidget
 	*///? } else {
 	public boolean mouseScrolled(double mx, double my, double scroll) {
 		//? if >=1.21 {
-		/*if (getFocused() instanceof Entry e) {
+		if (getFocused() instanceof Entry e) {
 			if (e instanceof OptionEntry oe && oe.controller.ownsRow()) {
 				if (e.mouseScrolled(mx, my, scroll)) return true;
 			}
 		}
 		return super.mouseScrolled(mx, my, 0, scroll);
-		*///? } else {
-		if (getFocused() instanceof Entry) {
+		//? } else {
+		/*if (getFocused() instanceof Entry) {
 			Entry e = (Entry) getFocused();
 			if (e instanceof OptionEntry oe && oe.controller.ownsRow()) {
 				if (e.mouseScrolled(mx, my, scroll)) return true;
 			}
 		}
 		return super.mouseScrolled(mx, my, scroll);
-		//? }
+		*///? }
 	}
 	//? }
 
@@ -287,13 +287,13 @@ public class OptionListWidget
 		return false;
 	}
 	*///? } else if >=1.21 {
-	/*@Override
+	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (getFocused() instanceof Entry e) return e.keyPressed(keyCode, scanCode, modifiers);
 		return false;
 	}
-	*///? } else {
-	@Override
+	//? } else {
+	/*@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (getFocused() instanceof Entry) {
 			Entry e = (Entry) getFocused();
@@ -301,7 +301,7 @@ public class OptionListWidget
 		}
 		return false;
 	}
-	//? }
+	*///? }
 
 	//? if >=1.21.9 {
 	/*@Override
@@ -328,7 +328,7 @@ public class OptionListWidget
 		return false;
 	}
 	*///? } else if >=1.21 {
-	/*@Override
+	@Override
 	public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
 		if (getFocused() instanceof Entry e) return e.keyReleased(keyCode, scanCode, modifiers);
 		return false;
@@ -339,8 +339,8 @@ public class OptionListWidget
 		if (getFocused() instanceof Entry e) return e.charTyped(chr, modifiers);
 		return false;
 	}
-	*///? } else {
-	@Override
+	//? } else {
+	/*@Override
 	public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
 		if (getFocused() instanceof Entry) {
 			Entry e = (Entry) getFocused();
@@ -357,12 +357,12 @@ public class OptionListWidget
 		}
 		return false;
 	}
-	//? }
+	*///? }
 
 	//? if >=1.21 {
-	/*//~ if >=26.1 'render' -> 'extract'
+	//~ if >=26.1 'render' -> 'extract'
 	@Override protected void renderListSeparators(GuiGraphics g) {}
-	*///? }
+	//? }
 
 	//? if >=1.21.9 {
 	//? } else {
@@ -382,10 +382,10 @@ public class OptionListWidget
 	@Override
 	public int getRowLeft() {
 		//? if >=1.21 {
-		/*return getX() + 8;
-		*///? } else {
-		return x0 + 8;
-		 //? }
+		return getX() + 8;
+		//? } else {
+		/*return x0 + 8;
+		 *///? }
 	}
 
 	@Override
@@ -402,18 +402,18 @@ public class OptionListWidget
 	@Override
 	protected int getScrollbarPosition() {
 		//? if >=1.21 {
-		/*return getRight() - 6;
-		*///? } else {
-		return x1 - 6;
-		//? }
+		return getRight() - 6;
+		//? } else {
+		/*return x1 - 6;
+		*///? }
 	}
 	//? }
 
 	//? if >=1.21 {
-	/*@Override protected void updateWidgetNarration(NarrationElementOutput out) {}
-	*///? } else{
-	@Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}
-	//?}
+	@Override protected void updateWidgetNarration(NarrationElementOutput out) {}
+	//? } else{
+	/*@Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}
+	*///?}
 
 
 
@@ -708,7 +708,7 @@ public class OptionListWidget
 				return controller.handleMouseScrolled((ConfigOption) option, mx, my, scroll);
 			}
 			if (optionWidget != null && optionWidget.isMouseOver(mx, my)) {
-				return optionWidget.mouseScrolled(mx, my/*? if >=1.21 {*/ /*, 0*//*?}*/, scroll);
+				return optionWidget.mouseScrolled(mx, my/*? if >=1.21 {*/ , 0/*?}*/, scroll);
 			}
 			return false;
 		}

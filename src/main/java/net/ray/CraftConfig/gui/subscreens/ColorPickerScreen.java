@@ -134,14 +134,14 @@ public class ColorPickerScreen extends SubScreen {
 			Minecraft.getInstance().getTextureManager().register(DISC_RL, DISC_TEXTURE);
 		});
 		*///? } else if >=1.21 {
-		/*DISC_TEXTURE = new DynamicTexture(img);
+		DISC_TEXTURE = new DynamicTexture(img);
 		DISC_RL = Minecraft.getInstance().getTextureManager().register(ResourceLocation.fromNamespaceAndPath("craftconfig", "color_picker_disc").getPath(), DISC_TEXTURE);
 		Minecraft.getInstance().getTextureManager().register(DISC_RL.getPath(), DISC_TEXTURE);
-		*///? } else {
-		DISC_TEXTURE = new DynamicTexture(img);
+		//? } else {
+		/*DISC_TEXTURE = new DynamicTexture(img);
 		DISC_RL = Minecraft.getInstance().getTextureManager().register(
 		new ResourceLocation("craftconfig", "color_picker_disc").getPath(), DISC_TEXTURE);
-		//? }
+		*///? }
 
 		TEXTURE_INITIALIZED = true;
 	}

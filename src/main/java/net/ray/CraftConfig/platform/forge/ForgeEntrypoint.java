@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.forge;
 
 //? forge {
 
-import net.minecraftforge.fml.common.Mod;
+/*import net.minecraftforge.fml.common.Mod;
 import net.ray.CraftConfig.platform.CraftConfigMod;
 import net.ray.CraftConfig.platform.CraftConfigModInitializer;
 import org.slf4j.Logger;
@@ -17,4 +17,4 @@ public class ForgeEntrypoint {
 		CraftConfigModInitializer.onInit(LOGGER);
 	}
 }
-//?}
+*///?}

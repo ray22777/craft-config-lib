@@ -1,6 +1,6 @@
 package net.ray.CraftConfig.platform.forge;
 //? forge {
-import com.mojang.brigadier.CommandDispatcher;
+/*import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -46,4 +46,4 @@ public class ForgeCommands {
 		return 1;
 	}
 }
-//?}
+*///?}

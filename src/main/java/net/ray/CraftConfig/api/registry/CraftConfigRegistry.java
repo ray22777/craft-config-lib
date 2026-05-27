@@ -1,7 +1,7 @@
 package net.ray.CraftConfig.api.registry;
 //?if fabric {
-/*import com.terraformersmc.modmenu.api.ConfigScreenFactory;
-*///? }
+import com.terraformersmc.modmenu.api.ConfigScreenFactory;
+//? }
 
 import net.minecraft.network.chat.Component;
 import net.ray.CraftConfig.api.v1.CraftConfig;
@@ -104,7 +104,7 @@ public class CraftConfigRegistry {
 		return Optional.ofNullable(entries.get(modId));
 	}
 	//?if fabric {
-	/*public static Map<String, ConfigScreenFactory<?>> getConfigScreenFactories() {
+	public static Map<String, ConfigScreenFactory<?>> getConfigScreenFactories() {
 		Map<String, ConfigScreenFactory<?>> factories = new LinkedHashMap<>();
 		for (Entry e : entries.values()) {
 			if (!e.modMenuEnabled()) continue;
@@ -113,7 +113,7 @@ public class CraftConfigRegistry {
 		}
 		return factories;
 	}
- 	*///?}
+ 	//?}
 	public static Map<String, CraftConfig> getConfigsForRegistration() {
 		Map<String, CraftConfig> configs = new LinkedHashMap<>();
 		for (Entry e : entries.values()) {

@@ -107,10 +107,10 @@ public class SelectionGridScreen extends SubScreen {
 
 		gridList = new GridList(minecraft, contentW, listH, y, CELL_SIZE + CELL_SPACING);
 		//? if >=1.21 {
-				/*gridList.setX(contentX);
-		*///? } else {
-				gridList.setLeftPos(contentX);
-		//? }
+				gridList.setX(contentX);
+		//? } else {
+				/*gridList.setLeftPos(contentX);
+		*///? }
 		addRenderableWidget(gridList);
 
 		int footerBtnY = modalY + modalH - FOOTER_H + 8;
@@ -257,12 +257,12 @@ public boolean mouseReleased(double mx, double my, int btn) {
 
 		GridList(Minecraft mc, int width, int height, int top, int rowHeight) {
 			//? if >=1.21 {
-			/*super(mc, width, height, top, rowHeight);
-			*///? } else {
-			super(mc, width, height, top, top + height, rowHeight);
+			super(mc, width, height, top, rowHeight);
+			//? } else {
+			/*super(mc, width, height, top, top + height, rowHeight);
 			this.setRenderBackground(false);
 			this.setRenderTopAndBottom(false);
-			//? }
+			*///? }
 		}
 
 		void rebuild(List<SelectionGridEntry> entries) {
@@ -303,11 +303,11 @@ public boolean mouseReleased(double mx, double my, int btn) {
 			return null;
 		}
 		//? if >=1.21 {
-		/*//~ if >=26.1 'render' -> 'extract'
+		//~ if >=26.1 'render' -> 'extract'
 		@Override protected void renderListBackground(GuiGraphics g) {}
 		//~ if >=26.1 'render' -> 'extract'
 		@Override protected void renderListSeparators(GuiGraphics g) {}
-		*///? }
+		//? }
 		//?if< 1.21.9{
 		@Override protected void renderDecorations(GuiGraphics g, int mx, int my) {}
 		@Override protected void renderSelection(GuiGraphics g, int top, int w, int h, int a, int b) {}
@@ -317,19 +317,19 @@ public boolean mouseReleased(double mx, double my, int btn) {
 			return getRight() - 6;
 		}
 		*///? } else if >=1.21 {
-		/*@Override protected int getScrollbarPosition() { return getRight() - 6;}
-		*///? } else {
-		@Override protected int getScrollbarPosition() {
+		@Override protected int getScrollbarPosition() { return getRight() - 6;}
+		//? } else {
+		/*@Override protected int getScrollbarPosition() {
 			return x1 - 6;
 		}
-		//? }
+		*///? }
 		@Override public int getRowWidth() { return width - 8; }
 		public int getListX() {
 			//? if >=1.21 {
-			/*return getX();
-			*///? } else {
-			return x0;
-			//? }
+			return getX();
+			//? } else {
+			/*return x0;
+			*///? }
 		}
 		class GridRow extends Entry<GridRow> {
 			final List<GridCell> cells;
@@ -395,10 +395,10 @@ public boolean mouseClicked(double mx, double my, int b) {
 
 		void calculatePosition(int rowY) {
 			//? if >=1.21 {
-						/*this.x = gridList.getX() + gridOffsetX + col * (CELL_SIZE + CELL_SPACING);
-			*///? } else {
-					this.x = gridList.getListX() + gridOffsetX + col * (CELL_SIZE + CELL_SPACING);
-			//? }
+						this.x = gridList.getX() + gridOffsetX + col * (CELL_SIZE + CELL_SPACING);
+			//? } else {
+					/*this.x = gridList.getListX() + gridOffsetX + col * (CELL_SIZE + CELL_SPACING);
+			*///? }
 			this.y = rowY;
 		}
 

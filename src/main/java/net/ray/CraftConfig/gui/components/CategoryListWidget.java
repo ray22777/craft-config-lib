@@ -16,9 +16,9 @@ public class CategoryListWidget
 
 		public CategoryListWidget(Minecraft mc, int width, int height, int top, int itemHeight) {
 			//? if 1.20.1
-			super(mc, width, height, top, top + height, itemHeight);
+			//super(mc, width, height, top, top + height, itemHeight);
 			//? if >=1.21
-			//super(mc, width, height, top, itemHeight);
+			super(mc, width, height, top, itemHeight);
 			this.setFocused(true);
 		}
 
@@ -27,10 +27,10 @@ public class CategoryListWidget
 		public int getRowLeft() {
 
 			//? if >=1.21 {
-			/*return getX() + 8;
-			*///? } else {
-			return x0 + 8;
-			 //? }
+			return getX() + 8;
+			//? } else {
+			/*return x0 + 8;
+			 *///? }
 		}
 
 		@Override
@@ -47,16 +47,16 @@ public class CategoryListWidget
 		*///? } else {
 		@Override protected int getScrollbarPosition() {
 			//? if >=1.21 {
-			/*return getRight() - 6;
-			*///? } else {
-			return x1 - 6;
-			//? }
+			return getRight() - 6;
+			//? } else {
+			/*return x1 - 6;
+			*///? }
 		}
 		//? }
 		//?if 1.20.1
-		@Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}
+		//@Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 		//?if >=1.21
-		//@Override
+		@Override
 		protected void updateWidgetNarration(NarrationElementOutput out) {
 		}
 		//? if >=1.21.9 {
@@ -113,11 +113,11 @@ public class CategoryListWidget
 		}
 
 		//? if >=1.21 {
-		/*//~ if >=26.1 'render' -> 'extract'
+		//~ if >=26.1 'render' -> 'extract'
 		@Override protected void renderListSeparators(GuiGraphics g) {
 		}
 
-		*///? }
+		//? }
 		@Override
 		public int addEntry(CategoryEntry entry) {
 			int index = super.addEntry(entry);

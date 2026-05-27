@@ -6,7 +6,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.screens.Screen;
 //~ if >=1.21 '.controls.KeyBindsScreen' -> '.options.controls.KeyBindsScreen'
-import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
+import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.network.chat.Component;
 import net.ray.CraftConfig.api.v1.ConfigKeybinds;
 import net.ray.CraftConfig.api.v1.ConfigOption;

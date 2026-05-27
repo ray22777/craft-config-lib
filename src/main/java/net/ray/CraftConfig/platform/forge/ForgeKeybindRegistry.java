@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.forge;
 
 //? forge {
 
-import com.mojang.blaze3d.platform.InputConstants;
+/*import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 //?if>=1.21.9
 //import net.minecraft.resources.ResourceLocation;
@@ -76,4 +76,4 @@ public class ForgeKeybindRegistry {
     }
 }
 
-//?}
+*///?}

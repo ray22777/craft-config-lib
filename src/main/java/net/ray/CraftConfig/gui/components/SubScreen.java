@@ -43,11 +43,11 @@ public abstract class SubScreen extends Screen {
 		//?if =1.21.5{
 		/*renderBackground(g,mx,my,delta);
 		*///?}else if >=1.21 {
-		/*if (parent != null) parent.render(g, 0, 0, delta);
-		*///? }else{
-			renderBackground(g);
+		if (parent != null) parent.render(g, 0, 0, delta);
+		//? }else{
+			/*renderBackground(g);
 
-		//?}
+		*///?}
         super.render(g, mx, my, delta);
 		//?if>=1.21.6{
 		/*g.fill(0, 0, width, height, 0x99000000);

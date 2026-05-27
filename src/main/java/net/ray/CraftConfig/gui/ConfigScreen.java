@@ -7,7 +7,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 //?if >=1.21
-//import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.systems.RenderSystem;
 //?if >=1.21.9
 //import net.minecraft.client.input.MouseButtonEvent;
 //?if >=1.21.6
@@ -88,10 +88,10 @@ public class ConfigScreen extends Screen {
 		categoryList = new CategoryListWidget(minecraft, catWidth,
 				height - HEADER_H - BOTTOM_H, HEADER_H + 1, ROW_H);
 		//? if >=1.21 {
-		/*categoryList.setX(0);
-		 *///? } else {
-		categoryList.setLeftPos(0);
-		//? }
+		categoryList.setX(0);
+		 //? } else {
+		/*categoryList.setLeftPos(0);
+		*///? }
 		categoryList.currentSelectedIndex = selectedCategory;
 		for (int i = 0; i < config.categories().size(); i++) {
 			final int idx = i;
@@ -112,10 +112,10 @@ public class ConfigScreen extends Screen {
 		optionList = new OptionListWidget(minecraft, optionWidth,
 				height - HEADER_H - BOTTOM_H, HEADER_H + 1, ROW_H);
 		//? if >=1.21 {
-		/*optionList.setX(catWidth);
-		 *///? } else {
-		optionList.setLeftPos(catWidth);
-		//? }
+		optionList.setX(catWidth);
+		 //? } else {
+		/*optionList.setLeftPos(catWidth);
+		*///? }
 		addRenderableWidget(optionList);
 		rebuildOptionList();
 
@@ -357,52 +357,52 @@ public class ConfigScreen extends Screen {
 	//~ if >=26.1 'render' -> 'extractRenderState'
 	@Override public void render(GuiGraphics g, int mx, int my, float delta) {
 		//? if <=1.21.5
-		renderBackground(g /*? if >=1.21 {*/ /*, mx, my, delta *//*?}*/);
+		renderBackground(g /*? if >=1.21 {*/ , mx, my, delta /*?}*/);
 
 		int panelW      = categoryPanelWidth();
 		int panelBottom = height - BOTTOM_H;
 		//? if <1.21 {
-		g.blit(Screen.BACKGROUND_LOCATION, 0, panelBottom, 0, panelBottom, width, BOTTOM_H, 32, 32);
+		/*g.blit(Screen.BACKGROUND_LOCATION, 0, panelBottom, 0, panelBottom, width, BOTTOM_H, 32, 32);
 		g.fill(0, panelBottom, width, height, 0xCC000000);
-		//? }
+		*///? }
 		g.fill(panelW, HEADER_H, panelW + 1, panelBottom + 1, COL_BORDER);
 		g.fill(0, TITLE_H, width, HEADER_H, COL_BG_DARK);
 		g.fill(0, HEADER_H, width, HEADER_H + 1, COL_BORDER);
 		//? if >=1.21 {
-				/*ResourceLocation topSep = minecraft.level == null
+				ResourceLocation topSep = minecraft.level == null
 						? Screen.HEADER_SEPARATOR : Screen.INWORLD_HEADER_SEPARATOR;
 				ResourceLocation botSep = minecraft.level == null
 						? Screen.FOOTER_SEPARATOR : Screen.INWORLD_FOOTER_SEPARATOR;//TODO:FIX FOR 1.21.2
 				//? if >=1.21.6 {
-				/^g.blit(RenderPipelines.GUI_TEXTURED, topSep, 0, TITLE_H - 1, 0.0F, 0.0F, width, 2, 32, 2);
+				/*g.blit(RenderPipelines.GUI_TEXTURED, topSep, 0, TITLE_H - 1, 0.0F, 0.0F, width, 2, 32, 2);
 				g.blit(RenderPipelines.GUI_TEXTURED, botSep, 0, panelBottom + 1, 0.0F, 0.0F, width, 2, 32, 2);
-				^///?}else{
+				*///?}else{
 				//?if <1.21.5
 				RenderSystem.enableBlend();
-				g.blit(/^? if >= 1.21.2 {^/ /^RenderType::guiTextured, ^//^?}^/topSep, 0, TITLE_H - 1, 0.0F, 0.0F, width, 2, 32, 2);
-				g.blit(/^? if >= 1.21.2 {^/ /^RenderType::guiTextured, ^//^?}^/botSep, 0, panelBottom + 1, 0.0F, 0.0F, width, 2, 32, 2);
+				g.blit(/*? if >= 1.21.2 {*/ /*RenderType::guiTextured, *//*?}*/topSep, 0, TITLE_H - 1, 0.0F, 0.0F, width, 2, 32, 2);
+				g.blit(/*? if >= 1.21.2 {*/ /*RenderType::guiTextured, *//*?}*/botSep, 0, panelBottom + 1, 0.0F, 0.0F, width, 2, 32, 2);
 				//?if <1.21.5
 				RenderSystem.disableBlend();
 
 				//? }
-		*///? }
+		//? }
 
 		g.drawCenteredString(font, title, width / 2, (TITLE_H - font.lineHeight) / 2, COL_ACCENT);
 		g.drawString(font, "Preset:", width - 210 - font.width("Preset:") - 4,
 				TITLE_H + 4 + (20 - font.lineHeight) / 2, COL_TEXT_GRAY, false);
 		updateButtonStates();
 		//?if<1.21{
-		for (GuiEventListener child : children()) {
+		/*for (GuiEventListener child : children()) {
 			if (child instanceof Renderable r && child != searchBox) r.render(g, mx, my, delta);
 		}
 		searchBox.render(g,mx,my,delta);
 
-		//?}else{
-			/*for (GuiEventListener child : children()) {
+		*///?}else{
+			for (GuiEventListener child : children()) {
 				//~ if >=26.1 'render' -> 'extractRenderState'
 				if (child instanceof Renderable r) r.render(g, mx, my, delta);
 			}
-			*///?}
+			//?}
 		if (dropdownOpen) {
 			//? if >= 1.21.6{
 			/*g.pose().pushMatrix();

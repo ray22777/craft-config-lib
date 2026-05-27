@@ -46,10 +46,10 @@ public class ColorButton extends AbstractButton {
 	}
 
 	//? if >=1.21 {
-	/*@Override protected void updateWidgetNarration(NarrationElementOutput out) {}
-	*///? } else{
-	@Override protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
-	//?}
+	@Override protected void updateWidgetNarration(NarrationElementOutput out) {}
+	//? } else{
+	/*@Override protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
+	*///?}
 
 
 	public static class Builder {

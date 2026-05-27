@@ -13,7 +13,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 *///?}
 
 //~ if >=1.21 '.controls.KeyBindsScreen' -> '.options.controls.KeyBindsScreen'
-import net.minecraft.client.gui.screens.controls.KeyBindsScreen;
+import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.LevelSummary;
@@ -102,7 +102,7 @@ public class PresetSettingsScreen extends SubScreen {
 		y += ROW_H + PADDING;
 		//? if >=1.21 {
 
-		/*defaultCheckbox = Checkbox.builder(Component.literal("Set as Default Preset"), font)
+		defaultCheckbox = Checkbox.builder(Component.literal("Set as Default Preset"), font)
 				.pos(cx, y)
 				.selected(preset.isDefault())
 				.onValueChange((checkbox, selected) -> {
@@ -120,9 +120,9 @@ public class PresetSettingsScreen extends SubScreen {
 					rebuildWidgets();
 				})
 				.build();
-		*///? } else {
+		//? } else {
 
-		defaultCheckbox = new Checkbox(cx, y, 20, 20, Component.literal("Set as Default Preset"), preset.isDefault(), true){
+		/*defaultCheckbox = new Checkbox(cx, y, 20, 20, Component.literal("Set as Default Preset"), preset.isDefault(), true){
 			@Override
 			public void onPress() {
 				super.onPress();
@@ -142,7 +142,7 @@ public class PresetSettingsScreen extends SubScreen {
 			}
 		};
 		addRenderableWidget(defaultCheckbox);
-		//? }
+		*///? }
 		addRenderableWidget(defaultCheckbox);
 
 		int listTop = modalY + HEADER_H + (ROW_H + PADDING) * 2;
@@ -152,10 +152,10 @@ public class PresetSettingsScreen extends SubScreen {
 		editList = new PresetEditList(Minecraft.getInstance(), modalW - 20, listHeight, listTop, ROW_H + 2);
 
 		//? if >=1.21 {
-				/*editList.setX(modalX + 10);
-		*///? } else {
-				editList.setLeftPos(modalX + 10);
-		//? }
+				editList.setX(modalX + 10);
+		//? } else {
+				/*editList.setLeftPos(modalX + 10);
+		*///? }
 		addRenderableWidget(editList);
 		rebuildList();
 
@@ -230,12 +230,12 @@ public class PresetSettingsScreen extends SubScreen {
 	private class PresetEditList extends AbstractSelectionList<PresetEditList.Entry> {
 		PresetEditList(Minecraft mc, int width, int height, int top, int itemHeight) {
 			//? if >=1.21 {
-			/*super(mc, width, height, top, itemHeight);
-			*///? } else {
-			super(mc, width, height, top, top + height, itemHeight);
+			super(mc, width, height, top, itemHeight);
+			//? } else {
+			/*super(mc, width, height, top, top + height, itemHeight);
 			this.setRenderBackground(false);
 			this.setRenderTopAndBottom(false);
-			//? }
+			*///? }
 		}
 		public int addEntry(Entry entry) {
 			return super.addEntry(entry);
@@ -251,19 +251,19 @@ public class PresetSettingsScreen extends SubScreen {
 		@Override
 		public int getRowLeft() {
 			//? if >=1.21 {
-			/*return getX() + 4;
-			*///? } else {
-			return x0 + 4;
-			//? }
+			return getX() + 4;
+			//? } else {
+			/*return x0 + 4;
+			*///? }
 		}
 
 		//? if >=1.21.4 {
 		/*@Override protected int scrollBarX() { return getRight() - 6; }
 		*///? } else if >=1.21 {
-				/*@Override protected int getScrollbarPosition() { return getRight() - 6; }
-		*///? } else {
-				@Override protected int getScrollbarPosition() { return x1 - 6; }
-		//? }
+				@Override protected int getScrollbarPosition() { return getRight() - 6; }
+		//? } else {
+				/*@Override protected int getScrollbarPosition() { return x1 - 6; }
+		*///? }
 
 		@Override
 		public int getRowWidth() {
@@ -273,10 +273,10 @@ public class PresetSettingsScreen extends SubScreen {
 
 
 		//? if >=1.21{
-		/*@Override public void updateWidgetNarration(NarrationElementOutput out) {}
-		*///?}else{
-		@Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}
-		//?}
+		@Override public void updateWidgetNarration(NarrationElementOutput out) {}
+		//?}else{
+		/*@Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}
+		*///?}
 		abstract static class Entry extends ObjectSelectionList.Entry<Entry> {}
 	}
 
@@ -611,12 +611,12 @@ public boolean mouseClicked(double mx, double my, int button) {
 				inputBox.setY(editY);
 				inputBox.setWidth(inputW);
 			//? if >=1.21
-				//inputBox.setHeight(editHeight);
+				inputBox.setHeight(editHeight);
 				addButton.setX(btnX);
 				addButton.setY(editY - 1);
 				addButton.setWidth(btnW);
 			//? if >=1.21
-				//addButton.setHeight(editHeight + 2);
+				addButton.setHeight(editHeight + 2);
 			//~ if >=26.1 'render' -> 'extractWidgetRenderState'
 			inputBox.render(g, mx, my, delta);
 			//~ if >=26.1 'render' -> 'extractRenderState'

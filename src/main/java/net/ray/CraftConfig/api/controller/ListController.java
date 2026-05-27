@@ -106,7 +106,7 @@ public class ListController<T> implements OptionController<List<T>> {
 			int editW = w - DELETE_BTN_W - PAD * 3;
 
 			//? if >=1.21 {
-						/*eb.setX(x + PAD + LPAD);
+						eb.setX(x + PAD + LPAD);
 						eb.setY(widgetY);
 						eb.setWidth(editW);
 						eb.setHeight(14);
@@ -115,15 +115,15 @@ public class ListController<T> implements OptionController<List<T>> {
 						db.setY(widgetY);
 						db.setWidth(DELETE_BTN_W);
 						db.setHeight(14);
-			*///? } else {
-						eb.setX(x + PAD + LPAD);
+			//? } else {
+						/*eb.setX(x + PAD + LPAD);
 						eb.setY(widgetY);
 						eb.setWidth(editW);
 
 						db.setX(deleteX);
 						db.setY(widgetY);
 						db.setWidth(DELETE_BTN_W);
-			//? }
+			*///? }
 			eb.setTextColor(error ? COL_TEXT_ERROR : COL_TEXT);
 
 			g.fill(x + PAD + LPAD - 1, widgetY - 1, x + PAD + editW + 1, widgetY + 15,
@@ -157,7 +157,7 @@ public class ListController<T> implements OptionController<List<T>> {
 			addButton.setX(x + PAD + LPAD); addButton.setY(widgetY);
 			addButton.setWidth(40);
 			//? if >=1.21
-			//addButton.setHeight(14); //fix for 1.20.1
+			addButton.setHeight(14); //fix for 1.20.1
 			//~ if >=26.1 'render' -> 'extractRenderState'
 			addButton.render(g, mx, my, delta);
 		}
@@ -312,10 +312,10 @@ public class ListController<T> implements OptionController<List<T>> {
 			@SuppressWarnings("shadow")
 			EditBox eb = new EditBox(font, 0, 0, 100, 14, Component.empty()){
 				//? if >= 1.21
-				//@Override public boolean isBordered() {return false;}
+				@Override public boolean isBordered() {return false;}
 			};
 			//? if = 1.20.1
-			eb.setBordered(false);
+			//eb.setBordered(false);
 			eb.setValue(val == null ? "" : val.toString());
 			eb.setMaxLength(Integer.MAX_VALUE);
 			eb.setTextColor(COL_TEXT);
