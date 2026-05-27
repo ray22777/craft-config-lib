@@ -20,22 +20,21 @@ public class SliderController<T extends Number> implements OptionController<T> {
 	}
 
 	@Override
-	@SuppressWarnings("shadow")
+	@SuppressWarnings("shadow")//no idea why github keeps failing on this
 	public AbstractSliderButton createWidget(ConfigOption<T> option, int x, int y, int w, int h) {
 		double current = clamp(option.get().doubleValue());
 		double initial = (current - min) / (max - min);
-		final ConfigOption<T> boundOption = option;
 
 		return new AbstractSliderButton(x, y, w, h, label(option, option.get()), initial){
 			@Override
 			protected void updateMessage() {
 				T val = sliderToValue(value);
-				setMessage(label(boundOption, val));
+				setMessage(label(option, val));
 			}
 
 			@Override
 			protected void applyValue() {
-				boundOption.set(sliderToValue(value));
+				option.set(sliderToValue(value));
 			}
 		};
 	}
