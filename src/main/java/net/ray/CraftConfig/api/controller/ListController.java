@@ -370,17 +370,16 @@ public class ListController<T> implements OptionController<List<T>> {
 
 	private ElementType resolvedType(ConfigOption<List<T>> option) {
 		if (elementType != null) return elementType;
-		for (Object o : safeList(option)) {
-			if (o == null) continue;
-			if (o instanceof Integer) return ElementType.INTEGER;
-			if (o instanceof Long)    return ElementType.LONG;
-			if (o instanceof Float)   return ElementType.FLOAT;
-			if (o instanceof Double)  return ElementType.DOUBLE;
+		for (Object item : safeList(option)) {  // ← renamed 'o' to 'item'
+			if (item == null) continue;
+			if (item instanceof Integer) return ElementType.INTEGER;
+			if (item instanceof Long)    return ElementType.LONG;
+			if (item instanceof Float)   return ElementType.FLOAT;
+			if (item instanceof Double)  return ElementType.DOUBLE;
 			return ElementType.STRING;
 		}
 		return ElementType.STRING;
 	}
-
 	private static Object tryParse(String s, ElementType et) {
 		if (s == null || s.isEmpty()) return null;
 		if (et == null || et == ElementType.STRING) return s;

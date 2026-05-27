@@ -133,9 +133,9 @@ public class PresetSettingsScreen extends SubScreen {
 					if (preset.isDefault()) {
 						preset.setScope(ConfigPreset.Scope.WORLD_SPECIFIC);
 						presetManager.presets().stream()
-								.filter(p -> !p.id().equals(preset.id()))
+								.filter(pr -> !pr.id().equals(preset.id()))  // ← renamed p → pr
 								.findFirst()
-								.ifPresent(p -> presetManager.setAsDefault(p));
+								.ifPresent(pr -> presetManager.setAsDefault(pr));  // ← renamed p → pr
 					}
 				}
 				rebuildWidgets();
