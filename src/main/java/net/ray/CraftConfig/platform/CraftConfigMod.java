@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 //? fabric {
-/*import net.ray.CraftConfig.platform.fabric.FabricPlatform;
-*///?} neoforge {
-import net.ray.CraftConfig.platform.neoforge.NeoforgePlatform;
-//?} forge {
+import net.ray.CraftConfig.platform.fabric.FabricPlatform;
+//?} neoforge {
+/*import net.ray.CraftConfig.platform.neoforge.NeoforgePlatform;
+*///?} forge {
 /*import net.ray.CraftConfig.platform.forge.ForgePlatform;
 *///?}
 
@@ -39,10 +39,10 @@ public class CraftConfigMod {
 
 	private static Platform createPlatformInstance() {
 		//? fabric {
-		/*return new FabricPlatform();
-		*///?} neoforge {
-		return new NeoforgePlatform();
-		 //?} forge {
+		return new FabricPlatform();
+		//?} neoforge {
+		/*return new NeoforgePlatform();
+		 *///?} forge {
 		/*return new ForgePlatform();
 		*///?}
 	}

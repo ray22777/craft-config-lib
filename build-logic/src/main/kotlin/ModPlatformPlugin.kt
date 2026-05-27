@@ -233,7 +233,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 	private fun Project.configureJava(stonecutter: StonecutterBuildExtension, requiredJava: JavaVersion) {
 		extensions.configure<JavaPluginExtension>("java") {
 			withSourcesJar()
-			withJavadocJar()
+//			withJavadocJar()
 			sourceCompatibility = requiredJava
 			targetCompatibility = requiredJava
 		}
@@ -262,7 +262,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 			from(
 				tasks.named(extension.jarTask.get()),
 				tasks.named(extension.sourcesJarTask.get()),
-				tasks.named("javadocJar").get()
+//				tasks.named("javadocJar").get()
 			)
 			into(rootProject.layout.buildDirectory.file("libs/$modVersion"))
 			dependsOn("build")

@@ -121,8 +121,8 @@ public class PresetSettingsScreen extends SubScreen {
 				})
 				.build();
 		//? } else {
-		/*
-		defaultCheckbox = new Checkbox(cx, y, 20, 20, Component.literal("Set as Default Preset"), preset.isDefault(), true) {
+
+		/*defaultCheckbox = new Checkbox(cx, y, 20, 20, Component.literal("Set as Default Preset"), preset.isDefault(), true){
 			@Override
 			public void onPress() {
 				super.onPress();
@@ -133,9 +133,9 @@ public class PresetSettingsScreen extends SubScreen {
 					if (preset.isDefault()) {
 						preset.setScope(ConfigPreset.Scope.WORLD_SPECIFIC);
 						presetManager.presets().stream()
-								.filter(pr -> !pr.id().equals(preset.id()))  // ← renamed p → pr
+								.filter(pr -> !pr.id().equals(preset.id()))
 								.findFirst()
-								.ifPresent(pr -> presetManager.setAsDefault(pr));  // ← renamed p → pr
+								.ifPresent(pr -> presetManager.setAsDefault(pr));
 					}
 				}
 				rebuildWidgets();

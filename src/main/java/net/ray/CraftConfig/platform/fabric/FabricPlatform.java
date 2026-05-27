@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.fabric;
 
 //? fabric {
 
-/*import net.fabricmc.loader.api.FabricLoader;import net.ray.CraftConfig.platform.Platform;
+import net.fabricmc.loader.api.FabricLoader;import net.ray.CraftConfig.platform.Platform;
 
 public class FabricPlatform implements Platform {
 
@@ -26,4 +26,4 @@ public class FabricPlatform implements Platform {
 		return FabricLoader.getInstance().isDevelopmentEnvironment();
 	}
 }
-*///?}
+//?}

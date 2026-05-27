@@ -1,6 +1,6 @@
 package net.ray.CraftConfig.platform.neoforge;
 //? neoforge {
-import net.neoforged.api.distmarker.Dist;
+/*import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
@@ -28,4 +28,4 @@ public class NeoforgeConfigScreen {
 		}
 	}
 }
-//?}
+*///?}

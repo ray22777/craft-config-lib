@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.neoforge;
 
 //? neoforge {
 
-import com.mojang.blaze3d.platform.InputConstants;
+/*import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 //?if>=1.21.9
 import net.minecraft.resources.Identifier;
@@ -39,11 +39,11 @@ public class NeoforgeKeybindRegistry {
                         ConfigKeybinds kb = opt.keybindSettings();
                         if (kb == null) continue;
 						//?if <1.21.11{
-						/*int keyCode = kb.defaultKey();
+						/^int keyCode = kb.defaultKey();
 						InputConstants.Key key = keyCode == -1
 								? InputConstants.UNKNOWN
 								: InputConstants.getKey(keyCode, 0);
-						*///?}
+						^///?}
                         kb.setOptionName(opt.name().getString());
                         KeyMapping mapping = new KeyMapping(
                                 opt.name().getString(),
@@ -51,13 +51,13 @@ public class NeoforgeKeybindRegistry {
 								//?if >=1.21.11{
 								InputConstants.Type.KEYSYM.getOrCreate(kb.defaultKey()),
 								//?}else{
-								/*key,
-								*///?}
+								/^key,
+								^///?}
 								//?if>=1.21.9{
 								category
 								//?}else{
-								/*entry.keybindCategory()
-								 *///?}
+								/^entry.keybindCategory()
+								 ^///?}
                         );
                         event.register(mapping);
                         kb.setKeyMapping(mapping);
@@ -70,11 +70,11 @@ public class NeoforgeKeybindRegistry {
             for (ConfigPreset preset : manager.presets()) {
                 if (preset.isDefault()) continue;
 				//?if <1.21.11{
-				/*int keyCode = preset.keyBind();
+				/^int keyCode = preset.keyBind();
 				InputConstants.Key key = keyCode == -1
 						? InputConstants.UNKNOWN
 						: InputConstants.getKey(keyCode, 0);
-				*///?}
+				^///?}
                 KeyMapping mapping = new KeyMapping(
                         preset.name(),
                         KeyConflictContext.IN_GAME,
@@ -86,8 +86,8 @@ public class NeoforgeKeybindRegistry {
 						//?if>=1.21.9{
 						category
 						//?}else{
-						/*entry.keybindCategory()
-						*///?}
+						/^entry.keybindCategory()
+						^///?}
                 );
                 event.register(mapping);
                 preset.setKeyMapping(mapping);
@@ -98,4 +98,4 @@ public class NeoforgeKeybindRegistry {
     }
 }
 
-//?}
+*///?}

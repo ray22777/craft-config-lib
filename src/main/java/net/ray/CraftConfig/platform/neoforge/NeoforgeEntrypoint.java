@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.neoforge;
 
 //? neoforge {
 
-import net.neoforged.fml.common.Mod;
+/*import net.neoforged.fml.common.Mod;
 import net.ray.CraftConfig.platform.CraftConfigMod;
 import net.ray.CraftConfig.platform.CraftConfigModInitializer;
 import org.slf4j.Logger;
@@ -18,4 +18,4 @@ public class NeoforgeEntrypoint {
     }
 }
 
-//?}
+*///?}

@@ -310,7 +310,7 @@ public class ListController<T> implements OptionController<List<T>> {
 			final int idx = i;
 			Object val = list.get(i);
 			@SuppressWarnings("shadow")
-			EditBox eb = new EditBox(font, 0, 0, 100, 14, Component.empty()) {
+			EditBox eb = new EditBox(font, 0, 0, 100, 14, Component.empty()){
 				//? if >= 1.21
 				@Override public boolean isBordered() {return false;}
 			};
@@ -370,7 +370,7 @@ public class ListController<T> implements OptionController<List<T>> {
 
 	private ElementType resolvedType(ConfigOption<List<T>> option) {
 		if (elementType != null) return elementType;
-		for (Object item : safeList(option)) {  // ← renamed 'o' to 'item'
+		for (Object item : safeList(option)) {
 			if (item == null) continue;
 			if (item instanceof Integer) return ElementType.INTEGER;
 			if (item instanceof Long)    return ElementType.LONG;

@@ -26,7 +26,7 @@ public class SliderController<T extends Number> implements OptionController<T> {
 		double initial = (current - min) / (max - min);
 		final ConfigOption<T> boundOption = option;
 
-		return new AbstractSliderButton(x, y, w, h, label(option, option.get()), initial) {
+		return new AbstractSliderButton(x, y, w, h, label(option, option.get()), initial){
 			@Override
 			protected void updateMessage() {
 				T val = sliderToValue(value);

@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.neoforge;
 
 //? neoforge {
 
-import com.mojang.brigadier.CommandDispatcher;
+/*import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -38,4 +38,4 @@ public class NeoforgeCommands {
     }
 }
 
-//?}
+*///?}
