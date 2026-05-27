@@ -67,11 +67,17 @@ public class ConfigOption<T> {
 
 	public ConfigOption<T> controller(OptionController<T> controller) {
 		this.controller = controller;
+		if (keybindSettings != null)
+			controller.initCycleValues(this, keybindSettings);
 		return this;
 	}
 
+
 	public ConfigOption<T> keybind(ConfigKeybinds keybindSettings) {
 		this.keybindSettings = keybindSettings;
+		keybindSettings.setOptionType(this.type);
+		if (controller != null)
+			controller.initCycleValues(this, keybindSettings);
 		return this;
 	}
 

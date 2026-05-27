@@ -8,10 +8,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.ray.CraftConfig.api.registry.CraftConfigRegistry;
+import net.ray.CraftConfig.api.registry.KeybindRegistry;
 import net.ray.CraftConfig.platform.CraftConfigMod;
 import net.ray.CraftConfig.preset.PresetRegisteration;
 
@@ -41,7 +43,10 @@ public class NeoforgeClientEventSubscriber {
 		PresetRegisteration.checkPreset();
 	}
 
-
+	@SubscribeEvent
+	public static void onClientTick(ClientTickEvent.Post event){
+		KeybindRegistry.tick(Minecraft.getInstance());
+	}
 }
 
 *///?}

@@ -42,6 +42,6 @@
 //
 //    public static void renderPlaceholder(GuiGraphics g, int x, int y, int iconSize, int color) {
 //        g.fill(x, y, x + iconSize, y + iconSize, color);
-//        g.submitOutline(x, y, iconSize, iconSize, 0xFF555555);
+//        g.renderOutline(x, y, iconSize, iconSize, 0xFF555555);
 //    }
 //}

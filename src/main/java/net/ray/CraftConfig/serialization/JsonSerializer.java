@@ -65,34 +65,37 @@ public class JsonSerializer {
 
 
 
-	public static JsonElement keybindToJson(ConfigKeybinds keybind) {
-		if (keybind == null) return JsonNull.INSTANCE;
+	public static JsonElement keybindToJson(ConfigKeybinds kb) {
+		if (kb == null) return JsonNull.INSTANCE;
 		JsonObject obj = new JsonObject();
-		obj.addProperty("enabled",         keybind.isEnabled());
-		obj.addProperty("defaultKey",      keybind.defaultKey());
-		obj.addProperty("mode",            keybind.mode().name());
-		obj.addProperty("sendChatMessage", keybind.sendChatMessage());
+		obj.addProperty("enabled",        kb.isEnabled());
+		obj.addProperty("notify", kb.getNotify());
+		if (kb.isBoolean()) {
+			obj.addProperty("mode", kb.mode().name());
+		}
 		return obj;
 	}
 
-	public static void keybindFromJson(ConfigKeybinds keybind, JsonElement element) {
-		if (keybind == null || element == null || element.isJsonNull()) return;
+	public static void keybindFromJson(ConfigKeybinds kb, JsonElement element) {
+		if (kb == null || element == null || element.isJsonNull()) return;
 		JsonObject obj = element.getAsJsonObject();
-		if (obj.has("enabled"))         keybind.setEnabled(obj.get("enabled").getAsBoolean());
-		if (obj.has("defaultKey"))      keybind.setDefaultKey(obj.get("defaultKey").getAsInt());
-		if (obj.has("mode"))            keybind.setMode(ConfigKeybinds.Mode.valueOf(obj.get("mode").getAsString()));
-		if (obj.has("sendChatMessage")) keybind.setSendChatMessage(obj.get("sendChatMessage").getAsBoolean());
+		// Shared
+		if (obj.has("enabled"))        kb.setEnabled(obj.get("enabled").getAsBoolean());
+		if (obj.has("notify")) kb.notify(obj.get("notify").getAsBoolean());
+		if (kb.isBoolean()) {
+			if (obj.has("mode")) kb.setMode(ConfigKeybinds.Mode.valueOf(obj.get("mode").getAsString()));
+		}
 	}
 
 	public static <T> void writeKeybind(JsonObject keybindsRoot, String key, ConfigOption<T> option) {
 		if (option.keybindSettings() == null) return;
 		keybindsRoot.add(key, keybindToJson(option.keybindSettings()));
 	}
+
 	public static <T> void readKeybind(JsonObject keybindsRoot, String key, ConfigOption<T> option) {
 		if (keybindsRoot == null || option.keybindSettings() == null) return;
-		if (keybindsRoot.has(key)) {
+		if (keybindsRoot.has(key))
 			keybindFromJson(option.keybindSettings(), keybindsRoot.get(key));
-		}
 	}
 	public static String formatCase(String displayName) {
 		return displayName.toLowerCase().replace(' ', '_');

@@ -21,6 +21,6 @@ public class BooleanController implements OptionController<Boolean> {
 	}
 
 	private static Component buttonLabel(ConfigOption<Boolean> opt) {
-		return Component.literal(opt.get() ? "ON" : "OFF");
+		return Component.literal(opt.get() ? "§aON" : "§cOFF");
 	}
 }

@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.fabric;
 
 //? fabric {
 
-import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
+/*import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -12,8 +12,9 @@ import net.minecraft.network.chat.Component;
 import net.ray.CraftConfig.api.registry.CraftConfigRegistry;
 import net.ray.CraftConfig.example.ExampleConfig;
 import net.ray.CraftConfig.platform.CraftConfigMod;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.ray.CraftConfig.preset.PresetRegisteration;
-
+import net.ray.CraftConfig.api.registry.KeybindRegistry;
 @Entrypoint("client")
 public class FabricClientEntrypoint implements ClientModInitializer {
 
@@ -26,6 +27,7 @@ public class FabricClientEntrypoint implements ClientModInitializer {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
 			PresetRegisteration.checkPreset();
         });
+		ClientTickEvents.END_CLIENT_TICK.register(KeybindRegistry::tick);
     }
 }
-//?}
+*///?}

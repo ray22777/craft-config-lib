@@ -1,6 +1,6 @@
 package net.ray.CraftConfig.platform.forge;
 //? forge {
-/*import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -42,8 +42,8 @@ public class ForgeCommands {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null) return 0;
 		//~ if >=1.21.2 '.tell' -> '.schedule'
-		mc.schedule(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
+		mc.tell(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
 		return 1;
 	}
 }
-*///?}
+//?}

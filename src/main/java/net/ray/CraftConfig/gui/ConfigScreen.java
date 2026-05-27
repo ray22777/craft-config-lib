@@ -7,15 +7,15 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 //?if >=1.21
-import com.mojang.blaze3d.systems.RenderSystem;
+//import com.mojang.blaze3d.systems.RenderSystem;
 //?if >=1.21.9
-import net.minecraft.client.input.MouseButtonEvent;
+//import net.minecraft.client.input.MouseButtonEvent;
 //?if >=1.21.6
-import net.minecraft.client.renderer.RenderPipelines;
+//import net.minecraft.client.renderer.RenderPipelines;
 //?if <1.21.11
-//import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.ray.CraftConfig.api.v1.ConfigCategory;
 import net.ray.CraftConfig.api.v1.ConfigOption;
 import net.ray.CraftConfig.api.v1.ConfigSection;
@@ -88,10 +88,10 @@ public class ConfigScreen extends Screen {
 		categoryList = new CategoryListWidget(minecraft, catWidth,
 				height - HEADER_H - BOTTOM_H, HEADER_H + 1, ROW_H);
 		//? if >=1.21 {
-		categoryList.setX(0);
-		//? } else {
-				/*categoryList.setLeftPos(0);
-		*///? }
+		/*categoryList.setX(0);
+		 *///? } else {
+		categoryList.setLeftPos(0);
+		//? }
 		categoryList.currentSelectedIndex = selectedCategory;
 		for (int i = 0; i < config.categories().size(); i++) {
 			final int idx = i;
@@ -112,10 +112,10 @@ public class ConfigScreen extends Screen {
 		optionList = new OptionListWidget(minecraft, optionWidth,
 				height - HEADER_H - BOTTOM_H, HEADER_H + 1, ROW_H);
 		//? if >=1.21 {
-				optionList.setX(catWidth);
-		//? } else {
-				/*optionList.setLeftPos(catWidth);
-		*///? }
+		/*optionList.setX(catWidth);
+		 *///? } else {
+		optionList.setLeftPos(catWidth);
+		//? }
 		addRenderableWidget(optionList);
 		rebuildOptionList();
 
@@ -353,83 +353,83 @@ public class ConfigScreen extends Screen {
 		}
 	}
 
-// 	//~ if >=26.1 'render' -> 'extract'
+	// 	//~ if >=26.1 'render' -> 'extract'
 	//~ if >=26.1 'render' -> 'extractRenderState'
 	@Override public void render(GuiGraphics g, int mx, int my, float delta) {
 		//? if <=1.21.5
-		//renderBackground(g /*? if >=1.21 {*/ , mx, my, delta /*?}*/);
+		renderBackground(g /*? if >=1.21 {*/ /*, mx, my, delta *//*?}*/);
+
 		int panelW      = categoryPanelWidth();
 		int panelBottom = height - BOTTOM_H;
-
-		g.fill(panelW, HEADER_H, panelW + 1, panelBottom + 1, COL_BORDER);
 		//? if <1.21 {
-		/*g.blit(Screen.BACKGROUND_LOCATION, 0, panelBottom, 0, panelBottom, width, BOTTOM_H, 32, 32);
+		g.blit(Screen.BACKGROUND_LOCATION, 0, panelBottom, 0, panelBottom, width, BOTTOM_H, 32, 32);
 		g.fill(0, panelBottom, width, height, 0xCC000000);
-		*///? }
+		//? }
+		g.fill(panelW, HEADER_H, panelW + 1, panelBottom + 1, COL_BORDER);
 		g.fill(0, TITLE_H, width, HEADER_H, COL_BG_DARK);
 		g.fill(0, HEADER_H, width, HEADER_H + 1, COL_BORDER);
 		//? if >=1.21 {
-				Identifier topSep = minecraft.level == null
+				/*ResourceLocation topSep = minecraft.level == null
 						? Screen.HEADER_SEPARATOR : Screen.INWORLD_HEADER_SEPARATOR;
-				Identifier botSep = minecraft.level == null
+				ResourceLocation botSep = minecraft.level == null
 						? Screen.FOOTER_SEPARATOR : Screen.INWORLD_FOOTER_SEPARATOR;//TODO:FIX FOR 1.21.2
 				//? if >=1.21.6 {
-				g.blit(RenderPipelines.GUI_TEXTURED, topSep, 0, TITLE_H - 1, 0.0F, 0.0F, width, 2, 32, 2);
+				/^g.blit(RenderPipelines.GUI_TEXTURED, topSep, 0, TITLE_H - 1, 0.0F, 0.0F, width, 2, 32, 2);
 				g.blit(RenderPipelines.GUI_TEXTURED, botSep, 0, panelBottom + 1, 0.0F, 0.0F, width, 2, 32, 2);
-				//?}else{
-				/*//?if <1.21.5
-				//RenderSystem.enableBlend();
-				g.blit(/^? if >= 1.21.2 {^/ RenderType::guiTextured, /^?}^/topSep, 0, TITLE_H - 1, 0.0F, 0.0F, width, 2, 32, 2);
-				g.blit(/^? if >= 1.21.2 {^/ RenderType::guiTextured, /^?}^/botSep, 0, panelBottom + 1, 0.0F, 0.0F, width, 2, 32, 2);
+				^///?}else{
 				//?if <1.21.5
-				//RenderSystem.disableBlend();
+				RenderSystem.enableBlend();
+				g.blit(/^? if >= 1.21.2 {^/ /^RenderType::guiTextured, ^//^?}^/topSep, 0, TITLE_H - 1, 0.0F, 0.0F, width, 2, 32, 2);
+				g.blit(/^? if >= 1.21.2 {^/ /^RenderType::guiTextured, ^//^?}^/botSep, 0, panelBottom + 1, 0.0F, 0.0F, width, 2, 32, 2);
+				//?if <1.21.5
+				RenderSystem.disableBlend();
 
-				*///? }
-		//? }
+				//? }
+		*///? }
 
 		g.drawCenteredString(font, title, width / 2, (TITLE_H - font.lineHeight) / 2, COL_ACCENT);
 		g.drawString(font, "Preset:", width - 210 - font.width("Preset:") - 4,
 				TITLE_H + 4 + (20 - font.lineHeight) / 2, COL_TEXT_GRAY, false);
 		updateButtonStates();
 		//?if<1.21{
-		/*for (GuiEventListener child : children()) {
+		for (GuiEventListener child : children()) {
 			if (child instanceof Renderable r && child != searchBox) r.render(g, mx, my, delta);
 		}
 		searchBox.render(g,mx,my,delta);
 
-		*///?}else{
-			for (GuiEventListener child : children()) {
+		//?}else{
+			/*for (GuiEventListener child : children()) {
 				//~ if >=26.1 'render' -> 'extractRenderState'
 				if (child instanceof Renderable r) r.render(g, mx, my, delta);
 			}
-			//?}
+			*///?}
 		if (dropdownOpen) {
 			//? if >= 1.21.6{
-			g.pose().pushMatrix();
-			//?}else{
-			/*g.pose().pushPose();
-			*///?}
+			/*g.pose().pushMatrix();
+			 *///?}else{
+			g.pose().pushPose();
+			//?}
 
 			//?if >= 1.21.6{
-			g.pose().translate(0, 0);
-			//?}else{
-			/*g.pose().translate(0, 0, 200);
-			*///?}
+			/*g.pose().translate(0, 0);
+			 *///?}else{
+			g.pose().translate(0, 0, 200);
+			//?}
 
 			renderPresetDropdown(g, mx, my);
 			//? if >= 1.21.6{
-			g.pose().popMatrix();
-			//?}else{
-			/*g.pose().popPose();
-			*///?}
+			/*g.pose().popMatrix();
+			 *///?}else{
+			g.pose().popPose();
+			//?}
 		}
 		if (pendingTooltip != null) {
 			List<Component> lines = ComponentUtil.splitTooltipLines(pendingTooltip);
 			//?if >= 1.21.6{
-			g.setComponentTooltipForNextFrame(font, lines, tooltipX, tooltipY);
-			//?}else{
-			/*g.renderComponentTooltip(font, lines, tooltipX, tooltipY);
-			*///?}
+			/*g.setComponentTooltipForNextFrame(font, lines, tooltipX, tooltipY);
+			 *///?}else{
+			g.renderComponentTooltip(font, lines, tooltipX, tooltipY);
+			//?}
 			pendingTooltip = null;
 		}
 	}
@@ -450,10 +450,10 @@ public class ConfigScreen extends Screen {
 
 		g.fill(ddX, ddY, ddX + ddW, ddY + totalH, COL_BG_BLACK);
 		//? if >= 1.21.9{
-		ScreenUtils.drawOutline(g,ddX, ddY, ddW, totalH, COL_BORDER);
-		//?}else{
 		/*ScreenUtils.drawOutline(g,ddX, ddY, ddW, totalH, COL_BORDER);
-		*///?}
+		 *///?}else{
+		ScreenUtils.drawOutline(g,ddX, ddY, ddW, totalH, COL_BORDER);
+		//?}
 
 
 		int listStartY = ddY + DD_PAD;
@@ -517,14 +517,14 @@ public class ConfigScreen extends Screen {
 		g.disableScissor();
 	}
 	//? if >=1.21.9{
-	@Override public boolean mouseClicked(MouseButtonEvent event, boolean bl) {
+	/*@Override public boolean mouseClicked(MouseButtonEvent event, boolean bl) {
 		double mx = event.x();
 		double my = event.y();
-	//?}else{
+	*///?}else{
 
-		/*@Override
-		public boolean mouseClicked(double mx, double my, int button) {
-		*///?}
+	@Override
+	public boolean mouseClicked(double mx, double my, int button) {
+		//?}
 		if (presetDropdownButton != null && presetDropdownButton.isMouseOver(mx, my)) {
 			toggleDropdown();
 			return true;
@@ -536,10 +536,10 @@ public class ConfigScreen extends Screen {
 			updatePresetButtonText();
 		}
 		//? if >=1.21.9{
-		return super.mouseClicked(event, bl);
-		//?}else{
-		/*return super.mouseClicked(mx, my, button);
-		*///?}
+		/*return super.mouseClicked(event, bl);
+		 *///?}else{
+		return super.mouseClicked(mx, my, button);
+		//?}
 	}
 
 

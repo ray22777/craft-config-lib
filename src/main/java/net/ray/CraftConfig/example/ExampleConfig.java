@@ -12,7 +12,6 @@ import net.ray.CraftConfig.platform.CraftConfigMod;
 import java.awt.*;
 import java.util.List;
 
-@SuppressWarnings("unchecked")
 public class ExampleConfig {
 
 
@@ -67,8 +66,8 @@ public class ExampleConfig {
 
 
 	//building the config screen
-	public static final CraftConfig config = CraftConfig.create("craft_config")
-			.title(Component.literal("Craft Mod Config"))
+	public static final CraftConfig config = CraftConfig.create("example_mod")
+			.title(Component.literal("Example Config"))
 
 			.category(ConfigCategory.builder(Component.literal("General"))
 					.section(ConfigSection.builder(Component.literal("Section One"))
@@ -78,8 +77,14 @@ public class ExampleConfig {
 							.option(exampleColor.controller(new ColorController()))
 							.build())
 					.section(ConfigSection.builder(Component.literal("Another Section"))
-							.option(exampleEnum.controller(new EnumController<>()))
-							.option(exampleCyclingList.controller(new CycleController<>(List.of("Easy", "Normal", "Hard", "Expert"))))
+							.option(exampleEnum.controller(new EnumController<>())
+									.keybind(ConfigKeybinds.create()
+											.defaultKey(InputConstants.KEY_G)
+											.notify(true)))
+							.option(exampleCyclingList.controller(new CycleController<>(List.of("Easy", "Normal", "Hard", "Expert")))
+									.keybind(ConfigKeybinds.create()
+											.defaultKey(InputConstants.KEY_F)
+											.notify(true)))
 							.option(exampleList.controller(new ListController<>(ListController.ElementType.STRING)))
 							.build())
 					.build())
@@ -111,17 +116,17 @@ public class ExampleConfig {
 									.keybind(ConfigKeybinds.create()
 											.defaultKey(InputConstants.KEY_R)
 											.mode(ConfigKeybinds.Mode.TOGGLE)
-											.sendChatMessage(true)))
+											.notify(true)))
 							.build())
 					.build())
 			.build();
 
 	public static void init() {
 		config.load();
-		CraftConfigRegistry.register("craft_config", config, "Example Mod")
+		CraftConfigRegistry.register("example_mod", config, "Example Mod")
 				.setModMenuEnabled(true)
 				.setCommandEnabled(true)
-				.setKeybindCategory("example.mod.keybinds")
+				.setKeybindCategory("example_mod") // Use language file to translate category, "key.category.minecraft." is appended in front to make it consistent with newer versions.
 				.build();
 
 	}

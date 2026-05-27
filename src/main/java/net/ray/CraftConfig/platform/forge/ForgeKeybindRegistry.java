@@ -2,10 +2,10 @@ package net.ray.CraftConfig.platform.forge;
 
 //? forge {
 
-/*import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 //?if>=1.21.9
-import net.minecraft.resources.Identifier;
+//import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.fml.ModList;
@@ -31,7 +31,6 @@ public class ForgeKeybindRegistry {
             for (ConfigCategory cat : config.categories()) {
                 for (ConfigSection sec : cat.sections()) {
                     for (ConfigOption<?> opt : sec.options()) {
-                        if (opt.type() != ConfigOption.Type.BOOLEAN) continue;
                         ConfigKeybinds kb = opt.keybindSettings();
                         if (kb == null) continue;
 						int keyCode = kb.defaultKey();
@@ -43,12 +42,15 @@ public class ForgeKeybindRegistry {
                                 opt.name().getString(),
                                 KeyConflictContext.IN_GAME,
 								key,
-								entry.keybindCategory()
+								"key.category.minecraft.entry." + entry.keybindCategory()
                         );
                         event.register(mapping);
                         kb.setKeyMapping(mapping);
-
-                        KeybindRegistry.addEntry((ConfigOption<Boolean>) opt, kb, config);
+						if (opt.type() == ConfigOption.Type.BOOLEAN) {
+							KeybindRegistry.addBooleanEntry((ConfigOption<Boolean>) opt, kb, config);
+						} else {
+							KeybindRegistry.addCycleEntry(opt, kb, config);
+						}
                     }
                 }
             }
@@ -63,7 +65,7 @@ public class ForgeKeybindRegistry {
                         preset.name(),
                         KeyConflictContext.IN_GAME,
 						key,
-						entry.keybindCategory()
+						"key.category.minecraft." + entry.keybindCategory()
                 );
                 event.register(mapping);
                 preset.setKeyMapping(mapping);
@@ -74,4 +76,4 @@ public class ForgeKeybindRegistry {
     }
 }
 
-*///?}
+//?}

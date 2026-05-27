@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.forge;
 
 //? forge {
 
-/*import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -30,4 +30,4 @@ public class ForgeClientEventSubscriber {
 }
 
 
-*///?}
+//?}

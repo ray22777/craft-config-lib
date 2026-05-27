@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.fabric;
 //~ fabric_cmd
 //? fabric {
 
-import com.mojang.brigadier.CommandDispatcher;
+/*import com.mojang.brigadier.CommandDispatcher;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
@@ -34,12 +34,12 @@ public class FabricCommands {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return 0;
 		//? if <=1.21.1 {
-		/*mc.tell(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
-		*///?} else {
+		/^mc.tell(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
+		^///?} else {
 		mc.schedule(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
 		//?}
 
         return 1;
     }
 }
-//?}
+*///?}

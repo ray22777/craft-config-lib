@@ -1,9 +1,10 @@
 package net.ray.CraftConfig.platform;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.ray.CraftConfig.config.Config;
 import net.ray.CraftConfig.example.ExampleConfig;
 import org.slf4j.Logger;
 
@@ -20,7 +21,9 @@ public class CraftConfigModInitializer {
     }
     public static void onInit(Logger log){
         setLogger(log);
-//		ExampleConfig.init(); //register your configs on init
-        CraftConfigModInitializer.getLogger().warn("Craft Config initialized.");
+		Config.init();
+		ExampleConfig.init(); //register your configs on init
+		CraftConfigModInitializer.getLogger().warn("Craft Config initialized.");
     }
 }
+

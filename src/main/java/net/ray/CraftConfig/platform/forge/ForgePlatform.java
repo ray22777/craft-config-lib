@@ -2,7 +2,7 @@ package net.ray.CraftConfig.platform.forge;
 
 //? forge {
 
-/*import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.ray.CraftConfig.platform.Platform;
@@ -29,4 +29,4 @@ public class ForgePlatform implements Platform {
 		return !FMLLoader.isProduction();
 	}
 }
-*///?}
+//?}

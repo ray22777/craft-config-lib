@@ -2,6 +2,7 @@ package net.ray.CraftConfig.api.controller;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+import net.ray.CraftConfig.api.v1.ConfigKeybinds;
 import net.ray.CraftConfig.api.v1.ConfigOption;
 
 import java.util.List;
@@ -23,20 +24,24 @@ public class CycleController<T> implements OptionController<T> {
         this.labelProvider = labelProvider;
     }
 
-    @Override
-    public Button createWidget(ConfigOption<T> option, int x, int y, int w, int h) {
-        return Button.builder(label(option.get()), btn -> {
-            T next = next(option.get());
-            option.set(next);
-            btn.setMessage(label(next));
-        }).bounds(x, y, w, h).build();
-    }
+	@Override
+	public Button createWidget(ConfigOption<T> option, int x, int y, int w, int h) {
+
+		return Button.builder(label(option.get()), btn -> {
+			T next = next(option.get());
+			option.set(next);
+			btn.setMessage(label(next));
+		}).bounds(x, y, w, h).build();
+	}
 
     private T next(T current) {
         int idx = values.indexOf(current);
         return values.get((idx + 1) % values.size());
     }
-
+	@Override
+	public void initCycleValues(ConfigOption<T> option, ConfigKeybinds keybinds) {
+		keybinds.setCycleValues(values);
+	}
     private Component label(T value) {
         return Component.literal(labelProvider.apply(value));
     }

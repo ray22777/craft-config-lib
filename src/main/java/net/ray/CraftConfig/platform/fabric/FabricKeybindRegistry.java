@@ -2,14 +2,14 @@ package net.ray.CraftConfig.platform.fabric;
 
 //? fabric {
 
-import com.mojang.blaze3d.platform.InputConstants;
+/*import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 //~ if >=26.1 '.keybinding.v1.KeyBindingHelper' -> '.keymapping.v1.KeyMappingHelper'
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.KeyMapping;
 //?if>=1.21.9
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.ray.CraftConfig.api.registry.CraftConfigRegistry;
 import net.ray.CraftConfig.api.registry.KeybindRegistry;
 import net.ray.CraftConfig.api.v1.*;
@@ -32,13 +32,12 @@ public class FabricKeybindRegistry {
 
 			//?if>=1.21.9{
 			KeyMapping.Category category = KeyMapping.Category.register(
-					Identifier.withDefaultNamespace(entry.keybindCategory()));
+					ResourceLocation.withDefaultNamespace(entry.keybindCategory()));
 			//?}
 
 			for (ConfigCategory cat : config.categories()) {
 				for (ConfigSection sec : cat.sections()) {
 					for (ConfigOption<?> opt : sec.options()) {
-						if (opt.type() != ConfigOption.Type.BOOLEAN) continue;
 						ConfigKeybinds kb = opt.keybindSettings();
 						if (kb == null) continue;
 
@@ -52,12 +51,16 @@ public class FabricKeybindRegistry {
 								//?if>=1.21.9{
 								category
 								//?}else{
-								/*entry.keybindCategory()
-								 *///?}
+								/^"key.category.minecraft." + entry.keybindCategory()
+								 ^///?}
 						));
 
 						kb.setKeyMapping(mapping);
-						KeybindRegistry.addEntry((ConfigOption<Boolean>) opt, kb, config);
+						if (opt.type() == ConfigOption.Type.BOOLEAN) {
+							KeybindRegistry.addBooleanEntry((ConfigOption<Boolean>) opt, kb, config);
+						} else {
+							KeybindRegistry.addCycleEntry(opt, kb, config);
+						}
 					}
 				}
 			}
@@ -74,8 +77,8 @@ public class FabricKeybindRegistry {
 						//?if>=1.21.9{
 						category
 						//?}else{
-						/*entry.keybindCategory()
-						 *///?}
+						/^"key.category.minecraft." + entry.keybindCategory()
+						 ^///?}
 				));
 
 				preset.setKeyMapping(mapping);
@@ -83,7 +86,7 @@ public class FabricKeybindRegistry {
 			}
 		}
 
-		ClientTickEvents.END_CLIENT_TICK.register(KeybindRegistry::tick);
+
 	}
 }
-//?}
+*///?}

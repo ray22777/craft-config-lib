@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 //?if>=1.21.9
-import net.minecraft.client.input.InputWithModifiers;
+//import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.network.chat.Component;
 import net.ray.CraftConfig.util.ScreenUtils;
 
@@ -46,10 +46,10 @@ public class ColorButton extends AbstractButton {
 	}
 
 	//? if >=1.21 {
-	@Override protected void updateWidgetNarration(NarrationElementOutput out) {}
-	//? } else{
-	/*@Override protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
-	*///?}
+	/*@Override protected void updateWidgetNarration(NarrationElementOutput out) {}
+	*///? } else{
+	@Override protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {}
+	//?}
 
 
 	public static class Builder {
@@ -107,7 +107,7 @@ public class ColorButton extends AbstractButton {
 	@Override
 	public void onPress(
 			//?if>=1.21.9
-			InputWithModifiers inputWithModifiers
+			//InputWithModifiers inputWithModifiers
 	) {
 		if (onPress != null) {
 			onPress.run();
@@ -115,20 +115,20 @@ public class ColorButton extends AbstractButton {
 	}
 
 	//?if = 1.21.11{
-	@Override protected void renderContents(GuiGraphics g, int mx, int my, float pt) {
-		//?}else{
+	/*@Override protected void renderContents(GuiGraphics g, int mx, int my, float pt) {
+		*///?}else{
 
-		/*//~ if >=26.1 'renderWidget' -> 'extractContents'
+		//~ if >=26.1 'renderWidget' -> 'extractContents'
 		@Override public void renderWidget (GuiGraphics g,int mx, int my, float pt){
-		*///?}
+		//?}
 		//?if>=1.21.11{
-		//~ if >=26.1 'render' -> 'extract'{
+		/*//~ if >=26.1 'render' -> 'extract'{
 		this.renderDefaultSprite(g);
 		this.renderDefaultLabel(g.textRenderer());
 		//~}
-		//?}else{
-		/*super.renderWidget(g, mx, my, pt);
-		*///?}
+		*///?}else{
+		super.renderWidget(g, mx, my, pt);
+		//?}
 
 
 			if (showThumb) {
