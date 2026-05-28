@@ -7,6 +7,7 @@ import net.minecraftforge.client.ConfigScreenHandler;
 import net.ray.CraftConfig.api.registry.CraftConfigRegistry;
 import net.ray.CraftConfig.api.v1.CraftConfig;
 import net.ray.CraftConfig.gui.ConfigScreen;
+import net.ray.CraftConfig.platform.CraftConfigMod;
 
 import java.util.Map;
 
@@ -27,6 +28,7 @@ public class ForgeConfigScreen {
                 );
             });
         }
+
     }
 }
 *///?}

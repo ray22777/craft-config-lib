@@ -23,7 +23,7 @@ public class NeoforgeClientEventSubscriber {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
 		CraftConfigMod.onInitializeClient();
-		NeoforgeConfigScreen.registerProvidedConfigScreens();
+		event.enqueueWork(NeoforgeConfigScreen::registerProvidedConfigScreens);
 
     }
 	@SubscribeEvent
