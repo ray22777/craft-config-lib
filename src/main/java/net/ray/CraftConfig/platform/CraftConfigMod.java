@@ -2,6 +2,7 @@ package net.ray.CraftConfig.platform;
 
 
 import com.mojang.logging.LogUtils;
+import net.ray.CraftConfig.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,13 +25,15 @@ public class CraftConfigMod {
 	private static final Platform PLATFORM = createPlatformInstance();
 
 	public static void onInitialize() {
-//		LOGGER.info("Initializing {} on {}", MOD_ID, HologramMod.xplat().loader());
-//		LOGGER.debug("{}: { version: {}; friendly_name: {} }", MOD_ID, MOD_VERSION, MOD_FRIENDLY_NAME);
+
 	}
 
 	public static void onInitializeClient() {
-//		LOGGER.info("Initializing {} Client on {}", MOD_ID, HologramMod.xplat().loader());
-//		LOGGER.debug("{}: { version: {}; friendly_name: {} }", MOD_ID, MOD_VERSION, MOD_FRIENDLY_NAME);
+		LOGGER.info("Craft Config Lib loaded.");
+
+		//register your mods in Client Init
+		Config.init();
+		//ExampleConfig.init(); //registering it
 	}
 
 	static Platform xplat() {

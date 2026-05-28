@@ -19,8 +19,9 @@ public class ForgeClientEventSubscriber {
 
 	@SubscribeEvent
 	public static void onClientSetup(FMLClientSetupEvent event) {
-
+		CraftConfigMod.onInitializeClient();
 		ForgeConfigScreen.registerProvidedConfigScreens();
+
 	}
 
 	@SubscribeEvent

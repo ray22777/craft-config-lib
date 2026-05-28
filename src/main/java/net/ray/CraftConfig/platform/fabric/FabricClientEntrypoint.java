@@ -20,7 +20,7 @@ public class FabricClientEntrypoint implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-
+		CraftConfigMod.onInitializeClient();
         FabricKeybindRegistry.init();
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
 			FabricCommands.register(dispatcher));

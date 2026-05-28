@@ -5,7 +5,6 @@ package net.ray.CraftConfig.platform.fabric;
 import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import net.fabricmc.api.ModInitializer;
 import net.ray.CraftConfig.platform.CraftConfigMod;
-import net.ray.CraftConfig.platform.CraftConfigModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +15,7 @@ public final class FabricEntrypoint implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		CraftConfigModInitializer.onInit(LOGGER);
+		CraftConfigMod.onInitialize();
 
 	}
 }
