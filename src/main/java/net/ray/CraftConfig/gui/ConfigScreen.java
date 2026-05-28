@@ -636,11 +636,11 @@ public class ConfigScreen extends Screen {
 					confirmed -> {
 						if (confirmed) {
 							saveChanges();
-							viewingPreset = null;
-							minecraft.setScreen(parent);
 						} else {
-							minecraft.setScreen(this);
+							revertToSnapshot();
 						}
+						viewingPreset = null;
+						minecraft.setScreen(parent);
 					},
 					Component.literal("Unsaved Changes"),
 					Component.literal("You have unsaved changes. Save before exiting?"),
