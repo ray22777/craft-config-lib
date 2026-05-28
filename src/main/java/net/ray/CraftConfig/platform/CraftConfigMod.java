@@ -33,7 +33,7 @@ public class CraftConfigMod {
 
 		//register your mods in Client Init
 		Config.init();
-		//ExampleConfig.init(); //registering it
+//		ExampleConfig.init(); //registering it
 	}
 
 	static Platform xplat() {

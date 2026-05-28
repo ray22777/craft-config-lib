@@ -20,10 +20,11 @@ public class KeybindRegistry {
 
 	private static final List<BooleanEntry> booleanEntries = new ArrayList<>();
 	private static final List<Boolean>      wasHeld        = new ArrayList<>();
+	private static final List<Boolean>      cycleWasHeld        = new ArrayList<>();
 	private static final List<CycleEntry>   cycleEntries   = new ArrayList<>();
 	private static final List<PresetEntry>  presetEntries  = new ArrayList<>();
 
-	private static final List<Consumer<ConfigOption<Boolean>>> changeListeners = new ArrayList<>();
+	private static final List<Consumer<ConfigOption<?>>> changeListeners = new ArrayList<>();
 
 	public static void addBooleanEntry(ConfigOption<Boolean> option, ConfigKeybinds settings, CraftConfig config) {
 		booleanEntries.add(new BooleanEntry(option, settings, config));
@@ -32,6 +33,7 @@ public class KeybindRegistry {
 
 	public static void addCycleEntry(ConfigOption<?> option, ConfigKeybinds settings, CraftConfig config) {
 		cycleEntries.add(new CycleEntry(option, settings, config));
+		cycleWasHeld.add(false);
 	}
 
 	public static void addPresetEntry(ConfigPreset preset, PresetManager manager, String modDisplayName) {
@@ -89,20 +91,26 @@ public class KeybindRegistry {
 	}
 
 	private static void tickCycle(Minecraft client) {
-		for (CycleEntry e : cycleEntries) {
+		for (int i = 0; i < cycleEntries.size(); i++) {
+			CycleEntry     e  = cycleEntries.get(i);
 			ConfigKeybinds kb = e.settings();
 			if (!kb.isEnabled() || kb.keyMapping() == null) continue;
 
-			KeyMapping km = kb.keyMapping();
-			boolean firedOnce = false;
-			while (km.consumeClick()) {
-				if (!firedOnce) {
-					kb.triggerCycle(e.option());
-					if (kb.getNotify()) sendCycleChat(client, e.option());
-					e.config().save();
-					firedOnce = true;
-				}
+			KeyMapping km          = kb.keyMapping();
+			boolean    heldNow     = km.isDown();
+			boolean    wasHeldPrev = cycleWasHeld.get(i);
+
+			if (heldNow && !wasHeldPrev) {
+				km.consumeClick();
+				kb.triggerCycle(e.option());
+				if (kb.getNotify()) sendCycleChat(client, e.option());
+				e.config().save();
+				notifyChangeListeners(e.option());
+			} else if (heldNow) {
+				while (km.consumeClick()) {}
 			}
+
+			cycleWasHeld.set(i, heldNow);
 		}
 	}
 
@@ -179,7 +187,7 @@ public class KeybindRegistry {
 		//?}
 	}
 
-	public static void notifyChangeListeners(ConfigOption<Boolean> option) {
-		for (Consumer<ConfigOption<Boolean>> l : changeListeners) l.accept(option);
+	public static void notifyChangeListeners(ConfigOption<?> option) {
+		for (Consumer<ConfigOption<?>> l : changeListeners) l.accept(option);
 	}
 }

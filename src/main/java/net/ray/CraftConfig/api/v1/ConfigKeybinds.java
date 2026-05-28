@@ -13,7 +13,7 @@ public class ConfigKeybinds {
 	private int      defaultKey     = InputConstants.UNKNOWN.getValue();
 	private boolean  notify = true;
 	private Mode              mode      = Mode.TOGGLE;
-	private Consumer<Boolean> onChanged = null;
+	private Consumer<Object> onChanged = null;
 	private KeyMapping              keyMapping  = null;
 	private String                  optionName  = null;
 	private ConfigOption.Type       optionType  = null;
@@ -25,13 +25,13 @@ public class ConfigKeybinds {
 	public ConfigKeybinds defaultKey(int key)        { this.defaultKey = key;   return this; }
 	public ConfigKeybinds notify(boolean v)  { this.notify = v; return this; }
 	public ConfigKeybinds mode(Mode mode)                  { this.mode = mode;    return this; }
-	public ConfigKeybinds onChanged(Consumer<Boolean> cb)  { this.onChanged = cb; return this; }
+	public ConfigKeybinds onChanged(Consumer<Object> cb) { this.onChanged = cb; return this; }
 
 	public void setEnabled(boolean v)               { this.enabled = v; }
 	public void setDefaultKey(int key)              { this.defaultKey = key; }
 	public void setNotify(boolean v)        { this.notify = v; }
 	public void setMode(Mode mode)                  { this.mode = mode; }
-	public void setOnChanged(Consumer<Boolean> cb)  { this.onChanged = cb; }
+	public void setOnChanged(Consumer<Object> cb) { this.onChanged = cb; }
 	public void setKeyMapping(KeyMapping km)        { this.keyMapping = km; }
 	public void setOptionName(String name)          { this.optionName = name; }
 	public void setOptionType(ConfigOption.Type t)  { this.optionType = t; }
@@ -47,7 +47,7 @@ public class ConfigKeybinds {
 	public int                defaultKey()     { return defaultKey; }
 	public boolean            getNotify() 	   { return notify; }
 	public Mode               mode()           { return mode; }
-	public Consumer<Boolean>  onChanged()      { return onChanged; }
+	public Consumer<Object> onChanged() { return onChanged; }
 	public KeyMapping         keyMapping()     { return keyMapping; }
 	public String             optionName()     { return optionName; }
 	public ConfigOption.Type  optionType()     { return optionType; }
