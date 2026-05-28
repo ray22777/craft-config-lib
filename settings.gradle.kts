@@ -26,6 +26,10 @@ stonecutter {
 	create(rootProject) {
 		fun match(version: String, vararg loaders: String) =
 			loaders.forEach {
+				val isGitHub = System.getenv("GITHUB_ACTIONS") == "true"
+				if (isGitHub && version == "1.20.1" && it == "forge") { //skip forge 1.20.1 on github bc it keeps failing
+					return@forEach
+				}
 				version("$version-$it", version).buildscript = if (version >= "26.1" && it == "fabric") {
 					"build.$it" + "-unobf.gradle.kts"
 				} else {
