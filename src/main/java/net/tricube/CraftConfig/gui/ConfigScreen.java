@@ -13,6 +13,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 //?if >=1.21.6
 //import net.minecraft.client.renderer.RenderPipelines;
 //?if <1.21.11
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
