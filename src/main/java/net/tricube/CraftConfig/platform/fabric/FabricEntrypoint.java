@@ -2,7 +2,7 @@ package net.tricube.CraftConfig.platform.fabric;
 
 //? fabric {
 
-/*import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
+import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import net.fabricmc.api.ModInitializer;
 import net.tricube.CraftConfig.platform.CraftConfigMod;
 import org.slf4j.Logger;
@@ -19,4 +19,4 @@ public final class FabricEntrypoint implements ModInitializer {
 
 	}
 }
-*///?}
+//?}

@@ -7,7 +7,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.Screen;
 //?if >=1.21.9
-import net.minecraft.client.input.MouseButtonEvent;
+//import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.tricube.CraftConfig.api.v1.entries.SelectionGridEntry;
@@ -186,10 +186,10 @@ public class SelectionGridScreen extends SubScreen {
 
 		if (hoveredEntry != null && !hoveredEntry.label.isEmpty()) {
 			//?if>=1.21.6{
-			g.setComponentTooltipForNextFrame(font, List.of(Component.literal(hoveredEntry.label)), mx, my);
-			//?}else{
-			/*g.renderComponentTooltip(font, List.of(Component.literal(hoveredEntry.label)), mx, my);
-			*///?}
+			/*g.setComponentTooltipForNextFrame(font, List.of(Component.literal(hoveredEntry.label)), mx, my);
+			*///?}else{
+			g.renderComponentTooltip(font, List.of(Component.literal(hoveredEntry.label)), mx, my);
+			//?}
 		}
 	}
 	//~}
@@ -202,7 +202,7 @@ public class SelectionGridScreen extends SubScreen {
 	}
 
 	//? if >=1.21.9 {
-	@Override
+	/*@Override
 	public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
 		double mx = event.x();
 		double my = event.y();
@@ -223,8 +223,8 @@ public class SelectionGridScreen extends SubScreen {
 		dragTargetState = null;
 		return super.mouseReleased(event);
 	}
-//? } else {
-/*@Override
+*///? } else {
+@Override
 public boolean mouseDragged(double mx, double my, int btn, double dx, double dy) {
     if (isDragging && dragTargetState != null) {
         GridCell cell = gridList.getCellAt((int) mx, (int) my);
@@ -241,7 +241,7 @@ public boolean mouseReleased(double mx, double my, int btn) {
     dragTargetState = null;
     return super.mouseReleased(mx, my, btn);
 }
-*///? }
+//? }
 
 
 
@@ -285,7 +285,7 @@ public boolean mouseReleased(double mx, double my, int btn) {
 			}
 		}
 		//? if >=1.21.9 {
-		//~ if >=26.1 'render' -> 'extract'
+		/*//~ if >=26.1 'render' -> 'extract'
 		@Override protected void renderSelection(GuiGraphics g, GridRow entry, int color) {}
 		//~ if >=26.1 'render' -> 'extract'
 		@Override protected void renderListItems(GuiGraphics g, int mx, int my, float delta) {
@@ -296,7 +296,7 @@ public boolean mouseReleased(double mx, double my, int btn) {
 			super.renderListItems(g, mx, my, delta);
 			g.disableScissor();
 		}
-		//? }
+		*///? }
 		GridCell getCellAt(int mouseX, int mouseY) {
 			for (GridCell cell : allCells)
 				if (cell.contains(mouseX, mouseY)) return cell;
@@ -309,16 +309,16 @@ public boolean mouseReleased(double mx, double my, int btn) {
 		@Override protected void renderListSeparators(GuiGraphics g) {}
 		//? }
 		//?if< 1.21.9{
-		/*@Override protected void renderDecorations(GuiGraphics g, int mx, int my) {}
+		@Override protected void renderDecorations(GuiGraphics g, int mx, int my) {}
 		@Override protected void renderSelection(GuiGraphics g, int top, int w, int h, int a, int b) {}
-		*///?}
+		//?}
 		//? if >=1.21.4 {
-		@Override protected int scrollBarX() {
+		/*@Override protected int scrollBarX() {
 			return getRight() - 6;
 		}
-		//? } else if >=1.21 {
-		/*@Override protected int getScrollbarPosition() { return getRight() - 6;}
-		*///? } else {
+		*///? } else if >=1.21 {
+		@Override protected int getScrollbarPosition() { return getRight() - 6;}
+		//? } else {
 		/*@Override protected int getScrollbarPosition() {
 			return x1 - 6;
 		}
@@ -337,7 +337,7 @@ public boolean mouseReleased(double mx, double my, int btn) {
 			GridRow(List<GridCell> cells) { this.cells = cells; }
 
 			//? if >=1.21.9 {
-			//~ if >=26.1 'render' -> 'extract'
+			/*//~ if >=26.1 'render' -> 'extract'
 			@Override public void renderContent(GuiGraphics g, int mx, int my, boolean hovered, float delta) {
 				for (GridCell cell : cells) cell.render(g, getY(), mx, my);
 			}
@@ -358,8 +358,8 @@ public boolean mouseReleased(double mx, double my, int btn) {
 				}
 				return false;
 			}
-//? } else {
-/*@Override
+*///? } else {
+@Override
 public void render(GuiGraphics g, int idx, int y, int x, int w, int h,
                    int mx, int my, boolean hovered, float delta) {
     for (GridCell cell : cells) cell.render(g, y, mx, my);
@@ -377,7 +377,7 @@ public boolean mouseClicked(double mx, double my, int b) {
     }
     return false;
 }
-*///? }
+//? }
 
 			@Override public Component getNarration() {return Component.empty();}
 		}
@@ -427,10 +427,10 @@ public boolean mouseClicked(double mx, double my, int b) {
 
 			g.fill(x, y, x + CELL_SIZE, y + CELL_SIZE, bg);
 			//? if >=1.21.9{
-			ScreenUtils.drawOutline(g, x, y, CELL_SIZE, CELL_SIZE, border);
-			//?}else{
-			/*ScreenUtils.drawOutline(g,x, y, CELL_SIZE, CELL_SIZE, border);
-			*///?}
+			/*ScreenUtils.drawOutline(g, x, y, CELL_SIZE, CELL_SIZE, border);
+			*///?}else{
+			ScreenUtils.drawOutline(g,x, y, CELL_SIZE, CELL_SIZE, border);
+			//?}
 			ItemStack icon = entry.getIcon();
 			if (icon != null && !icon.isEmpty())
 				//~ if >=26.1 'renderItem' -> 'item'

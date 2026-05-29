@@ -2,14 +2,14 @@ package net.tricube.CraftConfig.platform.fabric;
 
 //? fabric {
 
-/*import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 //~ if >=26.1 '.keybinding.v1.KeyBindingHelper' -> '.keymapping.v1.KeyMappingHelper'
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.KeyMapping;
 //?if>=1.21.9
-//import net.minecraft.resources.Identifier;
+//import net.minecraft.resources.ResourceLocation;
 import net.tricube.CraftConfig.api.registry.CraftConfigRegistry;
 import net.tricube.CraftConfig.api.registry.KeybindRegistry;
 import net.tricube.CraftConfig.api.v1.*;
@@ -32,9 +32,9 @@ public class FabricKeybindRegistry {
 					.orElse(modId);
 
 			//?if>=1.21.9{
-			/^KeyMapping.Category category = KeyMapping.Category.register(
-					Identifier.withDefaultNamespace(entry.keybindCategory()));
-			^///?}
+			/*KeyMapping.Category category = KeyMapping.Category.register(
+					ResourceLocation.withDefaultNamespace(entry.keybindCategory()));
+			*///?}
 
 			for (ConfigCategory cat : config.categories()) {
 				for (ConfigSection sec : cat.sections()) {
@@ -50,8 +50,8 @@ public class FabricKeybindRegistry {
 								InputConstants.Type.KEYSYM,
 								kb.defaultKey(),
 								//?if>=1.21.9{
-								/^category
-								^///?}else{
+								/*category
+								*///?}else{
 								"key.category.minecraft." + entry.keybindCategory()
 								 //?}
 						));
@@ -76,8 +76,8 @@ public class FabricKeybindRegistry {
 						InputConstants.Type.KEYSYM,
 						preset.keyBind(),
 						//?if>=1.21.9{
-						/^category
-						^///?}else{
+						/*category
+						*///?}else{
 						"key.category.minecraft." + entry.keybindCategory()
 						 //?}
 				));
@@ -90,4 +90,4 @@ public class FabricKeybindRegistry {
 
 	}
 }
-*///?}
+//?}

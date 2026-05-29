@@ -2,7 +2,7 @@ package net.tricube.CraftConfig.platform.neoforge;
 
 //? neoforge {
 
-import com.mojang.brigadier.CommandDispatcher;
+/*import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -33,9 +33,9 @@ public class NeoforgeCommands {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return 0;
 		//~ if >=1.21.2 '.tell' -> '.schedule'
-        mc.schedule(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
+        mc.tell(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
         return 1;
     }
 }
 
-//?}
+*///?}

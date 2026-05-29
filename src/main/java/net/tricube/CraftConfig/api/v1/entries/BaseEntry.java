@@ -2,12 +2,12 @@ package net.tricube.CraftConfig.api.v1.entries;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 //?if >=1.21.2{
-import net.minecraft.tags.TagKey;
+/*import net.minecraft.tags.TagKey;
 import net.minecraft.core.registries.Registries;
-//?}
+*///?}
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -84,7 +84,7 @@ public abstract class BaseEntry {
     }
     public abstract static class BlockBuilderBase<E extends BaseEntry, B extends BlockBuilderBase<E, B>> {
         protected final List<String>        keys              = new ArrayList<>();
-        protected Predicate<Identifier> filter          = rl -> true;
+        protected Predicate<ResourceLocation> filter          = rl -> true;
         protected int                       iconSize          = 16;
         protected boolean                   sortAlphabetically = false;
 
@@ -93,26 +93,26 @@ public abstract class BaseEntry {
         @SuppressWarnings("unchecked")
         public B addAll(Collection<String> names)       { keys.addAll(names); return (B) this; }
         @SuppressWarnings("unchecked")
-        public B filter(Predicate<Identifier> p)  { this.filter = p; return (B) this; }
+        public B filter(Predicate<ResourceLocation> p)  { this.filter = p; return (B) this; }
         @SuppressWarnings("unchecked")
         public B fromMod(String modId)                  { return filter(rl -> rl.getNamespace().equals(modId)); }
         @SuppressWarnings("unchecked")
         public B fromTag(net.minecraft.tags.TagKey<Block> tag) {
 			//? if <=1.21.1 {
-						/*return filter(rl -> BuiltInRegistries.BLOCK.get(rl).builtInRegistryHolder().is(tag));
-			*///?} else {
-				return filter(rl -> {
+						return filter(rl -> BuiltInRegistries.BLOCK.get(rl).builtInRegistryHolder().is(tag));
+			//?} else {
+				/*return filter(rl -> {
 					Block block = BuiltInRegistries.BLOCK.get(rl).get().value();
 					return block.builtInRegistryHolder().is(TagKey.create(Registries.BLOCK,
 							//?if>=1.21.11{
-							tag.registry().identifier()
-							//?}else{
-							/*tag.identifier()
-							*///?}
+							/^tag.registry().location()
+							^///?}else{
+							tag.location()
+							//?}
 
 					));
 				});
-			//?}
+			*///?}
         }
         @SuppressWarnings("unchecked")
         public B iconSize(int size)                     { this.iconSize = size; return (B) this; }
@@ -124,13 +124,13 @@ public abstract class BaseEntry {
         public List<E> build() {
             List<E> out = new ArrayList<>();
             for (String name : keys) {
-                Identifier rl = Identifier.tryParse(name);
+                ResourceLocation rl = ResourceLocation.tryParse(name);
                 if (rl == null || !filter.test(rl)) continue;
 				//? if <=1.21.1 {
-					/*Block b = BuiltInRegistries.BLOCK.get(rl);
-				*///?} else {
-					Block b = BuiltInRegistries.BLOCK.get(rl).get().value();
-				//?}
+					Block b = BuiltInRegistries.BLOCK.get(rl);
+				//?} else {
+					/*Block b = BuiltInRegistries.BLOCK.get(rl).get().value();
+				*///?}
 
                 ItemStack icon = (b != null && b.asItem() != null)
                         ? new ItemStack(b.asItem()) : null;
@@ -144,7 +144,7 @@ public abstract class BaseEntry {
 
     public abstract static class ItemBuilderBase<E extends BaseEntry, B extends ItemBuilderBase<E, B>> {
         protected final List<String>          keys              = new ArrayList<>();
-        protected Predicate<Identifier> filter            = rl -> true;
+        protected Predicate<ResourceLocation> filter            = rl -> true;
         protected int                         iconSize          = 16;
         protected boolean                     sortAlphabetically = false;
 
@@ -153,7 +153,7 @@ public abstract class BaseEntry {
         @SuppressWarnings("unchecked")
         public B addAll(Collection<String> names)       { keys.addAll(names); return (B) this; }
         @SuppressWarnings("unchecked")
-        public B filter(Predicate<Identifier> p)  { this.filter = p; return (B) this; }
+        public B filter(Predicate<ResourceLocation> p)  { this.filter = p; return (B) this; }
         @SuppressWarnings("unchecked")
         public B fromMod(String modId)                  { return filter(rl -> rl.getNamespace().equals(modId)); }
         @SuppressWarnings("unchecked")
@@ -167,13 +167,13 @@ public abstract class BaseEntry {
         public List<E> build() {
             List<E> out = new ArrayList<>();
             for (String name : keys) {
-                Identifier rl = Identifier.tryParse(name);
+                ResourceLocation rl = ResourceLocation.tryParse(name);
                 if (rl == null || !filter.test(rl)) continue;
 				//? if <=1.21.1 {
-				/*Item it = BuiltInRegistries.ITEM.get(rl);
-				*///?} else {
-				Item it = BuiltInRegistries.ITEM.get(rl).get().value();
-				//?}
+				Item it = BuiltInRegistries.ITEM.get(rl);
+				//?} else {
+				/*Item it = BuiltInRegistries.ITEM.get(rl).get().value();
+				*///?}
 
                 ItemStack icon = (it != null) ? new ItemStack(it) : null;
                 out.add(createEntry(name, toFriendly(rl.getPath()), icon, iconSize));

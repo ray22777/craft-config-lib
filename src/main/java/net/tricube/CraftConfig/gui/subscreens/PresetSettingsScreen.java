@@ -7,10 +7,10 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 //?if >=1.21.9{
 
-import net.minecraft.client.input.CharacterEvent;
+/*import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-//?}
+*///?}
 
 //~ if >=1.21 '.controls.KeyBindsScreen' -> '.options.controls.KeyBindsScreen'
 import net.minecraft.client.gui.screens.options.controls.KeyBindsScreen;
@@ -167,10 +167,10 @@ public class PresetSettingsScreen extends SubScreen {
 
 	private void rebuildList() {
 		//?if>=1.21.9{
-		editList.replaceEntries(new ArrayList<>());
-		//?}else{
-		/*editList.children().clear();
-		*///?}
+		/*editList.replaceEntries(new ArrayList<>());
+		*///?}else{
+		editList.children().clear();
+		//?}
 		if (preset.isDefault()) {
 			editList.addEntry(new NoteEntry("§7Default preset applies to all worlds."));
 			return;
@@ -243,10 +243,10 @@ public class PresetSettingsScreen extends SubScreen {
 		//?if>=26.1{
 		 /*@Override protected void extractSelection(GuiGraphics graphics, Entry entry, int outlineColor) {}
 		*///?}else if >=1.21.9{
-		@Override protected void renderSelection(GuiGraphics guiGraphics, Entry entry, int i) {}
-		//?}else{
-		/*@Override protected void renderSelection(GuiGraphics g, int top, int width, int height, int a, int b) {}
-		*///?}
+		/*@Override protected void renderSelection(GuiGraphics guiGraphics, Entry entry, int i) {}
+		*///?}else{
+		@Override protected void renderSelection(GuiGraphics g, int top, int width, int height, int a, int b) {}
+		//?}
 
 		@Override
 		public int getRowLeft() {
@@ -258,10 +258,10 @@ public class PresetSettingsScreen extends SubScreen {
 		}
 
 		//? if >=1.21.4 {
-		@Override protected int scrollBarX() { return getRight() - 6; }
-		//? } else if >=1.21 {
-				/*@Override protected int getScrollbarPosition() { return getRight() - 6; }
-		*///? } else {
+		/*@Override protected int scrollBarX() { return getRight() - 6; }
+		*///? } else if >=1.21 {
+				@Override protected int getScrollbarPosition() { return getRight() - 6; }
+		//? } else {
 				/*@Override protected int getScrollbarPosition() { return x1 - 6; }
 		*///? }
 
@@ -292,7 +292,7 @@ public class PresetSettingsScreen extends SubScreen {
 		}
 
 		//? if >=1.21.9 {
-		//~ if >=26.1 'render' -> 'extract'
+		/*//~ if >=26.1 'render' -> 'extract'
 		@Override public void renderContent(GuiGraphics g, int mx, int my, boolean hovered, float delta) {
 			int x = getX();
 			int y = getY();
@@ -310,8 +310,8 @@ public class PresetSettingsScreen extends SubScreen {
 			}
 			return true;
 		}
-		//? } else {
-		/*@Override
+		*///? } else {
+		@Override
 		public void render(GuiGraphics g, int idx, int y, int x, int w, int h, int mx, int my, boolean hovered, float delta) {
 			renderHoverEffect(g, x, y, w, h, hovered);
 			String arrow = isExpanded ? "▼" : "▶";
@@ -326,7 +326,7 @@ public class PresetSettingsScreen extends SubScreen {
 			}
 			return true;
 		}
-		*///? }
+		//? }
 
 		@Override
 		public Component getNarration() {
@@ -343,7 +343,7 @@ public class PresetSettingsScreen extends SubScreen {
 		}
 
 		//? if >=1.21.9 {
-		//~ if >=26.1 'render' -> 'extract'
+		/*//~ if >=26.1 'render' -> 'extract'
 		@Override public void renderContent(GuiGraphics g, int mx, int my, boolean hovered, float delta) {
 			button.setX(getX() + getWidth() / 2 - 40);
 			button.setY(getY());
@@ -356,8 +356,8 @@ public class PresetSettingsScreen extends SubScreen {
 		public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 			return button.mouseClicked(event, doubleClick);
 		}
-		//? } else {
-    /*@Override
+		*///? } else {
+    @Override
     public void render(GuiGraphics g, int idx, int y, int x, int w, int h, int mx, int my, boolean hovered, float delta) {
         button.setX(x + w / 2 - 40);
         button.setY(y);
@@ -368,7 +368,7 @@ public class PresetSettingsScreen extends SubScreen {
     public boolean mouseClicked(double mx, double my, int button) {
         return this.button.mouseClicked(mx, my, button);
     }
-    *///? }
+    //? }
 
 		@Override public Component getNarration() { return Component.empty(); }
 	}
@@ -378,7 +378,7 @@ public class PresetSettingsScreen extends SubScreen {
 			this.text = text;
 		}
 		//? if >=1.21.9 {
-		//~ if >=26.1 'render' -> 'extract'
+		/*//~ if >=26.1 'render' -> 'extract'
 		@Override public void renderContent(GuiGraphics g, int mx, int my, boolean hovered, float delta) {
 			int x = getX();
 			int y = getY();
@@ -386,12 +386,12 @@ public class PresetSettingsScreen extends SubScreen {
 			g.drawCenteredString(font, text, x + w / 2, y + 4, COL_DIM);
 		}
 		@Override public boolean isMouseOver(double mx, double my) { return false; }
-		//? } else {
-		/*@Override
+		*///? } else {
+		@Override
 		public void render(GuiGraphics g, int idx, int y, int x, int w, int h, int mx, int my, boolean hovered, float delta) {
 			g.drawCenteredString(font, text, x + w / 2, y + 4, COL_DIM);
 		}
-		*///? }
+		//? }
 		@Override
 		public Component getNarration() {
 			return Component.empty();
@@ -458,9 +458,9 @@ public class PresetSettingsScreen extends SubScreen {
 			return true;
 		}
 		//?if>=1.21.9
-		@Override public int getHeight() {return 16;}
+		//@Override public int getHeight() {return 16;}
 		//? if >=1.21.9 {
-		//~ if >=26.1 'render' -> 'extract'
+		/*//~ if >=26.1 'render' -> 'extract'
 		@Override public void renderContent(GuiGraphics g, int mx, int my, boolean hovered, float delta) {
 			renderWorldEntryContent(g, getX(), getY(), getWidth(), getHeight(), hovered);
 		}
@@ -469,8 +469,8 @@ public class PresetSettingsScreen extends SubScreen {
 		public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 			return handleWorldMouseClick();
 		}
-//? } else {
-/*@Override
+*///? } else {
+@Override
 public void render(GuiGraphics g, int idx, int y, int x, int w, int h, int mx, int my, boolean hovered, float delta) {
     renderWorldEntryContent(g, x, y, w, h, hovered);
 }
@@ -479,7 +479,7 @@ public void render(GuiGraphics g, int idx, int y, int x, int w, int h, int mx, i
 public boolean mouseClicked(double mx, double my, int button) {
     return handleWorldMouseClick();
 }
-*///? }
+//? }
 
 		@Override
 		public Component getNarration() {
@@ -529,7 +529,7 @@ public boolean mouseClicked(double mx, double my, int button) {
 		}
 
 		//? if >=1.21.9 {
-		//~ if >=26.1 'render' -> 'extract'
+		/*//~ if >=26.1 'render' -> 'extract'
 		@Override public void renderContent(GuiGraphics g, int mx, int my, boolean hovered, float delta) {
 			renderServerEntryContent(g, getX(), getY(), getWidth(), getHeight(), mx, my, hovered);
 		}
@@ -541,8 +541,8 @@ public boolean mouseClicked(double mx, double my, int button) {
 		public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 			return handleServerMouseClick(event.x(), event.y());
 		}
-		//? } else {
-		/*@Override
+		*///? } else {
+		@Override
 		public void render(GuiGraphics g, int idx, int y, int x, int w, int h, int mx, int my, boolean hovered, float delta) {
 			renderServerEntryContent(g, x, y, w, h, mx, my, hovered);
 		}
@@ -551,7 +551,7 @@ public boolean mouseClicked(double mx, double my, int button) {
 		public boolean mouseClicked(double mx, double my, int button) {
 			return handleServerMouseClick(mx, my);
 		}
-		*///? }
+		//? }
 
 		@Override
 		public Component getNarration() {
@@ -630,16 +630,16 @@ public boolean mouseClicked(double mx, double my, int button) {
 		}
 
 		//? if >=1.21.9 {
-		//~ if >=26.1 'render' -> 'extract'
+		/*//~ if >=26.1 'render' -> 'extract'
 		@Override public void renderContent(GuiGraphics g, int mx, int my, boolean hovered, float delta) {
 			renderAddServerContent(g, getX(), getY(), getWidth(), getHeight(), mx, my, delta);
 		}
-		//? } else {
-		/*@Override
+		*///? } else {
+		@Override
 		public void render(GuiGraphics g, int idx, int y, int x, int w, int h, int mx, int my, boolean hovered, float delta) {
 			renderAddServerContent(g, x, y, w, h, mx, my, delta);
 		}
-		*///? }
+		//? }
 
 		@Override
 		public Component getNarration() {
@@ -647,7 +647,7 @@ public boolean mouseClicked(double mx, double my, int button) {
 		}
 
 		//? if >=1.21.9 {
-		@Override
+		/*@Override
 		public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 			double mx = event.x();
 			double my = event.y();
@@ -720,8 +720,8 @@ public boolean mouseClicked(double mx, double my, int button) {
 			}
 			return false;
 		}
-		//? } else {
-		/*@Override
+		*///? } else {
+		@Override
 		public boolean mouseClicked(double mx, double my, int button) {
 			if (mx >= inputBox.getX() && mx <= inputBox.getX() + inputBox.getWidth() &&
 					my >= inputBox.getY() && my <= inputBox.getY() + inputBox.getHeight()) {
@@ -788,7 +788,7 @@ public boolean mouseClicked(double mx, double my, int button) {
 			}
 			return false;
 		}
-*///? }
+//? }
 
 
 	}

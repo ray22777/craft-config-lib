@@ -9,13 +9,13 @@ import net.minecraft.client.gui.screens.Screen;
 //?if >=1.21
 import com.mojang.blaze3d.systems.RenderSystem;
 //?if >=1.21.9
-import net.minecraft.client.input.MouseButtonEvent;
+//import net.minecraft.client.input.MouseButtonEvent;
 //?if >=1.21.6
-import net.minecraft.client.renderer.RenderPipelines;
+//import net.minecraft.client.renderer.RenderPipelines;
 //?if <1.21.11
-//import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.tricube.CraftConfig.api.v1.ConfigCategory;
 import net.tricube.CraftConfig.api.v1.ConfigOption;
 import net.tricube.CraftConfig.api.v1.ConfigSection;
@@ -357,7 +357,7 @@ public class ConfigScreen extends Screen {
 	//~ if >=26.1 'render' -> 'extractRenderState'
 	@Override public void render(GuiGraphics g, int mx, int my, float delta) {
 		//? if <=1.21.5
-		//renderBackground(g /*? if >=1.21 {*/ , mx, my, delta /*?}*/);
+		renderBackground(g /*? if >=1.21 {*/ , mx, my, delta /*?}*/);
 
 		int panelW      = categoryPanelWidth();
 		int panelBottom = height - BOTTOM_H;
@@ -369,22 +369,22 @@ public class ConfigScreen extends Screen {
 		g.fill(0, TITLE_H, width, HEADER_H, COL_BG_DARK);
 		g.fill(0, HEADER_H, width, HEADER_H + 1, COL_BORDER);
 		//? if >=1.21 {
-				Identifier topSep = minecraft.level == null
+				ResourceLocation topSep = minecraft.level == null
 						? Screen.HEADER_SEPARATOR : Screen.INWORLD_HEADER_SEPARATOR;
-				Identifier botSep = minecraft.level == null
+				ResourceLocation botSep = minecraft.level == null
 						? Screen.FOOTER_SEPARATOR : Screen.INWORLD_FOOTER_SEPARATOR;//TODO:FIX FOR 1.21.2
 				//? if >=1.21.6 {
-				g.blit(RenderPipelines.GUI_TEXTURED, topSep, 0, TITLE_H - 1, 0.0F, 0.0F, width, 2, 32, 2);
+				/*g.blit(RenderPipelines.GUI_TEXTURED, topSep, 0, TITLE_H - 1, 0.0F, 0.0F, width, 2, 32, 2);
 				g.blit(RenderPipelines.GUI_TEXTURED, botSep, 0, panelBottom + 1, 0.0F, 0.0F, width, 2, 32, 2);
-				//?}else{
-				/*//?if <1.21.5
-				//RenderSystem.enableBlend();
-				g.blit(/^? if >= 1.21.2 {^/ RenderType::guiTextured, /^?}^/topSep, 0, TITLE_H - 1, 0.0F, 0.0F, width, 2, 32, 2);
-				g.blit(/^? if >= 1.21.2 {^/ RenderType::guiTextured, /^?}^/botSep, 0, panelBottom + 1, 0.0F, 0.0F, width, 2, 32, 2);
+				*///?}else{
 				//?if <1.21.5
-				//RenderSystem.disableBlend();
+				RenderSystem.enableBlend();
+				g.blit(/*? if >= 1.21.2 {*/ /*RenderType::guiTextured, *//*?}*/topSep, 0, TITLE_H - 1, 0.0F, 0.0F, width, 2, 32, 2);
+				g.blit(/*? if >= 1.21.2 {*/ /*RenderType::guiTextured, *//*?}*/botSep, 0, panelBottom + 1, 0.0F, 0.0F, width, 2, 32, 2);
+				//?if <1.21.5
+				RenderSystem.disableBlend();
 
-				*///? }
+				//? }
 		//? }
 
 		g.drawCenteredString(font, title, width / 2, (TITLE_H - font.lineHeight) / 2, COL_ACCENT);
@@ -405,31 +405,31 @@ public class ConfigScreen extends Screen {
 			//?}
 		if (dropdownOpen) {
 			//? if >= 1.21.6{
-			g.pose().pushMatrix();
-			 //?}else{
-			/*g.pose().pushPose();
-			*///?}
+			/*g.pose().pushMatrix();
+			 *///?}else{
+			g.pose().pushPose();
+			//?}
 
 			//?if >= 1.21.6{
-			g.pose().translate(0, 0);
-			 //?}else{
-			/*g.pose().translate(0, 0, 200);
-			*///?}
+			/*g.pose().translate(0, 0);
+			 *///?}else{
+			g.pose().translate(0, 0, 200);
+			//?}
 
 			renderPresetDropdown(g, mx, my);
 			//? if >= 1.21.6{
-			g.pose().popMatrix();
-			 //?}else{
-			/*g.pose().popPose();
-			*///?}
+			/*g.pose().popMatrix();
+			 *///?}else{
+			g.pose().popPose();
+			//?}
 		}
 		if (pendingTooltip != null) {
 			List<Component> lines = ComponentUtil.splitTooltipLines(pendingTooltip);
 			//?if >= 1.21.6{
-			g.setComponentTooltipForNextFrame(font, lines, tooltipX, tooltipY);
-			 //?}else{
-			/*g.renderComponentTooltip(font, lines, tooltipX, tooltipY);
-			*///?}
+			/*g.setComponentTooltipForNextFrame(font, lines, tooltipX, tooltipY);
+			 *///?}else{
+			g.renderComponentTooltip(font, lines, tooltipX, tooltipY);
+			//?}
 			pendingTooltip = null;
 		}
 	}
@@ -450,10 +450,10 @@ public class ConfigScreen extends Screen {
 
 		g.fill(ddX, ddY, ddX + ddW, ddY + totalH, COL_BG_BLACK);
 		//? if >= 1.21.9{
-		ScreenUtils.drawOutline(g,ddX, ddY, ddW, totalH, COL_BORDER);
-		 //?}else{
 		/*ScreenUtils.drawOutline(g,ddX, ddY, ddW, totalH, COL_BORDER);
-		*///?}
+		 *///?}else{
+		ScreenUtils.drawOutline(g,ddX, ddY, ddW, totalH, COL_BORDER);
+		//?}
 
 
 		int listStartY = ddY + DD_PAD;
@@ -517,14 +517,14 @@ public class ConfigScreen extends Screen {
 		g.disableScissor();
 	}
 	//? if >=1.21.9{
-	@Override public boolean mouseClicked(MouseButtonEvent event, boolean bl) {
+	/*@Override public boolean mouseClicked(MouseButtonEvent event, boolean bl) {
 		double mx = event.x();
 		double my = event.y();
-	//?}else{
+	*///?}else{
 
-	/*@Override
+	@Override
 	public boolean mouseClicked(double mx, double my, int button) {
-		*///?}
+		//?}
 		if (presetDropdownButton != null && presetDropdownButton.isMouseOver(mx, my)) {
 			toggleDropdown();
 			return true;
@@ -536,10 +536,10 @@ public class ConfigScreen extends Screen {
 			updatePresetButtonText();
 		}
 		//? if >=1.21.9{
-		return super.mouseClicked(event, bl);
-		 //?}else{
-		/*return super.mouseClicked(mx, my, button);
-		*///?}
+		/*return super.mouseClicked(event, bl);
+		 *///?}else{
+		return super.mouseClicked(mx, my, button);
+		//?}
 	}
 
 

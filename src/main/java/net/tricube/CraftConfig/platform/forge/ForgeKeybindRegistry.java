@@ -5,7 +5,7 @@ package net.tricube.CraftConfig.platform.forge;
 /*import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 //?if>=1.21.9
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.fml.ModList;

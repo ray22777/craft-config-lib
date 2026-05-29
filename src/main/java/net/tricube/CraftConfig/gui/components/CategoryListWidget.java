@@ -6,7 +6,7 @@ import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import static net.tricube.CraftConfig.gui.constants.ColorSchemes.*;
 //?if >=1.21.9
-import net.minecraft.client.input.MouseButtonEvent;
+//import net.minecraft.client.input.MouseButtonEvent;
 
 
 public class CategoryListWidget
@@ -38,20 +38,20 @@ public class CategoryListWidget
 		}
 
 		//? if >=1.21.4 {
-		@Override
+		/*@Override
 		protected int scrollBarX() {
 			return getRight() - 6;
 		}
 
-		//? } else {
-		/*@Override protected int getScrollbarPosition() {
+		*///? } else {
+		@Override protected int getScrollbarPosition() {
 			//? if >=1.21 {
 			return getRight() - 6;
 			//? } else {
-			/^return x1 - 6;
-			^///? }
+			/*return x1 - 6;
+			*///? }
 		}
-		*///? }
+		//? }
 		//?if 1.20.1
 		//@Override public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 		//?if >=1.21
@@ -59,7 +59,7 @@ public class CategoryListWidget
 		protected void updateWidgetNarration(NarrationElementOutput out) {
 		}
 		//? if >=1.21.9 {
-		@Override
+		/*@Override
 		public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 			double mx = event.x();
 			double my = event.y();
@@ -79,17 +79,17 @@ public class CategoryListWidget
 
 			return super.mouseClicked(event, doubleClick);
 		}
-		//? } else {
+		*///? } else {
 
-		/*@Override
+		@Override
 		public boolean mouseClicked(double mx, double my, int button) {
 			//?if>=1.21.9{
+			/*if (this.getScrollbarPosition() <= mx && mx < this.getScrollbarPosition() + 6) {
+			*///?}else if >=1.21.4{
+			/*if (this.scrollBarX() <= mx && mx < scrollBarX()  + 6) {
+			*///?} else{
 			if (this.getScrollbarPosition() <= mx && mx < this.getScrollbarPosition() + 6) {
-			//?}else if >=1.21.4{
-			/^if (this.scrollBarX() <= mx && mx < scrollBarX()  + 6) {
-			^///?} else{
-			/^if (this.getScrollbarPosition() <= mx && mx < this.getScrollbarPosition() + 6) {
-			^///? }
+			//? }
 				return super.mouseClicked(mx, my, button);
 
 			}
@@ -105,9 +105,9 @@ public class CategoryListWidget
 
 			return super.mouseClicked(mx, my, button);
 		}
-		*///? }
+		//? }
 		//?if < 1.21.9
-		//@Override
+		@Override
 		protected void renderDecorations(GuiGraphics g, int mx, int my) {
 		}
 
@@ -142,7 +142,7 @@ public class CategoryListWidget
 			}
 
 			//? if >=1.21.9 {
-			//~ if >=26.1 'render' -> 'extract'
+			/*//~ if >=26.1 'render' -> 'extract'
 			@Override public void renderContent(GuiGraphics g, int mx, int my, boolean hovered, float delta) {
 				boolean selected = parent.currentSelectedIndex == index;
 				if (hovered) {
@@ -152,8 +152,8 @@ public class CategoryListWidget
 				g.drawString(Minecraft.getInstance().font, name,
 						getContentX() + 8, getContentY() + (getContentHeight() - 8) / 2, color, false);
 			}
-			//? } else {
-			/*@Override
+			*///? } else {
+			@Override
 			public void render(GuiGraphics g, int idx, int y, int x, int w, int h,
 							   int mx, int my, boolean hovered, float delta) {
 				boolean selected = parent.currentSelectedIndex == index;
@@ -162,24 +162,24 @@ public class CategoryListWidget
 				g.drawString(Minecraft.getInstance().font, name,
 						x + 8, y + (h - 8) / 2, color, false);
 			}
-			*///? }
+			//? }
 
 			//? if >=1.21.9 {
-			@Override
+			/*@Override
 			public boolean mouseClicked(MouseButtonEvent event, boolean bool) {
 				parent.currentSelectedIndex = index;
 				parent.setSelected(this);
 				onClick.run();
 				return true;
 			}
-			//? } else {
-			/*@Override
+			*///? } else {
+			@Override
 			public boolean mouseClicked(double mx, double my, int button) {
 				parent.currentSelectedIndex = index;
 				parent.setSelected(this);
 				onClick.run();
 				return true;
 			}
-			*///? }
+			//? }
 		}
 	}

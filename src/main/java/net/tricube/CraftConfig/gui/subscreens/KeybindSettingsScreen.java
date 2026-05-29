@@ -40,24 +40,24 @@ public class KeybindSettingsScreen extends SubScreen {
 		int y  = modalY + HEADER_H;
 
 //? if >=1.21.11 {
-		addRenderableWidget(CycleButton.<Boolean>builder(
+		/*addRenderableWidget(CycleButton.<Boolean>builder(
 						v -> Component.literal(v ? "§aEnabled" : "§7Disabled"),
 						kb::isEnabled)
 				.withValues(true, false)
 				.create(cx, y, cw, ROW_H, Component.literal("Keybind"),
 						(btn, val) -> kb.setEnabled(val)));
-//?} else {
-      /*addRenderableWidget(CycleButton.<Boolean>builder(
+*///?} else {
+      addRenderableWidget(CycleButton.<Boolean>builder(
                 v -> Component.literal(v ? "§aEnabled" : "§7Disabled"))
                 .withValues(true, false).withInitialValue(kb.isEnabled())
                 .create(cx, y, cw, ROW_H, Component.literal("Keybind"),
                         (btn, val) -> kb.setEnabled(val)));
-*///?}
+//?}
 		y += ROW_H + GAP;
 
 		if (kb.isBoolean()) {
 //? if >=1.21.11 {
-			addRenderableWidget(CycleButton.<ConfigKeybinds.Mode>builder(
+			/*addRenderableWidget(CycleButton.<ConfigKeybinds.Mode>builder(
 							mode -> switch (mode) {
 								case TOGGLE        -> Component.literal("Toggle");
 								case HOLD          -> Component.literal("Hold");
@@ -66,32 +66,32 @@ public class KeybindSettingsScreen extends SubScreen {
 					.withValues(ConfigKeybinds.Mode.values())
 					.create(cx, y, cw, ROW_H, Component.literal("Mode"),
 							(btn, val) -> kb.setMode(val)));
-//?} else {
-          /*addRenderableWidget(CycleButton.<ConfigKeybinds.Mode>builder(mode -> switch (mode) {
+*///?} else {
+          addRenderableWidget(CycleButton.<ConfigKeybinds.Mode>builder(mode -> switch (mode) {
                     case TOGGLE        -> Component.literal("Toggle");
                     case HOLD          -> Component.literal("Hold");
                     case HOLD_INVERTED -> Component.literal("Hold Inverted");
                 }).withValues(ConfigKeybinds.Mode.values()).withInitialValue(kb.mode())
                     .create(cx, y, cw, ROW_H, Component.literal("Mode"),
                             (btn, val) -> kb.setMode(val)));
-*///?}
+//?}
 			y += ROW_H + GAP;
 		}
 
 //? if >=1.21.11 {
-		addRenderableWidget(CycleButton.<Boolean>builder(
+		/*addRenderableWidget(CycleButton.<Boolean>builder(
 						v -> Component.literal(v ? "§aYes" : "§7No"),
 						kb::getNotify)
 				.withValues(true, false)
 				.create(cx, y, cw, ROW_H, Component.literal("Notify Change"),
 						(btn, val) -> kb.notify(val)));
-//?} else {
-      /*addRenderableWidget(CycleButton.<Boolean>builder(
+*///?} else {
+      addRenderableWidget(CycleButton.<Boolean>builder(
                 v -> Component.literal(v ? "§aYes" : "§7No"))
                 .withValues(true, false).withInitialValue(kb.getNotify())
                 .create(cx, y, cw, ROW_H, Component.literal("Notify Change"),
                         (btn, val) -> kb.setNotify(val)));
-*///?}
+//?}
 		y += ROW_H + GAP * 2;
 
 		infoY = y;

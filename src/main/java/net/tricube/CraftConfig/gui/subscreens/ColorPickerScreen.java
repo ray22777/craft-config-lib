@@ -10,9 +10,9 @@ import net.minecraft.client.gui.screens.Screen;
 //? if >=1.21.2 <1.21.11
 //import net.minecraft.client.renderer.RenderType;
 //?if >=1.21.6
-import net.minecraft.client.renderer.RenderPipelines;
+//import net.minecraft.client.renderer.RenderPipelines;
 //?if >=1.21.9
-import net.minecraft.client.input.MouseButtonEvent;
+//import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.network.chat.Component;
 //?if >= 26.1{
@@ -20,7 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.ChatFormatting;
 *///?}
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import net.minecraft.util.Mth;
 import net.tricube.CraftConfig.api.v1.ConfigOption;
@@ -41,7 +41,7 @@ public class ColorPickerScreen extends SubScreen {
 	private static final int SLIDER_HEIGHT = 16;
 
 	private static DynamicTexture DISC_TEXTURE;
-	private static Identifier DISC_RL;
+	private static ResourceLocation DISC_RL;
 	private static boolean TEXTURE_INITIALIZED = false;
 
 	private final Consumer<Color> onConfirm;
@@ -95,10 +95,10 @@ public class ColorPickerScreen extends SubScreen {
 				float dist = (float) Math.sqrt(dx * dx + dy * dy) / radius;
 				if (dist > 1.0f) {
 					//?>=1.21.2{
-					img.setPixel(x, y, 0);
-					//?}else{
-					/*img.setPixelRGBA(x, y, 0);
-					*///?}
+					/*img.setPixel(x, y, 0);
+					*///?}else{
+					img.setPixelRGBA(x, y, 0);
+					//?}
 					continue;
 				}
 				float angle = (float) Math.toDegrees(Math.atan2(dy, dx));
@@ -108,37 +108,37 @@ public class ColorPickerScreen extends SubScreen {
 				// NativeImage expects ABGR format
 				int a = 0xFF, r = (rgb >> 16) & 0xFF, g = (rgb >> 8) & 0xFF, b = rgb & 0xFF;
 				//?>=1.21.2{
-				img.setPixel(x, y, (a << 24) | (r << 16) | (g << 8) | b);
-				//?}else{
-				/*img.setPixelRGBA(x, y, (a << 24) | (b << 16) | (g << 8) | r);
-				*///?}
+				/*img.setPixel(x, y, (a << 24) | (r << 16) | (g << 8) | b);
+				*///?}else{
+				img.setPixelRGBA(x, y, (a << 24) | (b << 16) | (g << 8) | r);
+				//?}
 
 			}
 		}
 
 		//? if >=1.21.5{
-		DISC_RL = Identifier.fromNamespaceAndPath("craftconfig", "color_picker_disc");
-		Identifier discRl = DISC_RL;
+		/*DISC_RL = ResourceLocation.fromNamespaceAndPath("craftconfig", "color_picker_disc");
+		ResourceLocation discRl = DISC_RL;
 		NativeImage img2 = img;
 		Minecraft.getInstance().execute(() -> {
 			DISC_TEXTURE = new DynamicTexture(() -> "craftconfig:color_picker_disc", img2);
 			Minecraft.getInstance().getTextureManager().register(discRl, DISC_TEXTURE);
 		});
-		//?} else if >=1.21.4 {
+		*///?} else if >=1.21.4 {
 		/*DISC_TEXTURE = new DynamicTexture(img);
 		RenderSystem.recordRenderCall(() -> {
 			DISC_TEXTURE.upload();
-			DISC_RL = Identifier.fromNamespaceAndPath("craftconfig", "color_picker_disc");
+			DISC_RL = ResourceLocation.fromNamespaceAndPath("craftconfig", "color_picker_disc");
 			Minecraft.getInstance().getTextureManager().register(DISC_RL, DISC_TEXTURE);
 		});
 		*///? } else if >=1.21 {
-		/*DISC_TEXTURE = new DynamicTexture(img);
-		DISC_RL = Minecraft.getInstance().getTextureManager().register(Identifier.fromNamespaceAndPath("craftconfig", "color_picker_disc").getPath(), DISC_TEXTURE);
+		DISC_TEXTURE = new DynamicTexture(img);
+		DISC_RL = Minecraft.getInstance().getTextureManager().register(ResourceLocation.fromNamespaceAndPath("craftconfig", "color_picker_disc").getPath(), DISC_TEXTURE);
 		Minecraft.getInstance().getTextureManager().register(DISC_RL.getPath(), DISC_TEXTURE);
-		*///? } else {
+		//? } else {
 		/*DISC_TEXTURE = new DynamicTexture(img);
 		DISC_RL = Minecraft.getInstance().getTextureManager().register(
-		new Identifier("craftconfig", "color_picker_disc").getPath(), DISC_TEXTURE);
+		new ResourceLocation("craftconfig", "color_picker_disc").getPath(), DISC_TEXTURE);
 		*///? }
 
 		TEXTURE_INITIALIZED = true;
@@ -252,12 +252,12 @@ public class ColorPickerScreen extends SubScreen {
 
 		if (DISC_TEXTURE != null && DISC_RL != null) {
 			//? if <=1.21.1 {
-			/*g.blit(DISC_RL, discX, discY, 0, 0, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE);
-			*///?} else if < 1.21.6{
+			g.blit(DISC_RL, discX, discY, 0, 0, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE);
+			//?} else if < 1.21.6{
 			/*g.blit(RenderType::guiTextured, DISC_RL, discX, discY, 0, 0, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE);
 			*///?} else{
-			g.blit(RenderPipelines.GUI_TEXTURED, DISC_RL, discX, discY, 0, 0, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE);
-			//?}
+			/*g.blit(RenderPipelines.GUI_TEXTURED, DISC_RL, discX, discY, 0, 0, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE);
+			*///?}
 		}
 		ScreenUtils.drawOutline(g,discX, discY, COLOR_DISC_SIZE + 1, COLOR_DISC_SIZE + 1, 0xFF555555);
 
@@ -304,7 +304,7 @@ public class ColorPickerScreen extends SubScreen {
 
 
 	//? if >=1.21.9 {
-	@Override
+	/*@Override
 	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		double mx = event.x();
 		double my = event.y();
@@ -343,8 +343,8 @@ public class ColorPickerScreen extends SubScreen {
 		flushHexUpdate();
 		return super.mouseReleased(event);
 	}
-//? } else {
-/*@Override
+*///? } else {
+@Override
 public boolean mouseClicked(double mx, double my, int button) {
     if (button != 0) return super.mouseClicked(mx, my, button);
     int cx = modalX + 20 + COLOR_DISC_SIZE / 2;
@@ -375,7 +375,7 @@ public boolean mouseReleased(double mx, double my, int button) {
     flushHexUpdate();
     return super.mouseReleased(mx, my, button);
 }
-*///? }
+//? }
 
 	private void updateWheelFromMouse(double mx, double my, int cx, int cy, int radius) {
 		double dx = mx - cx, dy = my - cy;

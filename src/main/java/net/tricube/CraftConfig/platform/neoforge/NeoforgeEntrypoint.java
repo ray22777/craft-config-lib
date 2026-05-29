@@ -2,7 +2,7 @@ package net.tricube.CraftConfig.platform.neoforge;
 
 //? neoforge {
 
-import net.neoforged.fml.common.Mod;
+/*import net.neoforged.fml.common.Mod;
 import net.tricube.CraftConfig.platform.CraftConfigMod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,4 +16,4 @@ public class NeoforgeEntrypoint {
     }
 }
 
-//?}
+*///?}

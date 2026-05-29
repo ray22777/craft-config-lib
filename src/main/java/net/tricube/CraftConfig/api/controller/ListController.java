@@ -8,10 +8,10 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 //? if >=1.21.9{
-import net.minecraft.client.input.CharacterEvent;
+/*import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
-//?}
+*///?}
 import net.minecraft.network.chat.Component;
 import net.tricube.CraftConfig.api.v1.ConfigOption;
 import net.tricube.CraftConfig.gui.ConfigScreen;
@@ -161,7 +161,7 @@ public class ListController<T> implements OptionController<List<T>> {
 		}
 	}
 	//? if >=1.21.9 {
-	@Override
+	/*@Override
 	public boolean handleMouseClicked(ConfigOption<List<T>> option,
 									  MouseButtonEvent event, boolean doubleClick,
 									  int rowX, int rowY, int rowW, int rowH) {
@@ -235,8 +235,8 @@ public class ListController<T> implements OptionController<List<T>> {
 			if (eb.isFocused()) return eb.charTyped(characterEvent);
 		return false;
 	}
-	//? } else {
-	/*@Override
+	*///? } else {
+	@Override
 	public boolean handleMouseClicked(ConfigOption<List<T>> option,
 									  double mx, double my, int button,
 									  int rowX, int rowY, int rowW, int rowH) {
@@ -292,7 +292,7 @@ public class ListController<T> implements OptionController<List<T>> {
 	@Override public boolean handleMouseScrolled(ConfigOption<List<T>> option, double mx, double my, double scroll) {
 		return false;
 	}
-	*///?}
+	//?}
 
 
 	private void rebuildWidgets(ConfigOption<List<T>> option) {

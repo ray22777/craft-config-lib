@@ -2,10 +2,10 @@ package net.tricube.CraftConfig.platform.neoforge;
 
 //? neoforge {
 
-import com.mojang.blaze3d.platform.InputConstants;
+/*import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 //?if>=1.21.9
-import net.minecraft.resources.Identifier;
+//import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
 import net.neoforged.fml.ModList;
@@ -30,34 +30,34 @@ public class NeoforgeKeybindRegistry {
                     .map(c -> c.getModInfo().getDisplayName())
                     .orElse(modId);
 			//?if>=1.21.9{
-			KeyMapping.Category category = KeyMapping.Category.register(
-					Identifier.withDefaultNamespace(entry.keybindCategory()));
-			//?}
+			/^KeyMapping.Category category = KeyMapping.Category.register(
+					ResourceLocation.withDefaultNamespace(entry.keybindCategory()));
+			^///?}
             for (ConfigCategory cat : config.categories()) {
                 for (ConfigSection sec : cat.sections()) {
                     for (ConfigOption<?> opt : sec.options()) {
                         ConfigKeybinds kb = opt.keybindSettings();
                         if (kb == null) continue;
 						//?if <1.21.11{
-						/*int keyCode = kb.defaultKey();
+						int keyCode = kb.defaultKey();
 						InputConstants.Key key = keyCode == -1
 								? InputConstants.UNKNOWN
 								: InputConstants.getKey(keyCode, 0);
-						*///?}
+						//?}
                         kb.setOptionName(opt.name().getString());
                         KeyMapping mapping = new KeyMapping(
                                 opt.name().getString(),
                                 KeyConflictContext.IN_GAME,
 								//?if >=1.21.11{
-								InputConstants.Type.KEYSYM.getOrCreate(kb.defaultKey()),
-								//?}else{
-								/*key,
-								*///?}
+								/^InputConstants.Type.KEYSYM.getOrCreate(kb.defaultKey()),
+								^///?}else{
+								key,
+								//?}
 								//?if>=1.21.9{
-								category
-								//?}else{
-								/*"key.category.minecraft." + entry.keybindCategory()
-								 *///?}
+								/^category
+								^///?}else{
+								"key.category.minecraft." + entry.keybindCategory()
+								 //?}
                         );
                         event.register(mapping);
                         kb.setKeyMapping(mapping);
@@ -73,24 +73,24 @@ public class NeoforgeKeybindRegistry {
             for (ConfigPreset preset : manager.presets()) {
                 if (preset.isDefault()) continue;
 				//?if <1.21.11{
-				/*int keyCode = preset.keyBind();
+				int keyCode = preset.keyBind();
 				InputConstants.Key key = keyCode == -1
 						? InputConstants.UNKNOWN
 						: InputConstants.getKey(keyCode, 0);
-				*///?}
+				//?}
                 KeyMapping mapping = new KeyMapping(
                         preset.name(),
                         KeyConflictContext.IN_GAME,
 						//?if>=1.21.11{
-						InputConstants.Type.KEYSYM.getOrCreate(preset.keyBind()),
-						//?}else{
-						/*key,
-						*///?}
+						/^InputConstants.Type.KEYSYM.getOrCreate(preset.keyBind()),
+						^///?}else{
+						key,
+						//?}
 						//?if>=1.21.9{
-						category
-						//?}else{
-						/*"key.category.minecraft." + entry.keybindCategory()
-						*///?}
+						/^category
+						^///?}else{
+						"key.category.minecraft." + entry.keybindCategory()
+						//?}
                 );
                 event.register(mapping);
                 preset.setKeyMapping(mapping);
@@ -101,4 +101,4 @@ public class NeoforgeKeybindRegistry {
     }
 }
 
-//?}
+*///?}

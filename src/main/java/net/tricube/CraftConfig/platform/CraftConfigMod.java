@@ -6,10 +6,10 @@ import net.tricube.CraftConfig.config.Config;
 import org.slf4j.Logger;
 
 //? fabric {
-/*import net.tricube.CraftConfig.platform.fabric.FabricPlatform;
-*///?} neoforge {
-import net.tricube.CraftConfig.platform.neoforge.NeoforgePlatform;
-//?} forge {
+import net.tricube.CraftConfig.platform.fabric.FabricPlatform;
+//?} neoforge {
+/*import net.tricube.CraftConfig.platform.neoforge.NeoforgePlatform;
+*///?} forge {
 /*import net.tricube.CraftConfig.platform.forge.ForgePlatform;
 *///?}
 
@@ -41,10 +41,10 @@ public class CraftConfigMod {
 
 	private static Platform createPlatformInstance() {
 		//? fabric {
-		/*return new FabricPlatform();
-		*///?} neoforge {
-		return new NeoforgePlatform();
-		 //?} forge {
+		return new FabricPlatform();
+		//?} neoforge {
+		/*return new NeoforgePlatform();
+		 *///?} forge {
 		/*return new ForgePlatform();
 		*///?}
 	}
