@@ -1,0 +1,30 @@
+package net.tricube.CraftConfig.platform.fabric;
+
+//? fabric {
+
+/*import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.tricube.CraftConfig.platform.CraftConfigMod;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.tricube.CraftConfig.preset.PresetRegisteration;
+import net.tricube.CraftConfig.api.registry.KeybindRegistry;
+@Entrypoint("client")
+public class FabricClientEntrypoint implements ClientModInitializer {
+
+    @Override
+    public void onInitializeClient() {
+		CraftConfigMod.onInitializeClient();
+        FabricKeybindRegistry.init();
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
+			FabricCommands.register(dispatcher));
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+			PresetRegisteration.checkPreset();
+        });
+		ClientTickEvents.END_CLIENT_TICK.register(KeybindRegistry::tick);
+    }
+}
+*///?}

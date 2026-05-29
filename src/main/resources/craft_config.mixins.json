@@ -1,6 +1,6 @@
   {
   "required": true,
-  "package": "net.ray.CraftConfig.mixin",
+  "package": "net.tricube.CraftConfig.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [

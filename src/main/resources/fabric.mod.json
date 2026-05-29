@@ -15,13 +15,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.ray.CraftConfig.platform.fabric.FabricEntrypoint"
+      "net.tricube.CraftConfig.platform.fabric.FabricEntrypoint"
     ],
     "client": [
-      "net.ray.CraftConfig.platform.fabric.FabricClientEntrypoint"
+      "net.tricube.CraftConfig.platform.fabric.FabricClientEntrypoint"
     ],
     "modmenu": [
-      "net.ray.CraftConfig.platform.fabric.ModMenuIntegration"
+      "net.tricube.CraftConfig.platform.fabric.ModMenuIntegration"
     ]
 
   },
