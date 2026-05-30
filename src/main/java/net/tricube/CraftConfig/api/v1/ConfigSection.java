@@ -64,7 +64,7 @@ public class ConfigSection {
 
 	public static class Builder {
 		private final Component name;
-		private Component description = Component.empty();
+		private Component description;
 		private final List<ConfigOption<?>> options = new ArrayList<>();
 
 		private Builder(Component name) { this.name = name; }

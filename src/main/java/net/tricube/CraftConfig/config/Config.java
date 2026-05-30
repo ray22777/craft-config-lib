@@ -10,9 +10,6 @@ import net.tricube.CraftConfig.api.v1.CraftConfig;
 public class Config {
 
 
-
-
-
 	public enum NotifierType {HOTBAR,CHAT}
 	public static final ConfigOption<NotifierType> keybindNotifier =
 			ConfigOption.enumOption(Component.literal("Keybind Notifier Type"), NotifierType.HOTBAR)
