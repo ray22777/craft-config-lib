@@ -45,42 +45,40 @@ public class ColorPickerScreen extends SubScreen {
 	private static ResourceLocation DISC_RL;
 	private static boolean TEXTURE_INITIALIZED = false;
 
+	private boolean updating = false;
+	private int brightness = 255;
 	private final Consumer<Color> onConfirm;
 	private int finalColor;
 	private final int originalColor;
-
 	private float wheelHue = 0f;
 	private float wheelSat = 1f;
 	private int baseR = 255, baseG = 255, baseB = 255;
-	private int brightness = 255;
 	private int alpha = 255;
 	private int sliderAlpha = 255;
 	private EditBox hexInput;
 	private Button applyBtn, cancelBtn;
 	private ColorSlider redSlider, greenSlider, blueSlider, brightnessSlider, alphaSlider;
-	private ConfigOption option;
 	private boolean draggingDisc = false;
 	private boolean hexDirty = true;
 	private boolean hexWasFocused = false;
 
 	public ColorPickerScreen(Screen parent, Component title, Color initialColor, Consumer<Color> onConfirm) {
 		super(title, parent, MODAL_WIDTH, MODAL_HEIGHT);
-		this.onConfirm = onConfirm;  // This is already correct
+		this.onConfirm = onConfirm;
 		this.originalColor = initialColor.getRGB();
 		this.finalColor = initialColor.getRGB();
 
 		alpha = initialColor.getAlpha();
 		sliderAlpha = alpha;
-		baseR = initialColor.getRed();
-		baseG = initialColor.getGreen();
-		baseB = initialColor.getBlue();
-		float[] hsv = ColorUtils.rgbToHsv(baseR, baseG, baseB);
+		float[] hsv = ColorUtils.rgbToHsv(
+				initialColor.getRed(), initialColor.getGreen(), initialColor.getBlue());
 		wheelHue = hsv[0];
 		wheelSat = hsv[1];
-
-		brightness = 255;
-
+		brightness = Math.max(Math.max(
+				initialColor.getRed(), initialColor.getGreen()), initialColor.getBlue());
+		if (brightness == 0) brightness = 255;
 		computeFinalColor();
+
 	}
 
 	private static void initTexture() {
@@ -97,7 +95,7 @@ public class ColorPickerScreen extends SubScreen {
 				if (dist > 1.0f) {
 					//?>=1.21.2{
 					/*img.setPixel(x, y, 0);
-					*///?}else{
+					 *///?}else{
 					img.setPixelRGBA(x, y, 0);
 					//?}
 					continue;
@@ -105,12 +103,10 @@ public class ColorPickerScreen extends SubScreen {
 				float angle = (float) Math.toDegrees(Math.atan2(dy, dx));
 				if (angle < 0) angle += 360;
 				int rgb = ColorUtils.hsvToRgb(angle, dist, 1.0f);
-
-				// NativeImage expects ABGR format
 				int a = 0xFF, r = (rgb >> 16) & 0xFF, g = (rgb >> 8) & 0xFF, b = rgb & 0xFF;
 				//?>=1.21.2{
 				/*img.setPixel(x, y, (a << 24) | (r << 16) | (g << 8) | b);
-				*///?}else{
+				 *///?}else{
 				img.setPixelRGBA(x, y, (a << 24) | (b << 16) | (g << 8) | r);
 				//?}
 
@@ -155,20 +151,45 @@ public class ColorPickerScreen extends SubScreen {
 		int rightX = discX + COLOR_DISC_SIZE + 25;
 		int rightY = discY;
 
-		redSlider = new ColorSlider(rightX, rightY,SLIDER_WIDTH,SLIDER_HEIGHT, "R", baseR, 0xFFFF5555, v -> {
-			baseR = v; syncWheelFromRgb(); computeFinalColor();
+		redSlider = new ColorSlider(rightX, rightY, SLIDER_WIDTH, SLIDER_HEIGHT, "R",
+				(finalColor >> 16) & 0xFF, 0xFFFF5555, v -> {
+			if (updating) return;
+			updating = true;
+			finalColor = (sliderAlpha << 24)
+					| (v << 16)
+					| (finalColor & 0x00FF00FF & ~0x00FF0000);
+			syncWheelAndBrightnessFromFinal();
+			flushHexUpdate();
+			updating = false;
 		});
 		addRenderableWidget(redSlider);
 
 		rightY += SLIDER_HEIGHT + 5;
-		greenSlider = new ColorSlider(rightX, rightY,SLIDER_WIDTH,SLIDER_HEIGHT,"G", baseG, 0xFF55FF55, v -> {
-			baseG = v; syncWheelFromRgb(); computeFinalColor();
+		greenSlider = new ColorSlider(rightX, rightY, SLIDER_WIDTH, SLIDER_HEIGHT, "G",
+				(finalColor >> 8) & 0xFF, 0xFF55FF55, v -> {
+			if (updating) return;
+			updating = true;
+			finalColor = (sliderAlpha << 24)
+					| (finalColor & 0x00FF0000)
+					| (v << 8)
+					| (finalColor & 0x000000FF);
+			syncWheelAndBrightnessFromFinal();
+			flushHexUpdate();
+			updating = false;
 		});
 		addRenderableWidget(greenSlider);
 
 		rightY += SLIDER_HEIGHT + 5;
-		blueSlider = new ColorSlider(rightX, rightY,SLIDER_WIDTH,SLIDER_HEIGHT, "B", baseB, 0xFF5555FF, v -> {
-			baseB = v; syncWheelFromRgb(); computeFinalColor();
+		blueSlider = new ColorSlider(rightX, rightY, SLIDER_WIDTH, SLIDER_HEIGHT, "B",
+				finalColor & 0xFF, 0xFF5555FF, v -> {
+			if (updating) return;
+			updating = true;
+			finalColor = (sliderAlpha << 24)
+					| (finalColor & 0x00FFFF00)
+					| v;
+			syncWheelAndBrightnessFromFinal();
+			flushHexUpdate();
+			updating = false;
 		});
 		addRenderableWidget(blueSlider);
 
@@ -179,8 +200,13 @@ public class ColorPickerScreen extends SubScreen {
 				setMessage(Component.literal("Brightness: " + brightness));
 			}
 			@Override protected void applyValue() {
-				brightness = (int) (this.value * 255);
-				computeFinalColor(); // Runs immediately on drag
+				if (updating) return;
+				updating = true;
+				brightness = (int)(this.value * 255);
+				computeFinalColor();
+				pushToRgbSliders();
+				flushHexUpdate();
+				updating = false;
 			}
 		};
 		addRenderableWidget(brightnessSlider);
@@ -192,8 +218,12 @@ public class ColorPickerScreen extends SubScreen {
 				setMessage(Component.literal("Alpha: " + sliderAlpha));
 			}
 			@Override protected void applyValue() {
-				sliderAlpha = (int) (this.value * 255);
+				if (updating) return;
+				updating = true;
+				sliderAlpha = (int)(this.value * 255);
 				computeFinalColor();
+				flushHexUpdate();
+				updating = false;
 			}
 		};
 		addRenderableWidget(alphaSlider);
@@ -211,7 +241,7 @@ public class ColorPickerScreen extends SubScreen {
 			return FormattedCharSequence.forward(text, Style.EMPTY.withColor(ChatFormatting.RED));
 		});
 		*///?}else{
-				hexInput.setFilter(s -> s.matches("[0-9A-Fa-f#]*"));
+		hexInput.setFilter(s -> s.matches("[0-9A-Fa-f#]*"));
 		//?}
 
 		hexInput.setValue(toHex(finalColor));
@@ -238,8 +268,6 @@ public class ColorPickerScreen extends SubScreen {
 		addRenderableWidget(applyBtn);
 	}
 
-
-
 	//~ if >=26.1 'render' -> 'extractRenderState'{
 	@Override
 	public void render(GuiGraphics g, int mx, int my, float delta) {
@@ -256,30 +284,31 @@ public class ColorPickerScreen extends SubScreen {
 			g.blit(DISC_RL, discX, discY, 0, 0, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE);
 			//?} else if < 1.21.6{
 			/*g.blit(RenderType::guiTextured, DISC_RL, discX, discY, 0, 0, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE);
-			*///?} else{
+			 *///?} else{
 			/*g.blit(RenderPipelines.GUI_TEXTURED, DISC_RL, discX, discY, 0, 0, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE, COLOR_DISC_SIZE);
-			*///?}
+			 *///?}
 		}
-		ScreenUtils.drawOutline(g,discX, discY, COLOR_DISC_SIZE + 1, COLOR_DISC_SIZE + 1, 0xFF555555);
+		ScreenUtils.drawOutline(g, discX, discY, COLOR_DISC_SIZE + 1, COLOR_DISC_SIZE + 1, 0xFF555555);
 
 		double angleRad = Math.toRadians(wheelHue);
 		int selDist = (int) (wheelSat * radius);
 		int selX = centerX + (int) (Math.cos(angleRad) * selDist);
 		int selY = centerY + (int) (Math.sin(angleRad) * selDist);
-		ScreenUtils.drawOutline(g,selX - 1, selY - 1, 2, 2, 0xFFFFFFFF);
-		ScreenUtils.drawOutline(g,selX - 2, selY - 2, 4, 4, 0xFF000000);
+		ScreenUtils.drawOutline(g, selX - 1, selY - 1, 2, 2, 0xFFFFFFFF);
+		ScreenUtils.drawOutline(g, selX - 2, selY - 2, 4, 4, 0xFF000000);
 
 		int previewSize = 18;
 		int previewX = hexInput.getX() + hexInput.getWidth() + 5;
 		int previewY = hexInput.getY();
 		drawPreview(g, previewX, previewY, previewSize, finalColor);
-		ScreenUtils.drawOutline(g,previewX, previewY, previewSize, previewSize, 0xFF888888);
+		ScreenUtils.drawOutline(g, previewX, previewY, previewSize, previewSize, 0xFF888888);
 		if (hexInput != null && hexWasFocused && !hexInput.isFocused()) {
 			flushHexUpdate();
 		}
 		hexWasFocused = hexInput != null && hexInput.isFocused();
 	}
 	//~}
+
 	private void drawPreview(GuiGraphics g, int x, int y, int size, int color) {
 		int alpha = (color >> 24) & 0xFF;
 		int r = (color >> 16) & 0xFF;
@@ -302,7 +331,6 @@ public class ColorPickerScreen extends SubScreen {
 			}
 		}
 	}
-
 
 	//? if >=1.21.9 {
 	/*@Override
@@ -344,61 +372,54 @@ public class ColorPickerScreen extends SubScreen {
 		flushHexUpdate();
 		return super.mouseReleased(event);
 	}
-*///? } else {
-@Override
-public boolean mouseClicked(double mx, double my, int button) {
-    if (button != 0) return super.mouseClicked(mx, my, button);
-    int cx = modalX + 20 + COLOR_DISC_SIZE / 2;
-    int cy = modalY + HEADER_H + 15 + COLOR_DISC_SIZE / 2;
-    int r = COLOR_DISC_SIZE / 2;
-    double dx = mx - cx, dy = my - cy;
-    double dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist <= r) {
-        draggingDisc = true;
-        updateWheelFromMouse(mx, my, cx, cy, r);
-        return true;
-    }
-    return super.mouseClicked(mx, my, button);
-}
+	*///? } else {
+	@Override
+	public boolean mouseClicked(double mx, double my, int button) {
+		if (button != 0) return super.mouseClicked(mx, my, button);
+		int cx = modalX + 20 + COLOR_DISC_SIZE / 2;
+		int cy = modalY + HEADER_H + 15 + COLOR_DISC_SIZE / 2;
+		int r = COLOR_DISC_SIZE / 2;
+		double dx = mx - cx, dy = my - cy;
+		double dist = Math.sqrt(dx * dx + dy * dy);
+		if (dist <= r) {
+			draggingDisc = true;
+			updateWheelFromMouse(mx, my, cx, cy, r);
+			return true;
+		}
+		return super.mouseClicked(mx, my, button);
+	}
 
-@Override
-public boolean mouseDragged(double mx, double my, int button, double dragX, double dragY) {
-    if (button != 0 || !draggingDisc) return super.mouseDragged(mx, my, button, dragX, dragY);
-    int cx = modalX + 20 + COLOR_DISC_SIZE / 2;
-    int cy = modalY + HEADER_H + 15 + COLOR_DISC_SIZE / 2;
-    updateWheelFromMouse(mx, my, cx, cy, COLOR_DISC_SIZE / 2);
-    return true;
-}
+	@Override
+	public boolean mouseDragged(double mx, double my, int button, double dragX, double dragY) {
+		if (button != 0 || !draggingDisc) return super.mouseDragged(mx, my, button, dragX, dragY);
+		int cx = modalX + 20 + COLOR_DISC_SIZE / 2;
+		int cy = modalY + HEADER_H + 15 + COLOR_DISC_SIZE / 2;
+		updateWheelFromMouse(mx, my, cx, cy, COLOR_DISC_SIZE / 2);
+		return true;
+	}
 
-@Override
-public boolean mouseReleased(double mx, double my, int button) {
-    draggingDisc = false;
-    flushHexUpdate();
-    return super.mouseReleased(mx, my, button);
-}
-//? }
+	@Override
+	public boolean mouseReleased(double mx, double my, int button) {
+		draggingDisc = false;
+		flushHexUpdate();
+		return super.mouseReleased(mx, my, button);
+	}
+	//? }
 
 	private void updateWheelFromMouse(double mx, double my, int cx, int cy, int radius) {
+		updating = true;
 		double dx = mx - cx, dy = my - cy;
 		double dist = Math.min(Math.sqrt(dx * dx + dy * dy), radius);
 		double angle = Math.toDegrees(Math.atan2(dy, dx));
 		if (angle < 0) angle += 360;
 
 		wheelHue = (float) angle;
-		wheelSat = (float) (dist / radius);
+		wheelSat = Mth.clamp((float) (dist / radius), 0f, 1f);
 
-		wheelSat = Mth.clamp(wheelSat, 0f, 1f);
-
-		int rgb = ColorUtils.hsvToRgb(wheelHue, wheelSat, 1.0f);
-		baseR = (rgb >> 16) & 0xFF;
-		baseG = (rgb >> 8) & 0xFF;
-		baseB = rgb & 0xFF;
-
-		if (redSlider != null) redSlider.setSliderValue(baseR / 255.0);
-		if (greenSlider != null) greenSlider.setSliderValue(baseG / 255.0);
-		if (blueSlider != null) blueSlider.setSliderValue(baseB / 255.0);
-
-		computeFinalColor();
+		computeFinalColor();   // uses wheelHue + wheelSat + brightness (unchanged)
+		pushToRgbSliders();
+		flushHexUpdate();
+		updating = false;
 	}
 	private void syncWheelFromRgb() {
 		float[] hsv = ColorUtils.rgbToHsv(baseR, baseG, baseB);
@@ -406,11 +427,36 @@ public boolean mouseReleased(double mx, double my, int button) {
 		wheelSat = hsv[1];
 	}
 
+	private void syncBrightnessFromRgb() {
+		brightness = Math.max(Math.max(baseR, baseG), baseB);
+		if (brightnessSlider != null) brightnessSlider.setSliderValue(brightness / 255.0);
+	}
+
 	private void computeFinalColor() {
-		int r = Mth.clamp((baseR * brightness) / 255, 0, 255);
-		int g = Mth.clamp((baseG * brightness) / 255, 0, 255);
-		int b = Mth.clamp((baseB * brightness) / 255, 0, 255);
+		int rgb = ColorUtils.hsvToRgb(wheelHue, wheelSat, brightness / 255.0f);
+		int r = (rgb >> 16) & 0xFF;
+		int g = (rgb >> 8) & 0xFF;
+		int b = rgb & 0xFF;
 		finalColor = (sliderAlpha << 24) | (r << 16) | (g << 8) | b;
+		hexDirty = true;
+	}
+	private void syncWheelAndBrightnessFromFinal() {
+		int r = (finalColor >> 16) & 0xFF;
+		int g = (finalColor >> 8) & 0xFF;
+		int b = finalColor & 0xFF;
+
+		brightness = Math.max(Math.max(r, g), b);
+
+		// Normalize to full-brightness for HSV derivation
+		int nr = brightness > 0 ? (r * 255) / brightness : 255;
+		int ng = brightness > 0 ? (g * 255) / brightness : 255;
+		int nb = brightness > 0 ? (b * 255) / brightness : 255;
+
+		float[] hsv = ColorUtils.rgbToHsv(nr, ng, nb);
+		wheelHue = hsv[0];
+		wheelSat = hsv[1];
+
+		if (brightnessSlider != null) brightnessSlider.setSliderValue(brightness / 255.0);
 		hexDirty = true;
 	}
 
@@ -422,39 +468,39 @@ public boolean mouseReleased(double mx, double my, int button) {
 	}
 
 	private void onHexChanged(String text) {
-		if (text == null || text.isEmpty()) return;
+		if (updating) return;
+		updating = true;
 		try {
+			if (text == null || text.isEmpty()) { updating = false; return; }
 			String s = text.replace("#", "").toUpperCase();
 			if (s.length() == 6) s = "FF" + s;
-			if (s.length() != 8) return;
-
+			if (s.length() != 8) { updating = false; return; }
 			long val = Long.parseLong(s, 16);
-			if (val > 0xFFFFFFFFL) return;
+			if (val > 0xFFFFFFFFL) { updating = false; return; }
 
 			finalColor = (int) val;
 
 			sliderAlpha = (finalColor >> 24) & 0xFF;
-			baseR = (finalColor >> 16) & 0xFF;
-			baseG = (finalColor >> 8) & 0xFF;
-			baseB = finalColor & 0xFF;
-			brightness = 255;
-
-			if (!draggingDisc) {
-				if (alphaSlider != null) alphaSlider.setSliderValue(sliderAlpha / 255.0);
-				if (brightnessSlider != null) brightnessSlider.setSliderValue(brightness / 255.0);
-				if (redSlider != null) redSlider.setSliderValue(baseR / 255.0);
-				if (greenSlider != null) greenSlider.setSliderValue(baseG / 255.0);
-				if (blueSlider != null) blueSlider.setSliderValue(baseB / 255.0);
-			}
-
-			syncWheelFromRgb();
+			syncWheelAndBrightnessFromFinal();
+			if (alphaSlider != null) alphaSlider.setSliderValue(sliderAlpha / 255.0);
+			pushToRgbSliders();
 			hexDirty = false;
 		} catch (NumberFormatException ignored) {}
+		updating = false;
+	}
+
+	private void pushToRgbSliders() {
+		int r = (finalColor >> 16) & 0xFF;
+		int g = (finalColor >> 8) & 0xFF;
+		int b = finalColor & 0xFF;
+		if (redSlider != null)   redSlider.setSliderValue(r / 255.0);
+		if (greenSlider != null) greenSlider.setSliderValue(g / 255.0);
+		if (blueSlider != null)  blueSlider.setSliderValue(b / 255.0);
 	}
 	private void done() {
 		flushHexUpdate();
 		if (onConfirm != null) {
-			onConfirm.accept(new Color(finalColor,true));
+			onConfirm.accept(new Color(finalColor, true));
 		}
 		onClose();
 	}

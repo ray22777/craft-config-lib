@@ -32,7 +32,6 @@ public class SliderController<T extends Number> implements OptionController<T> {
 				T val = sliderToValue(value);
 				setMessage(label(boundOption, val));
 			}
-
 			@Override
 			protected void applyValue() {
 				boundOption.set(sliderToValue(value));

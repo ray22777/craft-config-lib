@@ -1,2 +1,1 @@
-- fix keybind registering
-- add section description support
+improved color picker screen

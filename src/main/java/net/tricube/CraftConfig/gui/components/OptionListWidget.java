@@ -649,7 +649,7 @@ public class OptionListWidget
 			if (controller.ownsRow()) {
 				return controller.handleMouseReleased((ConfigOption) option, event);
 			}
-			if (optionWidget != null && optionWidget.isMouseOver(mx, my)) {
+			if (optionWidget != null ) {
 				return optionWidget.mouseReleased(event);
 			}
 			return false;
@@ -692,7 +692,7 @@ public class OptionListWidget
 			if (controller.ownsRow()) {
 				return controller.handleMouseReleased((ConfigOption) option, mx, my, button);
 			}
-			if (optionWidget != null && optionWidget.isMouseOver(mx, my)) {
+			if (optionWidget != null ) {
 				return optionWidget.mouseReleased(mx, my, button);
 			}
 			return false;
@@ -703,7 +703,7 @@ public class OptionListWidget
 			if (controller.ownsRow()) {
 				return controller.handleMouseDragged((ConfigOption) option, mx, my, button, dx, dy);
 			}
-			if (optionWidget != null && optionWidget.isMouseOver(mx, my)) {
+			if (optionWidget != null) {
 				return optionWidget.mouseDragged(mx, my, button, dx, dy);
 			}
 			return false;

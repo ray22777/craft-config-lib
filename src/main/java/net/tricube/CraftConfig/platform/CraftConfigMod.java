@@ -3,6 +3,7 @@ package net.tricube.CraftConfig.platform;
 
 import com.mojang.logging.LogUtils;
 import net.tricube.CraftConfig.config.Config;
+import net.tricube.CraftConfig.example.ExampleConfig;
 import org.slf4j.Logger;
 
 //? fabric {
@@ -32,7 +33,9 @@ public class CraftConfigMod {
 
 		//register your mods in Client Init
 		Config.init();
-//		ExampleConfig.init(); //registering it
+		if(PLATFORM.isDevelopmentEnvironment()){
+			ExampleConfig.init(); //registering it
+		}
 	}
 
 	static Platform xplat() {

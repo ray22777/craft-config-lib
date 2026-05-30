@@ -124,13 +124,14 @@ public boolean mouseClicked(double mouseX, double mouseY, int button) {
 
     @Override
     public void onClose() {
+
         minecraft.setScreen(parent);
     }
 
-    @Override
-    public boolean isPauseScreen() {
-        return false;
-    }
+//    @Override
+//    public boolean isPauseScreen() {
+//        return true;
+//    }
 
     protected void renderHoverEffect(GuiGraphics g, int x, int y, int w, int h, boolean hovered) {
         if (hovered) {
