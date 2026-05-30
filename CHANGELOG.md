@@ -1,0 +1,2 @@
+- fix keybind registering
+- add section description support

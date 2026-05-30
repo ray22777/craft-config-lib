@@ -19,75 +19,76 @@ import net.tricube.CraftConfig.preset.PresetManager;
 
 public class FabricKeybindRegistry {
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public static void init() {
-		for (CraftConfigRegistry.Entry entry : CraftConfigRegistry.all()) {
-			String modId          = entry.modId();
-			CraftConfig config    = entry.config();
-			PresetManager manager = config.presetManager();
+		CraftConfigRegistry.setBuildCallback(FabricKeybindRegistry::processEntry);
+	}
 
-			String modDisplayName = FabricLoader.getInstance()
-					.getModContainer(modId)
-					.map(c -> c.getMetadata().getName())
-					.orElse(modId);
+	@SuppressWarnings("unchecked")
+	private static void processEntry(CraftConfigRegistry.Entry entry) {
+		String modId          = entry.modId();
+		CraftConfig config    = entry.config();
+		PresetManager manager = config.presetManager();
 
-			//?if>=1.21.9{
-			/*KeyMapping.Category category = KeyMapping.Category.register(
-					ResourceLocation.withDefaultNamespace(entry.keybindCategory()));
-			*///?}
+		String modDisplayName = FabricLoader.getInstance()
+				.getModContainer(modId)
+				.map(c -> c.getMetadata().getName())
+				.orElse(modId);
 
-			for (ConfigCategory cat : config.categories()) {
-				for (ConfigSection sec : cat.sections()) {
-					for (ConfigOption<?> opt : sec.options()) {
-						ConfigKeybinds kb = opt.keybindSettings();
-						if (kb == null) continue;
+		//?if>=1.21.9{
+		/*KeyMapping.Category category = KeyMapping.Category.register(
+				ResourceLocation.withDefaultNamespace(entry.keybindCategory()));
+		*///?}
 
-						kb.setOptionName(opt.name().getString());
-						//~ if >=26.1 'KeyBindingHelper.registerKeyBinding' -> 'KeyMappingHelper.registerKeyMapping' {
-						KeyMapping mapping = KeyBindingHelper.registerKeyBinding(new KeyMapping(
-								//~}
-								opt.name().getString(),
-								InputConstants.Type.KEYSYM,
-								kb.defaultKey(),
-								//?if>=1.21.9{
-								/*category
-								*///?}else{
-								"key.category.minecraft." + entry.keybindCategory()
-								 //?}
-						));
+		for (ConfigCategory cat : config.categories()) {
+			for (ConfigSection sec : cat.sections()) {
+				for (ConfigOption<?> opt : sec.options()) {
+					ConfigKeybinds kb = opt.keybindSettings();
+					if (kb == null) continue;
 
-						kb.setKeyMapping(mapping);
-						if (opt.type() == ConfigOption.Type.BOOLEAN) {
-							KeybindRegistry.addBooleanEntry((ConfigOption<Boolean>) opt, kb, config);
-						} else {
-							KeybindRegistry.addCycleEntry(opt, kb, config);
-						}
+					kb.setOptionName(opt.name().getString());
+					//~ if >=26.1 'KeyBindingHelper.registerKeyBinding' -> 'KeyMappingHelper.registerKeyMapping' {
+					KeyMapping mapping = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+							//~}
+							opt.name().getString(),
+							InputConstants.Type.KEYSYM,
+							kb.defaultKey(),
+							//?if>=1.21.9{
+							/*category
+							 *///?}else{
+							"key.category.minecraft." + entry.keybindCategory()
+							//?}
+					));
+
+					kb.setKeyMapping(mapping);
+					if (opt.type() == ConfigOption.Type.BOOLEAN) {
+						KeybindRegistry.addBooleanEntry((ConfigOption<Boolean>) opt, kb, config);
+					} else {
+						KeybindRegistry.addCycleEntry(opt, kb, config);
 					}
 				}
 			}
-
-			for (ConfigPreset preset : manager.presets()) {
-				if (preset.isDefault()) continue;
-
-				//~ if >=26.1 'KeyBindingHelper.registerKeyBinding' -> 'KeyMappingHelper.registerKeyMapping' {
-				KeyMapping mapping = KeyBindingHelper.registerKeyBinding(new KeyMapping(
-						//~}
-						"[Preset] " + preset.name(),
-						InputConstants.Type.KEYSYM,
-						preset.keyBind(),
-						//?if>=1.21.9{
-						/*category
-						*///?}else{
-						"key.category.minecraft." + entry.keybindCategory()
-						 //?}
-				));
-
-				preset.setKeyMapping(mapping);
-				KeybindRegistry.addPresetEntry(preset, manager, modDisplayName);
-			}
 		}
 
+		for (ConfigPreset preset : manager.presets()) {
+			if (preset.isDefault()) continue;
 
+			//~ if >=26.1 'KeyBindingHelper.registerKeyBinding' -> 'KeyMappingHelper.registerKeyMapping' {
+			KeyMapping mapping = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+					//~}
+					"[Preset] " + preset.name(),
+					InputConstants.Type.KEYSYM,
+					preset.keyBind(),
+					//?if>=1.21.9{
+					/*category
+					 *///?}else{
+					"key.category.minecraft." + entry.keybindCategory()
+					//?}
+			));
+
+			preset.setKeyMapping(mapping);
+			KeybindRegistry.addPresetEntry(preset, manager, modDisplayName);
+		}
 	}
 }
 //?}

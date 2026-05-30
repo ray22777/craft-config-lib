@@ -72,6 +72,7 @@ public class ExampleConfig {
 
 			.category(ConfigCategory.builder(Component.literal("General"))
 					.section(ConfigSection.builder(Component.literal("Section One"))
+							.description(Component.literal("This is a section description"))
 							.option(exampleBoolean.controller(new BooleanController()))
 							.option(exampleInteger.controller(new SliderController<>(0, 100))) //set the range between 0-100
 							.option(stringInput.controller(new InputFieldController<>()))

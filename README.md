@@ -2,6 +2,8 @@
 
 A client-sided configuration library with preset support, made for my mods. Feel free to use it in your mod if it fits your needs.
 
+NOTE: you should only use this for client sided mods.
+
 ### Features
 - **Config Presets**
   - Allow switching between multiple different configs quickly

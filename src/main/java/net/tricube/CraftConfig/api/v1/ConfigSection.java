@@ -47,15 +47,18 @@ import java.util.*;
 public class ConfigSection {
 
 	private final Component name;
+	private final Component description;
 	private final List<ConfigOption<?>> options;
 
 	private ConfigSection(Builder builder) {
 		this.name = builder.name;
+		this.description = builder.description;
 		this.options = builder.options;
 	}
 
 	public static Builder builder(Component name) { return new Builder(name); }
 
+	public Component description() { return description; }
 	public Component name() { return name; }
 	public List<ConfigOption<?>> options() { return Collections.unmodifiableList(options); }
 

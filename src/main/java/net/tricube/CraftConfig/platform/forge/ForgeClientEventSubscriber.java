@@ -4,6 +4,7 @@ package net.tricube.CraftConfig.platform.forge;
 
 /*import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;import net.tricube.CraftConfig.platform.CraftConfigMod;
@@ -15,10 +16,12 @@ public class ForgeClientEventSubscriber {
 	@SubscribeEvent
 	public static void onClientSetup(FMLClientSetupEvent event) {
 		CraftConfigMod.onInitializeClient();
-		event.enqueueWork(ForgeConfigScreen::registerProvidedConfigScreens);
+		event.enqueueWork(()->{
+			ForgeConfigScreen.registerProvidedConfigScreens();
+		});
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
 		ForgeKeybindRegistry.init(event);
 	}

@@ -3,7 +3,9 @@ package net.tricube.CraftConfig.platform.neoforge;
 //? neoforge {
 
 /*import net.minecraft.client.Minecraft;
+
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -25,11 +27,11 @@ public class NeoforgeClientEventSubscriber {
 		event.enqueueWork(NeoforgeConfigScreen::registerProvidedConfigScreens);
 
     }
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onRegisterClientCommands(RegisterClientCommandsEvent event) {
 		NeoforgeCommands.register(event.getDispatcher());
 	}
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
         NeoforgeKeybindRegistry.init(event);
     }

@@ -18,87 +18,96 @@ import net.tricube.CraftConfig.preset.PresetManager;
 
 public class NeoforgeKeybindRegistry {
 
-    @SuppressWarnings("unchecked")
-    public static void init(RegisterKeyMappingsEvent event) {
-        for (CraftConfigRegistry.Entry entry : CraftConfigRegistry.all()) {
-            String modId          = entry.modId();
-            CraftConfig config    = entry.config();
-            PresetManager manager = config.presetManager();
+	@SuppressWarnings("unchecked")
+	public static void init(RegisterKeyMappingsEvent event) {
+		CraftConfigRegistry.setBuildCallback(entry -> processEntry(entry, event));
+	}
 
-            String modDisplayName = ModList.get()
-                    .getModContainerById(modId)
-                    .map(c -> c.getModInfo().getDisplayName())
-                    .orElse(modId);
-			//?if>=1.21.9{
-			/^KeyMapping.Category category = KeyMapping.Category.register(
-					ResourceLocation.withDefaultNamespace(entry.keybindCategory()));
-			^///?}
-            for (ConfigCategory cat : config.categories()) {
-                for (ConfigSection sec : cat.sections()) {
-                    for (ConfigOption<?> opt : sec.options()) {
-                        ConfigKeybinds kb = opt.keybindSettings();
-                        if (kb == null) continue;
-						//?if <1.21.11{
-						int keyCode = kb.defaultKey();
-						InputConstants.Key key = keyCode == -1
-								? InputConstants.UNKNOWN
-								: InputConstants.getKey(keyCode, 0);
-						//?}
-                        kb.setOptionName(opt.name().getString());
-                        KeyMapping mapping = new KeyMapping(
-                                opt.name().getString(),
-                                KeyConflictContext.IN_GAME,
-								//?if >=1.21.11{
-								/^InputConstants.Type.KEYSYM.getOrCreate(kb.defaultKey()),
-								^///?}else{
-								key,
-								//?}
-								//?if>=1.21.9{
-								/^category
-								^///?}else{
-								"key.category.minecraft." + entry.keybindCategory()
-								 //?}
-                        );
-                        event.register(mapping);
-                        kb.setKeyMapping(mapping);
-						if (opt.type() == ConfigOption.Type.BOOLEAN) {
-							KeybindRegistry.addBooleanEntry((ConfigOption<Boolean>) opt, kb, config);
-						} else {
-							KeybindRegistry.addCycleEntry(opt, kb, config);
-						}
-                    }
-                }
-            }
+	@SuppressWarnings("unchecked")
+	private static void processEntry(CraftConfigRegistry.Entry entry, RegisterKeyMappingsEvent event) {
+		String modId          = entry.modId();
+		CraftConfig config    = entry.config();
+		PresetManager manager = config.presetManager();
 
-            for (ConfigPreset preset : manager.presets()) {
-                if (preset.isDefault()) continue;
-				//?if <1.21.11{
-				int keyCode = preset.keyBind();
-				InputConstants.Key key = keyCode == -1
-						? InputConstants.UNKNOWN
-						: InputConstants.getKey(keyCode, 0);
-				//?}
-                KeyMapping mapping = new KeyMapping(
-                        preset.name(),
-                        KeyConflictContext.IN_GAME,
-						//?if>=1.21.11{
-						/^InputConstants.Type.KEYSYM.getOrCreate(preset.keyBind()),
-						^///?}else{
-						key,
-						//?}
-						//?if>=1.21.9{
-						/^category
-						^///?}else{
-						"key.category.minecraft." + entry.keybindCategory()
-						//?}
-                );
-                event.register(mapping);
-                preset.setKeyMapping(mapping);
+		String modDisplayName = ModList.get()
+				.getModContainerById(modId)
+				.map(c -> c.getModInfo().getDisplayName())
+				.orElse(modId);
 
-                KeybindRegistry.addPresetEntry(preset, manager, modDisplayName);
-            }
-        }
-    }
+		//?if>=1.21.9{
+        /^KeyMapping.Category category = KeyMapping.Category.register(
+                ResourceLocation.withDefaultNamespace(entry.keybindCategory()));
+        ^///?}
+
+		for (ConfigCategory cat : config.categories()) {
+			for (ConfigSection sec : cat.sections()) {
+				for (ConfigOption<?> opt : sec.options()) {
+					ConfigKeybinds kb = opt.keybindSettings();
+					if (kb == null) continue;
+
+					//?if <1.21.11{
+					int keyCode = kb.defaultKey();
+					InputConstants.Key key = keyCode == -1
+							? InputConstants.UNKNOWN
+							: InputConstants.getKey(keyCode, 0);
+					//?}
+
+					kb.setOptionName(opt.name().getString());
+					KeyMapping mapping = new KeyMapping(
+							opt.name().getString(),
+							KeyConflictContext.IN_GAME,
+							//?if >=1.21.11{
+							/^InputConstants.Type.KEYSYM.getOrCreate(kb.defaultKey()),
+							 ^///?}else{
+							key,
+							//?}
+							//?if>=1.21.9{
+							/^category
+							 ^///?}else{
+							"key.category.minecraft." + entry.keybindCategory()
+							//?}
+					);
+					event.register(mapping);
+					kb.setKeyMapping(mapping);
+
+					if (opt.type() == ConfigOption.Type.BOOLEAN) {
+						KeybindRegistry.addBooleanEntry((ConfigOption<Boolean>) opt, kb, config);
+					} else {
+						KeybindRegistry.addCycleEntry(opt, kb, config);
+					}
+				}
+			}
+		}
+
+		for (ConfigPreset preset : manager.presets()) {
+			if (preset.isDefault()) continue;
+
+			//?if <1.21.11{
+			int keyCode = preset.keyBind();
+			InputConstants.Key key = keyCode == -1
+					? InputConstants.UNKNOWN
+					: InputConstants.getKey(keyCode, 0);
+			//?}
+
+			KeyMapping mapping = new KeyMapping(
+					preset.name(),
+					KeyConflictContext.IN_GAME,
+					//?if>=1.21.11{
+					/^InputConstants.Type.KEYSYM.getOrCreate(preset.keyBind()),
+					 ^///?}else{
+					key,
+					//?}
+					//?if>=1.21.9{
+					/^category
+					 ^///?}else{
+					"key.category.minecraft." + entry.keybindCategory()
+					//?}
+			);
+			event.register(mapping);
+			preset.setKeyMapping(mapping);
+			KeybindRegistry.addPresetEntry(preset, manager, modDisplayName);
+		}
+	}
 }
 
 *///?}

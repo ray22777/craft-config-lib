@@ -6,9 +6,16 @@ import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import net.tricube.CraftConfig.api.v1.CraftConfig;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class CraftConfigRegistry {
-
+	private static Consumer<Entry> buildCallback = null;
+	public static void setBuildCallback(Consumer<Entry> callback) {
+		buildCallback = callback;
+		for (Entry e : entries.values()) {
+			callback.accept(e);
+		}
+	}
 	public static class RegistrationBuilder {
 		private final String modId;
 		private final CraftConfig config;
@@ -17,6 +24,7 @@ public class CraftConfigRegistry {
 		private String customCommand = null;
 		private String keybindCategory = null;
 		private final String modDisplayName;
+
 
 		private RegistrationBuilder(String modId, CraftConfig config) {
 			this.modId = modId;
@@ -50,13 +58,18 @@ public class CraftConfigRegistry {
 			return this;
 		}
 
+
 		public void build() {
 			if (keybindCategory == null) {
 				keybindCategory = modDisplayName.toLowerCase().replace(" ","_");
 			}
 			if (entries.containsKey(modId))
 				throw new IllegalStateException("[CraftConfig] '" + modId + "' is already registered.");
-			entries.put(modId, new Entry(modId, config, modMenuEnabled, commandEnabled, customCommand, keybindCategory));
+			Entry entry = new Entry(modId, config, modMenuEnabled, commandEnabled, customCommand, keybindCategory);
+			entries.put(modId, entry);
+			if (buildCallback != null) {
+				buildCallback.accept(entry);
+			}
 		}
 	}
 
@@ -94,6 +107,7 @@ public class CraftConfigRegistry {
 	public static RegistrationBuilder register(String modId, CraftConfig config,String modDisplayName) {
 		return new RegistrationBuilder(modId, config, modDisplayName);
 	}
+
 
 	public static Collection<Entry> all() {
 		return Collections.unmodifiableCollection(entries.values());

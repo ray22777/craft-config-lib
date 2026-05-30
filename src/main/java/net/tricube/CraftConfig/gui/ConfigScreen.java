@@ -320,7 +320,7 @@ public class ConfigScreen extends Screen {
 					if (collapsed) collapsedSections.remove(sec.name().getString());
 					else           collapsedSections.add(sec.name().getString());
 					rebuildOptionList();
-				}));
+				}, sec.description(), this));
 				if (!collapsed)
 					for (ConfigOption<?> opt : sec.options())
 						optionList.addEntry(new OptionListWidget.OptionEntry(opt,

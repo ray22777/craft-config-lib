@@ -453,9 +453,13 @@ public class OptionListWidget
 		private final String name;
 		private final boolean collapsed;
 		private final Runnable onToggle;
+		private final Component description;
+		private final Screen parentScreen;
 
-		public SectionEntry(String name, boolean collapsed, Runnable onToggle) {
+		public SectionEntry(String name, boolean collapsed, Runnable onToggle, Component description, Screen parentScreen) {
 			this.name = name; this.collapsed = collapsed; this.onToggle = onToggle;
+			this.description = description;
+			this.parentScreen = parentScreen;
 		}
 
 		@Override
@@ -466,6 +470,10 @@ public class OptionListWidget
 					(collapsed ? "▶ " : "▼ ") + name,
 					x + 4, y + (h - 8) / 2, COL_ACCENT, false);
 			g.fill(x, y + h - 1, x + w, y + h, COL_BORDER_DARK);
+
+			if (hovered && description != null && parentScreen instanceof ConfigScreen cs) {
+				cs.setTooltip(description, mx, my);
+			}
 		}
 
 		//? if >=1.21.9 {
