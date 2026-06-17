@@ -10,6 +10,7 @@ import net.tricube.CraftConfig.platform.CraftConfigMod;
 import net.tricube.CraftConfig.serialization.JsonSerializer;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
 
@@ -32,61 +33,83 @@ public class PresetManager {
 		this.indexFile = configDir.resolve("_presets.json");
 	}
 
-	// TODO: change world to use world name instead of folder names.
 	public void load() {
 		presets.clear();
 
 		if (!Files.exists(indexFile)) {
-			ConfigPreset def = new ConfigPreset("Default", ConfigPreset.Scope.DEFAULT);
-			def.setValues(snapshotCurrentValues());
-			presets.add(def);
-			activePresetId = def.id();
-			saveAll();
+			createDefaultAndSave();
 			return;
 		}
 
 		try (Reader r = Files.newBufferedReader(indexFile)) {
 			JsonObject root = gson.fromJson(r, JsonObject.class);
-			if (root == null) return;
+			if (root == null) throw new JsonParseException("empty index file");
 
-			activePresetId = root.has("activePresetId")
+			activePresetId = root.has("activePresetId") && !root.get("activePresetId").isJsonNull()
 					? root.get("activePresetId").getAsString() : null;
 
-			for (JsonElement el : root.getAsJsonArray("presets")) {
-				JsonObject obj  = el.getAsJsonObject();
-				String id = obj.get("id").getAsString();
-				String name = obj.get("name").getAsString();
-				ConfigPreset.Scope scope = ConfigPreset.Scope.valueOf(obj.get("scope").getAsString());
-				int keyBind = InputConstants.UNKNOWN.getValue();
-				if (obj.has("keyBind")) {
-					keyBind = obj.get("keyBind").getAsInt();
-				}
-				List<String> worlds = new ArrayList<>();
-				for (JsonElement w : obj.getAsJsonArray("worldIds")) worlds.add(w.getAsString());
+			JsonArray presetArray = root.has("presets") && root.get("presets").isJsonArray()
+					? root.getAsJsonArray("presets") : new JsonArray();
 
-				JsonObject values = new JsonObject();
-				Path valuesFile = presetFile(name);
-				if (Files.exists(valuesFile)) {
-					try (Reader vr = Files.newBufferedReader(valuesFile)) {
-						JsonObject parsed = gson.fromJson(vr, JsonObject.class);
-						if (parsed != null) values = parsed;
-					} catch (IOException e) {
-						System.err.println("[CraftConfig] Failed to read values for preset '" + name + "': " + e.getMessage());
+			for (JsonElement el : presetArray) {
+				try {
+					JsonObject obj = el.getAsJsonObject();
+					if (!obj.has("id") || !obj.has("name") || !obj.has("scope")) continue; // skip malformed entry
+
+					String id = obj.get("id").getAsString();
+					String name = obj.get("name").getAsString();
+					ConfigPreset.Scope scope = ConfigPreset.Scope.valueOf(obj.get("scope").getAsString());
+					int keyBind = obj.has("keyBind") ? obj.get("keyBind").getAsInt() : InputConstants.UNKNOWN.getValue();
+
+					List<String> worlds = new ArrayList<>();
+					if (obj.has("worldIds") && obj.get("worldIds").isJsonArray()) {
+						for (JsonElement w : obj.getAsJsonArray("worldIds")) worlds.add(w.getAsString());
 					}
+
+					JsonObject values = new JsonObject();
+					Path valuesFile = presetFile(name);
+					if (Files.exists(valuesFile)) {
+						try (Reader vr = Files.newBufferedReader(valuesFile)) {
+							JsonObject parsed = gson.fromJson(vr, JsonObject.class);
+							if (parsed != null) values = parsed;
+						} catch (Exception e) { // was IOException-only — same bug, same fix
+							CraftConfigMod.LOGGER.warn("[CraftConfig] Failed to read values for preset '" + name + "': " + e.getMessage());
+						}
+					}
+					ConfigPreset preset = new ConfigPreset(id, name, scope, worlds, values);
+					preset.setKeyBind(keyBind);
+					presets.add(preset);
+				} catch (Exception e) {
+					CraftConfigMod.LOGGER.warn("[CraftConfig] Skipping corrupted preset entry: " + e.getMessage());
 				}
-				ConfigPreset preset = new ConfigPreset(id, name, scope, worlds, values);
-				preset.setKeyBind(keyBind); // Set the keybind
-				presets.add(preset);
 			}
 
 			ensureIntegrity();
 			getActive().ifPresent(this::applyToConfig);
 
-		} catch (IOException e) {
-			System.err.println("[CraftConfig] Failed to load presets: " + e.getMessage());
+		} catch (Exception e) {
+			CraftConfigMod.LOGGER.error("[CraftConfig] Presets file corrupted, backing up and resetting: " + e.getMessage());
+			backupCorruptFile(indexFile);
+			createDefaultAndSave();
 		}
 	}
 
+	private void createDefaultAndSave() {
+		ConfigPreset def = new ConfigPreset("Default", ConfigPreset.Scope.DEFAULT);
+		def.setValues(snapshotCurrentValues());
+		presets.add(def);
+		activePresetId = def.id();
+		saveAll();
+	}
+
+	private void backupCorruptFile(Path file) {
+		try {
+			if (Files.exists(file)) {
+				Files.move(file, file.resolveSibling(file.getFileName() + ".corrupt-" + System.currentTimeMillis()),
+						StandardCopyOption.REPLACE_EXISTING);
+			}
+		} catch (IOException ignored) {}
+	}
 	public void saveAll() {
 		try {
 			Files.createDirectories(configDir);
@@ -101,7 +124,6 @@ public class PresetManager {
 				obj.addProperty("name", p.name());
 				obj.addProperty("scope", p.scope().name());
 
-				// Save keybind
 				if (p.keyBind() != InputConstants.UNKNOWN.getValue()) {
 					obj.addProperty("keyBind", p.keyBind());
 				}
@@ -113,31 +135,39 @@ public class PresetManager {
 			}
 			root.add("presets", arr);
 
-			try (Writer w = Files.newBufferedWriter(indexFile)) {
-				gson.toJson(root, w);
-			}
+			writeJson(indexFile, root);
 
 			for (ConfigPreset p : presets) {
-				try (Writer w = Files.newBufferedWriter(presetFile(p.name()))) {
-					gson.toJson(p.values(), w);
-				}
+				writeJson(presetFile(p.name()), p.values());
 			}
 		} catch (IOException e) {
 			System.err.println("[CraftConfig] Failed to save presets: " + e.getMessage());
 		}
 	}
 
-	/**
-	 * Saves the current live config values into the specified preset.
-	 * Use this instead of always writing to the active preset, because
-	 * the user may be viewing (pending) a different preset than the active one.
-	 */
-	public void saveCurrentValuesIntoPreset(ConfigPreset preset) {
-		preset.setValues(snapshotCurrentValues());
-		saveAll();
+	private void writeJson(Path target, JsonElement json) throws IOException {
+		Path tmp = target.resolveSibling(target.getFileName().toString() + ".tmp");
+		try (Writer w = Files.newBufferedWriter(tmp, StandardCharsets.UTF_8,
+				StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE)) {
+			gson.toJson(json, w);
+		}
+		try {
+			Files.move(tmp, target, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+		} catch (AtomicMoveNotSupportedException e) {
+			Files.move(tmp, target, StandardCopyOption.REPLACE_EXISTING);
+		}
 	}
 
-	/** Convenience overload — saves into the active preset. */
+	public void saveCurrentValuesIntoPreset(ConfigPreset preset) {
+		preset.setValues(snapshotCurrentValues());
+		try {
+			Files.createDirectories(configDir);
+			writeJson(presetFile(preset.name()), preset.values());
+		} catch (IOException e) {
+			System.err.println("[CraftConfig] Failed to save preset '" + preset.name() + "': " + e.getMessage());
+		}
+	}
+
 	public void saveCurrentValuesIntoActivePreset() {
 		getActive().ifPresent(this::saveCurrentValuesIntoPreset);
 	}
@@ -153,20 +183,12 @@ public class PresetManager {
 		return presets.stream().filter(ConfigPreset::isDefault).findFirst();
 	}
 
-	/**
-	 * Switches the active preset.
-	 * FIX: previously called saveCurrentValuesIntoActivePreset() first, which would
-	 * incorrectly overwrite the active preset with whatever the pending (viewed) preset
-	 * was showing before the switch completed.
-	 * Now the caller is responsible for deciding whether to save or discard before switching.
-	 */
 	public void switchTo(ConfigPreset preset) {
 		activePresetId = preset.id();
 		applyToConfig(preset);
 		saveAll();
 	}
 
-	/** Create a new blank world-specific preset, seeded from current live values. */
 	public ConfigPreset createNew(String name) {
 		String uniqueName = getUniqueName(stripCopySuffix(name));
 		ConfigPreset p = new ConfigPreset(uniqueName, ConfigPreset.Scope.WORLD_SPECIFIC);
@@ -175,7 +197,6 @@ public class PresetManager {
 		saveAll();
 		return p;
 	}
-	/** Duplicate an existing preset under a new unique name. */
 	public ConfigPreset duplicate(ConfigPreset source) {
 		String uniqueName = getUniqueName(stripCopySuffix(source.name()));
 		ConfigPreset copy = source.duplicate(uniqueName);
@@ -240,7 +261,6 @@ public class PresetManager {
 	}
 
 	public void addWorldToPreset(ConfigPreset preset, String worldId) {
-		// Remove this worldId from any other preset first
 		for (ConfigPreset p : presets) {
 			if (!p.id().equals(preset.id())) p.worldIds().remove(worldId);
 		}
@@ -263,14 +283,17 @@ public class PresetManager {
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public void applyToConfig(ConfigPreset preset) {
 		JsonObject root = preset.values();
-		JsonObject keybindsRoot = root.has("_keybinds") ? root.getAsJsonObject("_keybinds") : new JsonObject();
+		JsonObject keybindsRoot = (root.has("_keybinds") && root.get("_keybinds").isJsonObject())
+				? root.getAsJsonObject("_keybinds") : new JsonObject();
 		for (ConfigCategory cat : config.categories()) {
 			String catKey = JsonSerializer.formatCase(cat.name().getString());
-			JsonObject catObj = root.has(catKey) ? root.getAsJsonObject(catKey) : null;
+			JsonObject catObj = (root.has(catKey) && root.get(catKey).isJsonObject())
+					? root.getAsJsonObject(catKey) : null;
 			if (catObj == null) continue;
 			for (ConfigSection sec : cat.sections()) {
 				String secKey = JsonSerializer.formatCase(sec.name().getString());
-				JsonObject secObj = catObj.has(secKey) ? catObj.getAsJsonObject(secKey) : null;
+				JsonObject secObj = (catObj.has(secKey) && catObj.get(secKey).isJsonObject())
+						? catObj.getAsJsonObject(secKey) : null;
 				if (secObj == null) continue;
 				for (ConfigOption opt : sec.options()) {
 					String optKey = JsonSerializer.formatCase(opt.name().getString());
