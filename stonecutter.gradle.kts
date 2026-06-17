@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.replace
 
 plugins {
 	alias(libs.plugins.stonecutter)
@@ -74,6 +75,9 @@ stonecutter parameters {
 			replace("ClientCommandManager", "ClientCommands")
 		}
 
+		replacements.string(current.parsed >= "26.2") {
+			replace(".setScreen", ".gui.setScreen")
+		}
 
 
 	}

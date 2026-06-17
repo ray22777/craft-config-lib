@@ -36,7 +36,8 @@ public class FabricCommands {
 		//? if <=1.21.1 {
 		mc.tell(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
 		//?} else {
-		/*mc.schedule(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
+		/*//~ if >=26.2 '.screen' -> '.gui.screen()'
+		mc.schedule(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
 		*///?}
 
         return 1;

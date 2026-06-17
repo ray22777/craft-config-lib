@@ -19,6 +19,7 @@ public class ColorController implements OptionController<Color> {
 		return ColorButton.colorBuilder(
 						Component.literal(String.format("#%08X", colorValue) + "  "),
 						() -> Minecraft.getInstance().setScreen(new ColorPickerScreen(
+								//~ if >=26.2 '.screen' -> '.gui.screen()'
 								Minecraft.getInstance().screen,
 								option.name(),
 								currentColor,

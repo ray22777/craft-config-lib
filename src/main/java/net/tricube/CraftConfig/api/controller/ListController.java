@@ -175,7 +175,9 @@ public class ListController<T> implements OptionController<List<T>> {
 			}
 			if (expanded) editBoxes.forEach(eb -> eb.setFocused(false));
 			expanded = !expanded;
+			//~ if >=26.2 '.screen' -> '.gui.screen()'
 			if (Minecraft.getInstance().screen instanceof ConfigScreen) {
+				//~ if >=26.2 '.screen' -> '.gui.screen()'
 				ConfigScreen cs = (ConfigScreen) Minecraft.getInstance().screen;
 				cs.refreshOptionList();
 			}
@@ -339,7 +341,9 @@ public class ListController<T> implements OptionController<List<T>> {
 				flushEditBoxes(option, et);
 				List<Object> current = new ArrayList<>(safeList(option));
 				if (idx < current.size()) current.remove(idx);
+				//~ if >=26.2 '.screen' -> '.gui.screen()'
 				if (Minecraft.getInstance().screen instanceof ConfigScreen) {
+					//~ if >=26.2 '.screen' -> '.gui.screen()'
 					ConfigScreen cs = (ConfigScreen) Minecraft.getInstance().screen;
 					cs.refreshOptionList();
 				}
@@ -353,7 +357,9 @@ public class ListController<T> implements OptionController<List<T>> {
 			flushEditBoxes(option, et);
 			List<Object> current = new ArrayList<>(safeList(option));
 			current.add(defaultValue(et));
+			//~ if >=26.2 '.screen' -> '.gui.screen()'
 			if (Minecraft.getInstance().screen instanceof ConfigScreen) {
+				//~ if >=26.2 '.screen' -> '.gui.screen()'
 				ConfigScreen cs = (ConfigScreen) Minecraft.getInstance().screen;
 				cs.refreshOptionList();
 			}

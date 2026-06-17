@@ -58,6 +58,7 @@ public class SelectionGridController implements OptionController<List<String>> {
 				}
 
 				Minecraft.getInstance().setScreen(new SelectionGridScreen(
+						//~ if >=26.2 '.screen' -> '.gui.screen()'
 						Minecraft.getInstance().screen,
 						option.name(),
 						workingEntries,
