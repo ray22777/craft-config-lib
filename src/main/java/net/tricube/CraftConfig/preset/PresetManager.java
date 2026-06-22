@@ -40,57 +40,61 @@ public class PresetManager {
 			createDefaultAndSave();
 			return;
 		}
+		ConfigOption.setLoading(true);
+		try {
+			try (Reader r = Files.newBufferedReader(indexFile)) {
+				JsonObject root = gson.fromJson(r, JsonObject.class);
+				if (root == null) throw new JsonParseException("empty index file");
 
-		try (Reader r = Files.newBufferedReader(indexFile)) {
-			JsonObject root = gson.fromJson(r, JsonObject.class);
-			if (root == null) throw new JsonParseException("empty index file");
+				activePresetId = root.has("activePresetId") && !root.get("activePresetId").isJsonNull()
+						? root.get("activePresetId").getAsString() : null;
 
-			activePresetId = root.has("activePresetId") && !root.get("activePresetId").isJsonNull()
-					? root.get("activePresetId").getAsString() : null;
+				JsonArray presetArray = root.has("presets") && root.get("presets").isJsonArray()
+						? root.getAsJsonArray("presets") : new JsonArray();
 
-			JsonArray presetArray = root.has("presets") && root.get("presets").isJsonArray()
-					? root.getAsJsonArray("presets") : new JsonArray();
+				for (JsonElement el : presetArray) {
+					try {
+						JsonObject obj = el.getAsJsonObject();
+						if (!obj.has("id") || !obj.has("name") || !obj.has("scope")) continue; // skip malformed entry
 
-			for (JsonElement el : presetArray) {
-				try {
-					JsonObject obj = el.getAsJsonObject();
-					if (!obj.has("id") || !obj.has("name") || !obj.has("scope")) continue; // skip malformed entry
+						String id = obj.get("id").getAsString();
+						String name = obj.get("name").getAsString();
+						ConfigPreset.Scope scope = ConfigPreset.Scope.valueOf(obj.get("scope").getAsString());
+						int keyBind = obj.has("keyBind") ? obj.get("keyBind").getAsInt() : InputConstants.UNKNOWN.getValue();
 
-					String id = obj.get("id").getAsString();
-					String name = obj.get("name").getAsString();
-					ConfigPreset.Scope scope = ConfigPreset.Scope.valueOf(obj.get("scope").getAsString());
-					int keyBind = obj.has("keyBind") ? obj.get("keyBind").getAsInt() : InputConstants.UNKNOWN.getValue();
-
-					List<String> worlds = new ArrayList<>();
-					if (obj.has("worldIds") && obj.get("worldIds").isJsonArray()) {
-						for (JsonElement w : obj.getAsJsonArray("worldIds")) worlds.add(w.getAsString());
-					}
-
-					JsonObject values = new JsonObject();
-					Path valuesFile = presetFile(name);
-					if (Files.exists(valuesFile)) {
-						try (Reader vr = Files.newBufferedReader(valuesFile)) {
-							JsonObject parsed = gson.fromJson(vr, JsonObject.class);
-							if (parsed != null) values = parsed;
-						} catch (Exception e) { // was IOException-only — same bug, same fix
-							CraftConfigMod.LOGGER.warn("[CraftConfig] Failed to read values for preset '" + name + "': " + e.getMessage());
+						List<String> worlds = new ArrayList<>();
+						if (obj.has("worldIds") && obj.get("worldIds").isJsonArray()) {
+							for (JsonElement w : obj.getAsJsonArray("worldIds")) worlds.add(w.getAsString());
 						}
+
+						JsonObject values = new JsonObject();
+						Path valuesFile = presetFile(name);
+						if (Files.exists(valuesFile)) {
+							try (Reader vr = Files.newBufferedReader(valuesFile)) {
+								JsonObject parsed = gson.fromJson(vr, JsonObject.class);
+								if (parsed != null) values = parsed;
+							} catch (Exception e) { // was IOException-only — same bug, same fix
+								CraftConfigMod.LOGGER.warn("[CraftConfig] Failed to read values for preset '" + name + "': " + e.getMessage());
+							}
+						}
+						ConfigPreset preset = new ConfigPreset(id, name, scope, worlds, values);
+						preset.setKeyBind(keyBind);
+						presets.add(preset);
+					} catch (Exception e) {
+						CraftConfigMod.LOGGER.warn("[CraftConfig] Skipping corrupted preset entry: " + e.getMessage());
 					}
-					ConfigPreset preset = new ConfigPreset(id, name, scope, worlds, values);
-					preset.setKeyBind(keyBind);
-					presets.add(preset);
-				} catch (Exception e) {
-					CraftConfigMod.LOGGER.warn("[CraftConfig] Skipping corrupted preset entry: " + e.getMessage());
 				}
+
+				ensureIntegrity();
+				getActive().ifPresent(this::applyToConfig);
+
+			} catch (Exception e) {
+				CraftConfigMod.LOGGER.error("[CraftConfig] Presets file corrupted, backing up and resetting: " + e.getMessage());
+				backupCorruptFile(indexFile);
+				createDefaultAndSave();
 			}
-
-			ensureIntegrity();
-			getActive().ifPresent(this::applyToConfig);
-
-		} catch (Exception e) {
-			CraftConfigMod.LOGGER.error("[CraftConfig] Presets file corrupted, backing up and resetting: " + e.getMessage());
-			backupCorruptFile(indexFile);
-			createDefaultAndSave();
+		}finally {
+			ConfigOption.setLoading(false);
 		}
 	}
 

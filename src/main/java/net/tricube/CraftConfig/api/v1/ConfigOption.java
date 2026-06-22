@@ -21,6 +21,7 @@ public class ConfigOption<T> {
 	private ConfigKeybinds keybindSettings;
 	private T currentValue;
 	private final List<Consumer<T>> changeListeners = new ArrayList<>();
+	private static boolean isLoading = false;
 
 	private ConfigOption(Component name, T defaultValue, Type type) {
 		this.name = name;
@@ -72,6 +73,9 @@ public class ConfigOption<T> {
 		return this;
 	}
 
+	public static void setLoading(boolean loading) {
+		isLoading = loading;
+	}
 
 	public ConfigOption<T> keybind(ConfigKeybinds keybindSettings) {
 		this.keybindSettings = keybindSettings;
@@ -99,7 +103,9 @@ public class ConfigOption<T> {
 		T oldValue = this.currentValue;
 		if (!valuesEqual(oldValue, value)) {
 			this.currentValue = value;
-			changeListeners.forEach(l -> l.accept(value));
+			if (!isLoading) {
+				changeListeners.forEach(l -> l.accept(value));
+			}
 		}
 	}
 
