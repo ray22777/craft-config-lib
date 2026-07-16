@@ -32,8 +32,10 @@ public class NeoforgeCommands {
     private static int openScreen(CraftConfigRegistry.Entry entry) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return 0;
+		//~ if >=26.2 '.screen' -> '.gui.screen()'{
 		//~ if >=1.21.2 '.tell' -> '.schedule'
         mc.tell(() -> mc.setScreen(entry.config().createScreen(mc.screen)));
+		//~}
         return 1;
     }
 }

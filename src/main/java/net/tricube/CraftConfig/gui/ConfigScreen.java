@@ -280,13 +280,17 @@ public class ConfigScreen extends Screen {
 		if (hasUnsavedChanges()) {
 			minecraft.setScreen(new ConfirmScreen(
 					confirmed -> {
-						if (confirmed) { saveChanges(); onClose(); }
-						else             onClose();
+						if (confirmed) {
+							onClose();
+						} else {
+							saveChanges();
+							onClose();
+						}
 					},
 					Component.literal("Unsaved Changes"),
 					Component.literal("You have unsaved changes. Save before exiting?"),
-					Component.literal("Save & Exit"),
-					Component.literal("Discard & Exit")
+					Component.literal("Discard"),
+					Component.literal("Save & Exit")
 			));
 		} else {
 			onClose();
@@ -562,15 +566,17 @@ public class ConfigScreen extends Screen {
 				if (hasUnsavedChanges()) {
 					minecraft.setScreen(new ConfirmScreen(confirmed -> {
 						if (confirmed) {
+							minecraft.setScreen(this);
+						} else {
 							saveChanges();
 							switchToPresetView(p);
 						}
-						minecraft.setScreen(this);
 					},
 							Component.literal("Unsaved Changes"),
 							Component.literal("Save changes before switching preset?"),
-							Component.literal("Save & Switch"),
-							Component.literal("Cancel")));
+							Component.literal("Cancel"),
+							Component.literal("Save & Switch")
+					));
 				} else {
 					switchToPresetView(p);
 				}
@@ -636,17 +642,17 @@ public class ConfigScreen extends Screen {
 			minecraft.setScreen(new ConfirmScreen(
 					confirmed -> {
 						if (confirmed) {
-							saveChanges();
-						} else {
 							revertToSnapshot();
+						} else {
+							saveChanges();
 						}
 						viewingPreset = null;
 						minecraft.setScreen(parent);
 					},
 					Component.literal("Unsaved Changes"),
 					Component.literal("You have unsaved changes. Save before exiting?"),
-					Component.literal("Save & Exit"),
-					Component.literal("Discard")
+					Component.literal("Discard"),
+					Component.literal("Save & Exit")
 			));
 		} else {
 			viewingPreset = null;
